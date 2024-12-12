@@ -6925,50 +6925,44 @@ Changing your console’s working directory
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Exercise</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Solution</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<p>Your turn: load the world happiness dataset from the <code>whr_2023.csv</code> file. Save it as a variable called <code>world_happiness</code>. Then print out the first 10 rows, the column names, create a summary of the data, report its dimension.</p>
+<p>Your turn: <a href="https://github.com/rlbarter/r-book/raw/refs/heads/main/data/whr.zip">download the following world happiness dataset</a>. Load the the <code>whr_2023.csv</code> file into R, saving it as a variable called <code>world_happiness</code>.</p>
+<p>Then print out the first 6 rows, the column names, create a summary of the data, report its dimension.</p>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>Loading the data</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>world_happiness <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/whr_2023.csv"</span>)</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(world_happiness, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>world_happiness <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/whr_2023.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Printing the first 6 rows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(world_happiness)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   country_name year life_ladder log_GDP_per_capita social_support
-1   Afghanistan 2005          NA                 NA             NA
-2   Afghanistan 2006          NA                 NA             NA
-3   Afghanistan 2007          NA                 NA             NA
-4   Afghanistan 2008       3.724              7.350          0.451
-5   Afghanistan 2009       4.402              7.509          0.552
-6   Afghanistan 2010       4.758              7.614          0.539
-7   Afghanistan 2011       3.832              7.581          0.521
-8   Afghanistan 2012       3.783              7.661          0.521
-9   Afghanistan 2013       3.572              7.680          0.484
-10  Afghanistan 2014       3.131              7.671          0.526
-   healthy_life_expectancy_at_birth freedom_to_make_life_choices generosity
-1                                NA                           NA         NA
-2                                NA                           NA         NA
-3                                NA                           NA         NA
-4                              50.5                        0.718      0.168
-5                              50.8                        0.679      0.191
-6                              51.1                        0.600      0.121
-7                              51.4                        0.496      0.164
-8                              51.7                        0.531      0.238
-9                              52.0                        0.578      0.063
-10                             52.3                        0.509      0.106
-   perceptions_of_corruption positive_affect negative_affect
-1                         NA              NA              NA
-2                         NA              NA              NA
-3                         NA              NA              NA
-4                      0.882           0.414           0.258
-5                      0.850           0.481           0.237
-6                      0.707           0.517           0.275
-7                      0.731           0.480           0.267
-8                      0.776           0.614           0.268
-9                      0.823           0.547           0.273
-10                     0.871           0.492           0.375</code></pre>
+<pre><code>  country_name year life_ladder log_GDP_per_capita social_support
+1  Afghanistan 2005          NA                 NA             NA
+2  Afghanistan 2006          NA                 NA             NA
+3  Afghanistan 2007          NA                 NA             NA
+4  Afghanistan 2008       3.724              7.350          0.451
+5  Afghanistan 2009       4.402              7.509          0.552
+6  Afghanistan 2010       4.758              7.614          0.539
+  healthy_life_expectancy_at_birth freedom_to_make_life_choices generosity
+1                               NA                           NA         NA
+2                               NA                           NA         NA
+3                               NA                           NA         NA
+4                             50.5                        0.718      0.168
+5                             50.8                        0.679      0.191
+6                             51.1                        0.600      0.121
+  perceptions_of_corruption positive_affect negative_affect
+1                        NA              NA              NA
+2                        NA              NA              NA
+3                        NA              NA              NA
+4                     0.882           0.414           0.258
+5                     0.850           0.481           0.237
+6                     0.707           0.517           0.275</code></pre>
 </div>
 </div>
+<p>And looking at several features of the data:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(world_happiness)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(world_happiness)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>'data.frame':   2970 obs. of  11 variables:
  $ country_name                    : chr  "Afghanistan" "Afghanistan" "Afghanistan" "Afghanistan" ...
@@ -6983,7 +6977,7 @@ Changing your console’s working directory
  $ positive_affect                 : num  NA NA NA 0.414 0.481 0.517 0.48 0.614 0.547 0.492 ...
  $ negative_affect                 : num  NA NA NA 0.258 0.237 0.275 0.267 0.268 0.273 0.375 ...</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(world_happiness)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(world_happiness)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> country_name            year       life_ladder    log_GDP_per_capita
  Length:2970        Min.   :2005   Min.   :1.281   Min.   : 5.527    
@@ -7012,7 +7006,7 @@ Changing your console’s working directory
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(world_happiness)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(world_happiness)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2970   11</code></pre>
 </div>
@@ -7033,33 +7027,33 @@ Changing your console’s working directory
 </ol>
 <p>To install the “readxl” package, you can write the following code <em>directly into your console</em>. I <em>don’t</em> recommend saving this code in a quarto document or R script, because you only need to install a package once.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run in the console: </span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"readxl"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run in the console: </span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"readxl"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>But every time you want to <em>use</em> an installed R package in a new R session, you need to <em>“load”</em> it using the library() function (we R folk use the words “library” and “package” interchangeably).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Since you need to run this every time you open RStudio, you should include this code at the top of your quarto document or R script.</p>
 <p>You will often see a lot of message “output” when you load libraries. This is <em>completely normal</em>. Don’t freak out. Unless you see the word “Error” in the message. Then it’s not a message at all, it’s an error, and you should probably freak out. Or just check that you’ve installed the package. Either works, but I imagine that one is more productive than the other.</p>
 <p>If you are loading a library in a quarto document and you want to hide the message output in the resulting rendered document, you can use the chunk option <code>#| message: false</code>, such as:</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="in">#| message: false</span></span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="in">library(readxl)</span></span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="in">#| message: false</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="in">library(readxl)</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="loading-data-from-excel-files" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="loading-data-from-excel-files"><span class="header-section-number">5.3</span> Loading data from Excel files</h2>
 <p>Ok, so now that we’ve loaded our “readxl” library, we should be able to use the <code>read_excel()</code> function! As you may have surmised, the <code>read_excel()</code> function will load in a dataset from an Excel file.</p>
 <p>Just for fun, I have also created an excel version of the gapminder data, <code>gapminder.xls</code>. Let’s load that in using the <code>read_excel()</code> function from the “readxl” library. This code will only work if you have first installed the “readxl” package at some time in the past, and in this session you have run the <code>library("readxl")</code> code to “load” the library into your R session.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>gapminder_excel <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/gapminder.xls"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>gapminder_excel <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/gapminder.xls"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If you have an excel file with lots of sheets, be aware that this function will only load the <em>first</em> sheet. However, you can use the <code>sheet</code> argument to load other sheets.</p>
 <p>In the <code>gapminder.xls</code> file, you will see that there is in fact a second sheet, containing the rows for Australia only. To load in this second sheet, we use our <code>read_excel()</code> function with the <code>sheet = 2</code> argument:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use the "sheet" argument to load in just the second sheet containing Australia's data</span></span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>gapminder_excel_australia <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/gapminder.xls"</span>, <span class="at">sheet =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use the "sheet" argument to load in just the second sheet containing Australia's data</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>gapminder_excel_australia <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/gapminder.xls"</span>, <span class="at">sheet =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="loading-data-from-spss-stata-and-sas-files-using-the-haven-package" class="level2" data-number="5.4">
@@ -7078,11 +7072,11 @@ Changing your console’s working directory
 <p>So why did I even write the following content? I wrote it because I want to show you the misery of working with data frames without the tidyverse. Without this content, you won’t be able to fully appreciate the beauty of the tidyverse that will be introduced in the next chapter. If your only exposure to working with data in R is through the tidyverse, you’ll take it for granted. Don’t take the tidyverse for granted. It’s special, Ok? Besides, if you haven’t already, at some point in your R journeys you’re going to encounter code written by other people that uses a lot of the syntax from this chapter, and I want to make sure that you understand it.</p>
 <p>The rest of this chapter is all about working with data using “base R”. When I say “base R” here, I mean R functions and syntax that are available to you without requiring that you install and load any additional packages. That is, they are part of the “base” R language itself. Since this chapter corresponds to a new quarto document, I’m going to go ahead and load our trust gapminder data frame using the <code>read.csv()</code> function (which is itself a base R function!!).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>gapminder <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/gapminder.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>gapminder <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/gapminder.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And let’s take a look at the first few rows:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      country continent year lifeExp      pop gdpPercap
 1 Afghanistan      Asia 1952  28.801  8425333  779.4453
@@ -7099,7 +7093,7 @@ Changing your console’s working directory
 <p>If you only take away one thing from this chapter, let it be that you can extract a column from a data frame using a dollar sign: <code>$</code>. Despite the fact that this is technically a “base R” technique for working with data frames, I do actually use it all the time.</p>
 <p>For example, if I want to extract the <code>country</code> column from <code>gapminder</code> as a <em>vector</em>, I can write:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>gapminder<span class="sc">$</span>country</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>gapminder<span class="sc">$</span>country</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre style="height: 400px"><code>   [1] "Afghanistan"              "Afghanistan"             
    [3] "Afghanistan"              "Afghanistan"             
@@ -7957,7 +7951,7 @@ Changing your console’s working directory
 </div>
 <p>What kind of object is this? It’s a (very long) vector! You can use the <code>head()</code> function on vectors too to just look at the first 6 values:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder<span class="sc">$</span>country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder<span class="sc">$</span>country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Afghanistan" "Afghanistan" "Afghanistan" "Afghanistan" "Afghanistan"
 [6] "Afghanistan"</code></pre>
@@ -7971,7 +7965,7 @@ Changing your console’s working directory
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder<span class="sc">$</span>lifeExp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder<span class="sc">$</span>lifeExp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 28.801 30.332 31.997 34.020 36.088 38.438</code></pre>
 </div>
@@ -7986,28 +7980,28 @@ Changing your console’s working directory
 <p>To extract individual entries from a data frame using base R, you can write the name of the data frame object (such as <code>gapminder</code>) immediately followed by some <em>square</em> parentheses with two values separated by a comma. The first value will correspond to the row-number of the value you want to extract, and the second value will correspond to the column position of the value, which can either be the numeric index position (e.g., <code>2</code> for the second column) or the name of the column as a character value, such as <code>"country"</code>.</p>
 <p>For example, to extract the entry in the 3rd row and 4th column of <code>gapminder</code>, you can write:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>gapminder[<span class="dv">3</span>, <span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>gapminder[<span class="dv">3</span>, <span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 31.997</code></pre>
 </div>
 </div>
 <p>Or you can use the column name in the second (column) position of the square parentheses:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>gapminder[<span class="dv">3</span>, <span class="st">"lifeExp"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>gapminder[<span class="dv">3</span>, <span class="st">"lifeExp"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 31.997</code></pre>
 </div>
 </div>
 <p>If you want to extract multiple values, you can use the <code>c()</code> function to create a vector of row or column indices. For example, to extract the entries in the 3rd and 4th rows and 4th column, you can write:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>gapminder[<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>), <span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>gapminder[<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>), <span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 31.997 34.020</code></pre>
 </div>
 </div>
 <p>and if you want to extract the entries in the 3rd and 4th rows and the 4th and 5th columns, you can write:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>gapminder[<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>), <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>gapminder[<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>), <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  lifeExp      pop
 3  31.997 10267083
@@ -8016,7 +8010,7 @@ Changing your console’s working directory
 </div>
 <p>Or you can use the column names:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>gapminder[<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>), <span class="fu">c</span>(<span class="st">"lifeExp"</span>, <span class="st">"pop"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>gapminder[<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>), <span class="fu">c</span>(<span class="st">"lifeExp"</span>, <span class="st">"pop"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  lifeExp      pop
 3  31.997 10267083
@@ -8038,44 +8032,44 @@ Changing your console’s working directory
 <h3 data-number="5.7.1" class="anchored" data-anchor-id="extracting-entire-columns-from-a-data-frame"><span class="header-section-number">5.7.1</span> Extracting entire columns from a data frame</h3>
 <p>There are many ways to extract a single <em>column</em> from a data frame using base R syntax. You’ve already seen one:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder<span class="sc">$</span>lifeExp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder<span class="sc">$</span>lifeExp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 28.801 30.332 31.997 34.020 36.088 38.438</code></pre>
 </div>
 </div>
 <p>But you can also use the square parenthesis syntax to extract an entire column by leaving the first row index position in the square parentheses blank. For example, the following code will extract the entire fourth column (and just print out the head):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[, <span class="dv">4</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[, <span class="dv">4</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 28.801 30.332 31.997 34.020 36.088 38.438</code></pre>
 </div>
 </div>
 <p>And the following code will do the same thing using the name of the fourth column instead of its index position:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[, <span class="st">"lifeExp"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[, <span class="st">"lifeExp"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 28.801 30.332 31.997 34.020 36.088 38.438</code></pre>
 </div>
 </div>
 <p>Here’s a fun question for you (and don’t try to tell me I don’t know what “fun” means!)… What do you think the output of the following code will be:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[<span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[<span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And what about:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[<span class="st">"year"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[<span class="st">"year"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>How is this code different from what we were just doing above?</p>
 <p>Above whenever we were using the square parenthesis syntax, we provided two values: the row position and the column position. If we wanted all of the rows, we left the row position blank, but we still had the comma, for example <code>gapminder[,3]</code>. But in the code above, we only provided one value, and no commas inside the square parentheses!</p>
 <p>If you tried it out yourself, you will have seen that the output of these two pieces of code above where we just provide a number of a column name inside the square parentheses without any commas is the relevant column, but what type of object is it? Is <code>gapminder["year"]</code> different from <code>gapminder[, "year"]</code>? Take a look at the two outputs:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[, <span class="st">"year"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[, <span class="st">"year"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1952 1957 1962 1967 1972 1977</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[<span class="st">"year"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[<span class="st">"year"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  year
 1 1952
@@ -8089,11 +8083,11 @@ Changing your console’s working directory
 <p>What type of objects are they? The first one is a vector, and the second one is a single-column data frame!</p>
 <p>And just to confuse you even further, there is yet another way to extract a column: you can use double square parentheses <code>[[]]</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[[<span class="dv">3</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[[<span class="dv">3</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1952 1957 1962 1967 1972 1977</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[[<span class="st">"year"</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[[<span class="st">"year"</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1952 1957 1962 1967 1972 1977</code></pre>
 </div>
@@ -8113,15 +8107,15 @@ Changing your console’s working directory
 <li></li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>gapminder[<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>), <span class="st">"gdpPercap"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>gapminder[<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>), <span class="st">"gdpPercap"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 836.1971 739.9811</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>gapminder[<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>), <span class="dv">6</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>gapminder[<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>), <span class="dv">6</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 836.1971 739.9811</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>gapminder[<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>), <span class="fu">ncol</span>(gapminder)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>gapminder[<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>), <span class="fu">ncol</span>(gapminder)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 836.1971 739.9811</code></pre>
 </div>
@@ -8130,20 +8124,20 @@ Changing your console’s working directory
 <li></li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 7 ways of extracting the lifeExp column</span></span>
-<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[, <span class="dv">4</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 7 ways of extracting the lifeExp column</span></span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[, <span class="dv">4</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 28.801 30.332 31.997 34.020 36.088 38.438</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[, <span class="st">"lifeExp"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[, <span class="st">"lifeExp"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 28.801 30.332 31.997 34.020 36.088 38.438</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder<span class="sc">$</span>lifeExp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder<span class="sc">$</span>lifeExp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 28.801 30.332 31.997 34.020 36.088 38.438</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[<span class="dv">4</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[<span class="dv">4</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  lifeExp
 1  28.801
@@ -8153,7 +8147,7 @@ Changing your console’s working directory
 5  36.088
 6  38.438</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[<span class="st">"lifeExp"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[<span class="st">"lifeExp"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  lifeExp
 1  28.801
@@ -8163,11 +8157,11 @@ Changing your console’s working directory
 5  36.088
 6  38.438</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[[<span class="dv">4</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[[<span class="dv">4</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 28.801 30.332 31.997 34.020 36.088 38.438</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[[<span class="st">"lifeExp"</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[[<span class="st">"lifeExp"</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 28.801 30.332 31.997 34.020 36.088 38.438</code></pre>
 </div>
@@ -8182,11 +8176,11 @@ Changing your console’s working directory
 <p>While being able to extract subsets of your data frame using row and column position, you probably don’t want to have to figure out the row and column positions of every value that you want to extract. Fortunately, you don’t have to! You can use that logical subsetting stuff that I went on and on about way back in <a href="03_vectors.html#sec-logical-subsetting" class="quarto-xref"><span>Section 4.6</span></a>.</p>
 <p>Let’s use logical subsetting to create a logical vector, called <code>is_aus</code> that is <code>TRUE</code> when the corresponding row’s country value is “Australia” and <code>FALSE</code> otherwise.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>is_aus <span class="ot">&lt;-</span> gapminder<span class="sc">$</span>country <span class="sc">==</span> <span class="st">"Australia"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a>is_aus <span class="ot">&lt;-</span> gapminder<span class="sc">$</span>country <span class="sc">==</span> <span class="st">"Australia"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Remember that <code>vec == "value"</code> will ask whether every value in the vector <code>vec</code> (in our example, this is the country column of gapminder <code>gapminder$country</code>) is equal to <code>"Australia"</code>, and will return <code>TRUE</code> if it is and <code>FALSE</code> if it is not. So the <code>is_aus</code> variable will contain a vector of <code>TRUE</code> and <code>FALSE</code> values. Since this vector is going to be long (its length equals the number of rows in <code>gapminder</code>), let’s just look at the first 100 entries using <code>head()</code> (we can specify how many rows we want to look at by providing a second argument to head, in this case, <code>100</code>):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(is_aus, <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(is_aus, <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
  [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
@@ -8201,14 +8195,14 @@ Changing your console’s working directory
 </div>
 <p>One trick to ask how many <code>TRUE</code> values there are in a logical vector is to use the <code>sum()</code> function. This is because <code>TRUE</code> is treated as <code>1</code> and <code>FALSE</code> is treated as <code>0</code>, so the sum of a logical vector will be the number of <code>TRUE</code> values in the vector.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(is_aus)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(is_aus)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 12</code></pre>
 </div>
 </div>
 <p>So why do we want to create this logical vector? It turns out that we can use it to filter to just the rows for Australia by providing it in the row indexing position of our square parentheses like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>gapminder[is_aus, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>gapminder[is_aus, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     country continent year lifeExp      pop gdpPercap
 61 Australia   Oceania 1952  69.120  8691212  10039.60
@@ -8228,8 +8222,8 @@ Changing your console’s working directory
 <p>Since I didn’t provide anything in the second position <code>[is_aus, ]</code>, this returned all of the columns.</p>
 <p>This is pretty helpful, but it can get kind of messy, especially if we want to avoid defining intermediate objects (which I generally do). The way I wrote the code above involved defining an “intermediate object” corresponding to the <code>is_aus</code> logical vector:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>is_aus <span class="ot">&lt;-</span> gapminder<span class="sc">$</span>country <span class="sc">==</span> <span class="st">"Australia"</span></span>
-<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>gapminder[is_aus, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a>is_aus <span class="ot">&lt;-</span> gapminder<span class="sc">$</span>country <span class="sc">==</span> <span class="st">"Australia"</span></span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>gapminder[is_aus, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     country continent year lifeExp      pop gdpPercap
 61 Australia   Oceania 1952  69.120  8691212  10039.60
@@ -8248,7 +8242,7 @@ Changing your console’s working directory
 </div>
 <p>But I could have done this all in one row by writing:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>gapminder[gapminder<span class="sc">$</span>country <span class="sc">==</span> <span class="st">"Australia"</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>gapminder[gapminder<span class="sc">$</span>country <span class="sc">==</span> <span class="st">"Australia"</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     country continent year lifeExp      pop gdpPercap
 61 Australia   Oceania 1952  69.120  8691212  10039.60
@@ -8267,7 +8261,7 @@ Changing your console’s working directory
 </div>
 <p>You will often see this kind of code. For now, it’s still fairly readable, but if I want to proide multiple conditions for my filtering, for example I just want to subset to the rows corresponding to <code>country == "Australia"</code> and <code>year &gt; 1990</code>, I can do this by using the <code>&amp;</code> operator to combine the two logical vectors:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a>gapminder[(gapminder<span class="sc">$</span>country <span class="sc">==</span> <span class="st">"Australia"</span>) <span class="sc">&amp;</span> (gapminder<span class="sc">$</span>year <span class="sc">&gt;</span> <span class="dv">1990</span>), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a>gapminder[(gapminder<span class="sc">$</span>country <span class="sc">==</span> <span class="st">"Australia"</span>) <span class="sc">&amp;</span> (gapminder<span class="sc">$</span>year <span class="sc">&gt;</span> <span class="dv">1990</span>), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     country continent year lifeExp      pop gdpPercap
 69 Australia   Oceania 1992  77.560 17481977  23424.77
@@ -8278,7 +8272,7 @@ Changing your console’s working directory
 </div>
 <p>Where our row condition <code>(gapminder$country == "Australia") &amp; (gapminder$year &gt; 1990)</code> will return a logical vector that is <code>TRUE</code> when both conditions are met and <code>FALSE</code> otherwise:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a>(gapminder<span class="sc">$</span>country <span class="sc">==</span> <span class="st">"Australia"</span>) <span class="sc">&amp;</span> (gapminder<span class="sc">$</span>year <span class="sc">&gt;</span> <span class="dv">1990</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a>(gapminder<span class="sc">$</span>country <span class="sc">==</span> <span class="st">"Australia"</span>) <span class="sc">&amp;</span> (gapminder<span class="sc">$</span>year <span class="sc">&gt;</span> <span class="dv">1990</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre style="height: 400px"><code>   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
   [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
@@ -8431,7 +8425,7 @@ Changing your console’s working directory
 <p>Remember how you could remove a value from a vector by providing a negative value inside the indexing parentheses, such as <code>vec[-2]</code> for removing the second entry of the vector.</p>
 <p>You can use negative indexing to remove columns of a data frame too! The following code will remove the third column (<code>year</code>) from gapminder, and show just the first 6 rows:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[<span class="sc">-</span><span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder[<span class="sc">-</span><span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      country continent lifeExp      pop gdpPercap
 1 Afghanistan      Asia  28.801  8425333  779.4453
@@ -8448,16 +8442,16 @@ Changing your console’s working directory
 <h2 data-number="5.10" class="anchored" data-anchor-id="adding-columns"><span class="header-section-number">5.10</span> Adding columns</h2>
 <p>Just as you can remove columns from a data frame using the square parenthesis index syntax, you can also <em>add</em> new columns to a data frame. However, since adding a column involve <em>assigning</em> the new column to somthing, this <em>will</em> modify the gapminder object. To avoid modifying our original <code>gapminder</code> object, let’s create a new version of it called <code>gapminder_tmp</code> (for “gapminder temporary”). I can do that by assigning <code>gapminder_tmp</code> to <code>gapminder</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a>gapminder_tmp <span class="ot">&lt;-</span> gapminder</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb125"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a>gapminder_tmp <span class="ot">&lt;-</span> gapminder</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If I wanted to add a new column to <code>gapminder_tmp</code>, I can use the <code>$</code> syntax to define <code>gapminder_tmp$gdp</code> (the column I want to create that does not yet exist) by assigning it to the vector of values that I want it to contain.</p>
 <p>The <code>gdp</code> column that I want to create will correspond to the product of the <code>gdpPercap</code> column and the <code>pop</code> column (note that <code>gapminder_tmp$gdpPercap</code> and <code>gapminder_tmp$pop</code> are both vectors and their product is also a vector):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb125"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a>gapminder_tmp<span class="sc">$</span>gdp <span class="ot">&lt;-</span> gapminder_tmp<span class="sc">$</span>gdpPercap <span class="sc">*</span> gapminder_tmp<span class="sc">$</span>pop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb126"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a>gapminder_tmp<span class="sc">$</span>gdp <span class="ot">&lt;-</span> gapminder_tmp<span class="sc">$</span>gdpPercap <span class="sc">*</span> gapminder_tmp<span class="sc">$</span>pop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s take a look at our modified <code>gapminder_tmp</code> data frame:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb126"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder_tmp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb127"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder_tmp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      country continent year lifeExp      pop gdpPercap         gdp
 1 Afghanistan      Asia 1952  28.801  8425333  779.4453  6567086330
@@ -8471,11 +8465,11 @@ Changing your console’s working directory
 <p>Notice that there is a new <code>gdp</code> column at the end!</p>
 <p>Note that we could alternatively do this using the square parenthesis syntax:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb128"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb128-1"><a href="#cb128-1" aria-hidden="true" tabindex="-1"></a>gapminder_tmp[, <span class="st">"gdp"</span>] <span class="ot">&lt;-</span> gapminder_tmp[, <span class="st">"gdpPercap"</span>] <span class="sc">*</span> gapminder_tmp[, <span class="st">"pop"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb129"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a>gapminder_tmp[, <span class="st">"gdp"</span>] <span class="ot">&lt;-</span> gapminder_tmp[, <span class="st">"gdpPercap"</span>] <span class="sc">*</span> gapminder_tmp[, <span class="st">"pop"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>As well as the using version of indexing that doesn’t involve a row index position (i.e., <code>df["col"]</code> instead of <code>df[, "col"]</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb129"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a>gapminder_tmp[<span class="st">"gdp"</span>] <span class="ot">&lt;-</span> gapminder_tmp[<span class="st">"gdpPercap"</span>] <span class="sc">*</span> gapminder_tmp[<span class="st">"pop"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb130"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb130-1"><a href="#cb130-1" aria-hidden="true" tabindex="-1"></a>gapminder_tmp[<span class="st">"gdp"</span>] <span class="ot">&lt;-</span> gapminder_tmp[<span class="st">"gdpPercap"</span>] <span class="sc">*</span> gapminder_tmp[<span class="st">"pop"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>These all do the same thing!</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
@@ -8487,9 +8481,9 @@ Changing your console’s working directory
 </div>
 <div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb130"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb130-1"><a href="#cb130-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for all rows:</span></span>
-<span id="cb130-2"><a href="#cb130-2" aria-hidden="true" tabindex="-1"></a>gapminder_tmp<span class="sc">$</span>lifeExp <span class="ot">&lt;-</span> <span class="fu">round</span>(gapminder_tmp<span class="sc">$</span>lifeExp)</span>
-<span id="cb130-3"><a href="#cb130-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder_tmp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb131"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb131-1"><a href="#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for all rows:</span></span>
+<span id="cb131-2"><a href="#cb131-2" aria-hidden="true" tabindex="-1"></a>gapminder_tmp<span class="sc">$</span>lifeExp <span class="ot">&lt;-</span> <span class="fu">round</span>(gapminder_tmp<span class="sc">$</span>lifeExp)</span>
+<span id="cb131-3"><a href="#cb131-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder_tmp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      country continent year lifeExp      pop gdpPercap         gdp
 1 Afghanistan      Asia 1952      29  8425333  779.4453  6567086330
