@@ -193,16 +193,26 @@ You can update your console's working directory to be the location of your curre
 :::
 
 
-Let's load an actual .csv file. If you are working in a quarto document or an R script on your computer, take note of where you saved it. Create a new folder called "data" in the same location as your current document. Then [download the gapminder dataset](https://raw.githubusercontent.com/rlbarter/r-book/refs/heads/main/data/gapminder.csv) and move it to your new "data" folder.
-<a href="https://raw.githubusercontent.com/rlbarter/r-book/refs/heads/main/data/gapminder.csv" download>Download CSV</a>
+Let's load an actual .csv file. If you are working in a quarto document or an R script on your computer, take note of where you saved it. Then [download the following "data" folder containing the "gapminder" dataset](https://github.com/rlbarter/r-book/raw/refs/heads/main/data/data.zip) and move the data folder to the same location as your current quarto document.
 
-Then, assuming that your console's working directory matches the location where your quarto document or R script has been saved, you should be able to run this code below to load in the gapminder csv data file and save it as an object called `gapminder` using the `read.csv()` function.
+If you are working in a quarto document called "analysis.qmd" then your folder should have the following structure, in which the "data" folder lives in the same place as "analysis.qmd":
+
+```{r}
+#| echo: false
+#| out.width: 200
+#| fig.align: "center"
+knitr::include_graphics("figures/data_folder.png")
+```
+
+
+
+Then, assuming that your console's working directory matches the location of your quarto document on your computer, you should be able to run the code below to load in the gapminder.csv data file and save it as a data frame object called `gapminder`:
 
 ```{r}
 gapminder <- read.csv(file = "data/gapminder.csv")
 ```
 
-If you get an error that says `"Warning message: In file(file, "rt") : cannot open file 'data/gapminder.csv': No such file or directory"`, this means that either you did not set up your file in the right place, or your console's working directory is incorrect!
+If you get an error that says `"Warning message: In file(file, "rt") : cannot open file 'data/gapminder.csv': No such file or directory"`, this means that either you did not move the "data" folder containing "gapminder.csv" in the right place, or your console's working directory is incorrect!
 
 Hopefully you figured out how to tell R to find and load your dataset! If your code above worked, you should then be able to take a look at the gapminder object by typing its name:
 
@@ -211,37 +221,46 @@ Hopefully you figured out how to tell R to find and load your dataset! If your c
 gapminder
 ```
 
-But this clearly prints out A LOT of data! 
+This prints out A LOT of data (I've contained the output in a nice scrolly box, but if you did this in a standard quarto document, the entire thing will be printed out, sans scrolly box). In general, you want to avoid printing your entire dataset in your R console or rendered quarto document. 
 
-In general, you will want to try to avoid printing your entire dataset in your R console or quarto output. Try printing just the first few (6, to be exact) rows using the `head()` function:
+Instead, try printing just the first few (6, to be exact) rows using the `head()` function:
 
 ```{r}
 head(gapminder)
 ```
 
-So what is this "gapminder" data? The gapminder dataset contains information on life expectancy, population, and GDP per capita for 142 countries over the years 1952 to 2007. If you want to learn more about it for some reason, head on over to the [gapminder website](https://www.gapminder.org/).
+Now that we are starting to get a handle on our gapminder data frame, let's talk about the information it contains. The gapminder dataset contains information on life expectancy, population, and GDP per capita for 142 countries every 5 years between 1952 to 2007. Each country has 12 rows in the data, one for each year.
+
+If you want to learn more about the gapminder dataset, head on over to the [gapminder website](https://www.gapminder.org/).
 
 
-### Describing attributes of a data frame
+### Attributes of a data frame
 
-Now that we have a data frame containing our data, we can print out just the column names using the `colnames()` function:
+Often I find it helpful to print out just the column names of a data frame using the `colnames()` function:
 
 ```{r}
 colnames(gapminder)
 ```
 
-This is particularly useful for data frames with a lot of columns.
-
-We can also ask things like how many rows and columns our data frame has:
+We can also ask things like how many rows our data frame has using the `nrow()` function:
 
 ```{r}
-# compute the number of rows (nrow)
 nrow(gapminder)
-# compute the number of columns (ncol)
+```
+
+
+How many columns our data frame has using the `ncol()` function:
+```{r}
 ncol(gapminder)
-# do both at the same time (dim)
+```
+
+Or we can ask both how many rows and how many columns our data frame has at the same time using the `dim()` function:
+
+```{r}
 dim(gapminder)
 ```
+
+
 
 We can use our trusty `str()` function from earlier to take a sneak peak at the "structure" of our data:
 
@@ -249,7 +268,7 @@ We can use our trusty `str()` function from earlier to take a sneak peak at the 
 str(gapminder)
 ```
 
-And we can use the `summary()` function to get some statistical summaries (like the minimum, median, mean, maximum and the quartiles) of each of the numeric columns in our data frame (this summary is fairly useless for character columns though):
+And we can use the `summary()` function to get some statistical summaries (like the minimum, median, mean, maximum and the quartiles) of each of the numeric columns in our data frame (this summary is fairly useless for character/categorical columns though):
 
 ```{r}
 # use summary() to look at a summary of gapminder
