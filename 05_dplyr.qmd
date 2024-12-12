@@ -1,23 +1,23 @@
 ---
-title: "Data frames with dplyr"
+title: "Data Frames in the Tidyverse"
 format: html
 embed-resources: true
 editor_options: 
   chunk_output_type: console
 ---
 
-In this chapter, I'm finally going to introduce the tidyverse! Are you excited? I know I am! 
+I don't think it's an exaggeration to say that you probably wouldn't be learning the R programming language today were it not for the "tidyverse" and the human who led to its creation, Hadley Wickham. 
 
-I don't think it's an exaggeration to say that I genuinely don't think the R programming language would be nearly as widespread and useful as it is today if it were not for the tidyverse and the human who first created it, Hadley Wickham. Since R is an open source language, anyone can be an R developer, which means that you can take the R programming language and create your own functions that enhance it. And one of the most successful R developers is Hadley Wickham, who created the ggplot2 R package (which you'll meet in the next chapter) as a part of his PhD, and later a range of other packages, including dplyr (which is the topic if this chapter). These packages, along with several others, form what is now called the "tidyverse" (because they serve to help you create "tidy" data), to which hundreds of brilliant people have contributed.
+What is the "tidyverse"? R is an open source programming language, which means that anyone can enhance it by creating their own R functions. A collection of R functions can be bundled into a "package" or a "library" (I use these terms interchangeably).
 
-The tidyverse ecosystem and its impacts are a true testament to the power of the open source community.
+In the 2010s, Hadley Wickham developed several transformative R packages, including "dplyr" and "ggplot2" (this chapter will introduce "dplyr" and you'll get to know "ggplot2" in the next chapter). These, along with other packages, form a suite collectively known as the "tidyverse"—so named because they help you create and work with "tidy" data.
 
-To get started with dplyr, ggplot2, and the other tidyverse packages, you need to *install* them. To make our lives a little bit too easy, you can now simultaneously install all of the tidyverse packages (ggplot2, dplyr, reshape, purrr, readr, and many others) by just installing a single "tidyverse" library.
+While Hadley Wickham created many of the foundational packages in the tidyverse, it has since grown to include contributions from hundreds of brilliant developers. Together, they have revolutionized the way we write R code for the better. The tidyverse and its impacts are a true testament to the power of the open source community.
+
 
 
 ## Installing and Loading R packages
 
-In case you didn't read @sec-readxl, where we introduced packages, I'm going to repeat what I wrote here. 
 
 R packages are collections of "add-on" R functions that you can "load" into your R session to provide you with additional functionality. For example, the "dplyr" package provides functions that allow you to work with data frames.
 
@@ -27,23 +27,35 @@ To use functions from a package, you need to do two things:
 
 2. Load your package into your current R session. *You need to do this every time you start a new R session (i.e., every time you open up RStudio).*
 
-To install the "dplyr" package, you can write the following code *directly into your console*. I *don't* recommend saving this code in a quarto document or R script, because you only need to install a package once. 
+I like to think of installing a package like installing a new application (like RStudio!) onto your computer. You only ever need to install the application once (unless you're updating it), but you need to open it every time you want to use it (in this analogy, loading a library is like "opening" your application).
+
+
+### Installing an R package
+
+So to get started with dplyr, ggplot2, and the other tidyverse packages, we need to *install* them. But to make our lives easier, you can now simultaneously install all of the tidyverse packages (ggplot2, dplyr, reshape, purrr, readr, and many others) by just installing the "tidyverse" package itself.
+
+
+To install the "tidyverse" package (or any other package), you can write the following code *directly into your console* (I do *not* recommend saving this code in a quarto document or R script, because you only need to install a package once):
 
 ```{r}
 #| eval: false
 # run in the console: 
-install.packages("dplyr")
+install.packages("tidyverse")
 ```
 
-But every time you want to *use* an installed R package in a new R session, you need to *"load"* it using the library() function (we R folk use the words "library" and "package" interchangeably). 
+Note that you need to be connected to the internet to install a package (since it's like downloading an application from the internet.)
+
+### Loading an R package
+
+Once you've installed it, every time you want to *use* an installed R package in a new R session, you need to *"load"* it using the library() function. 
 
 ```{r}
-library(dplyr)
+library(tidyverse)
 ```
 
-Since you need to run this every time you open RStudio, you should include this code at the top of your quarto document or R script.
+Since you need to run this every time you open RStudio, you should include this code in the first chunk of your quarto document or R script.
 
-You will often see a lot of message "output" when you load libraries. This is *completely normal*. Don't freak out. Unless you see the word "Error" in the message. Then it's not a message at all, it's an error, and you should probably freak out. Or just check that you've installed the package. Either works, but I imagine that one is more productive than the other.
+When you load libraries in R, you'll often see a lot of message "output" (what I like to call "chatter"). This output is completely normal and nothing to worry about. However, if you see the word "Error" in the message output, then you'll want to check whether you've properly installed the package you're trying to load. I usually do that by just running, for example, `install.packages("tidyverse")` again and seeing what happens.
 
 If you are loading a library in a quarto document and you want to hide the message output in the resulting rendered document, you can use the chunk option `#| message: false`, such as:
 
@@ -54,35 +66,14 @@ library(dplyr)
 
 
 
-## The tidyverse library
-
-Throughout the next few chapters, we are going to be working with the tidyverse library. The tidyverse library is a little bit special. While it is an R package (like the "readxl" R package from @sec-readxl and "dplyr", above), the tidyverse is actually a package that contains a bunch of different packages, one of which is the "dplyr" package that we just installed and loaded above!
-
-The tidyverse also includes the "ggplot2" library that we will be working with in a few chapters, and most of the other libraries that we will be using throughout this book. While you can install and load these libraries separately, it is actually more common to just load the "tidyverse", which will load all of the included libraries at once. 
-
-As an exercise, go ahead and install the tidyverse library (write `install.packages("tidyverse")` directly in the console) and then load it into your R session (`library(tidyverse)`). Remember that you don't want to include the `install.packages("tidyverse")` code in your quarto document or R script, because you only need to install a package once, but you will want to include the `library(tidyverse)` code at the top of your document, because you will need to run this every time you start a new R session. Note that you need quotes for "tidyverse" in the `install.packages()` function, but not in the `library()` function. 
-
-As an analogy, think of installing an R package (`install.packages("tidyverse")`) as downloading and installing an application from the internet onto your computer. Then think of loading an R package (`library(tidyverse)`) as opening that application on your computer. You only need to download and install an application once, but you need to open (load) it every time you want to use it.
-
-Therefore, the first code chunk in most of my quarto documents is just:
-
-```{{r}}
-#| message: false
-library(tidyverse)
-```
-
-```{r}
-#| message: false
-#| echo: false
-library(tidyverse)
-```
-
-
 
 
 ## Tibbles and the `read_csv()` function
 
-Up until now, we have been using a base R function (`read.csv()`) to load our gapminder dataset. While it's perfectly fine to continue to use this function, it is recommended that you switch to a slightly different function that has an underscore instead of a period in its name: `read_csv()`. This function is part of the tidyverse and is a little bit more efficient and user-friendly than `read.csv()`.
+In the last chapter, we used a "base R" function (`read.csv()`) to load our gapminder dataset. "base R" refers to functions that are available in R and do not require you to load any additional libraries.
+
+
+While it's perfectly fine to continue to use this function, it is recommended that you switch to a slightly different function that has an underscore instead of a period in its name: `read_csv()`. This function is part of the tidyverse and is a little bit more efficient and user-friendly than `read.csv()`.
 
 Let's use `read_csv()` (the tidyverse version of `read.csv()`) to load the gapminder dataset:
 

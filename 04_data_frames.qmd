@@ -115,7 +115,7 @@ While I will occasionally want to extract columns from my data as a vector using
 But first, I want to show you how to load a dataset that you have saved on your computer into a data frame in R.
 
 
-## Loading in data from external files
+## Loading data from external files
 
 
 To create the `my_data` data frame object above, I first created the individual vectors, which I then used to define the individual columns of my data frame within the `data.frame()` function. Imagine if your data had hundreds of observations/values for each of hundreds of variables. No one wants to manually type their data into R. 
@@ -199,7 +199,7 @@ If you are working in a quarto document called "analysis.qmd" then your folder s
 
 ```{r}
 #| echo: false
-#| out.width: 200
+#| out.width: 250
 #| fig.align: "center"
 knitr::include_graphics("figures/data_folder.png")
 ```
@@ -234,7 +234,7 @@ Now that we are starting to get a handle on our gapminder data frame, let's talk
 If you want to learn more about the gapminder dataset, head on over to the [gapminder website](https://www.gapminder.org/).
 
 
-### Attributes of a data frame
+## Attributes of a data frame
 
 Often I find it helpful to print out just the column names of a data frame using the `colnames()` function:
 
@@ -311,82 +311,12 @@ summary(world_happiness)
 dim(world_happiness)
 ```
 
-
 ::::
 
 
 
+## Loading data from Excel, SPSS, Stata, and SAS files 
 
+Loading data from Excel, SPSS, Stata, and files is almost as easy as loading data from .csv files, except that you will need to install some add-on packages to do so. Specifically, to load Excel files, you will need to install the "readxl" package, and to load in SPSS, Stata, or SAS files, you'll need to install the "haven" package.
 
-## Installing and loading R packages {#sec-readxl}
-
-If you are unfortunate enough to receive your data in the format of an Excel file, you can still load it into R! However, to load excel files, you will need to **install the "readxl" R package**. 
-
-R packages are collections of "add-on" R functions that you can "load" into your R session to provide you with additional functionality. For example, the "readxl" package provides functions that allow you to read in data from Excel files.
-
-To use functions from a package, you need to do two things:
-
-1. Install the package onto your computer. You only need to do this once.
-
-2. Load your package into your current R session. You need to do this every time you start a new R session (i.e., every time you open up RStudio).
-
-To install the "readxl" package, you can write the following code *directly into your console*. I *don't* recommend saving this code in a quarto document or R script, because you only need to install a package once. 
-
-```{r}
-#| eval: false
-# run in the console: 
-install.packages("readxl")
-```
-
-But every time you want to *use* an installed R package in a new R session, you need to *"load"* it using the library() function (we R folk use the words "library" and "package" interchangeably). 
-
-```{r}
-library(readxl)
-```
-
-Since you need to run this every time you open RStudio, you should include this code at the top of your quarto document or R script.
-
-You will often see a lot of message "output" when you load libraries. This is *completely normal*. Don't freak out. Unless you see the word "Error" in the message. Then it's not a message at all, it's an error, and you should probably freak out. Or just check that you've installed the package. Either works, but I imagine that one is more productive than the other.
-
-If you are loading a library in a quarto document and you want to hide the message output in the resulting rendered document, you can use the chunk option `#| message: false`, such as:
-
-```{{r}}
-#| message: false
-library(readxl)
-```
-
-
-## Loading data from Excel files 
-
-Ok, so now that we've loaded our "readxl" library, we should be able to use the `read_excel()` function! As you may have surmised, the `read_excel()` function will load in a dataset from an Excel file.
-
-Just for fun, I have also created an excel version of the gapminder data, `gapminder.xls`. Let's load that in using the `read_excel()` function from the "readxl" library. This code will only work if you have first installed the "readxl" package at some time in the past, and in this session you have run the `library("readxl")` code to "load" the library into your R session. 
-
-```{r}
-gapminder_excel <- read_excel("data/gapminder.xls")
-```
-
-If you have an excel file with lots of sheets, be aware that this function will only load the *first* sheet. However, you can use the `sheet` argument to load other sheets.
-
-In the `gapminder.xls` file, you will see that there is in fact a second sheet, containing the rows for Australia only. To load in this second sheet, we use our `read_excel()` function with the `sheet = 2` argument:
-
-```{r}
-# use the "sheet" argument to load in just the second sheet containing Australia's data
-gapminder_excel_australia <- read_excel("data/gapminder.xls", sheet = 2)
-```
-
-
-## Loading data from SPSS, Stata and SAS files using the haven package
-
-I'm not going to go into details here, but if you happen to have data in SPSS, Stata, or SAS file formats, the "haven" package has functions that you can use to load in these files.
-
-Once you've installed (`install.packages("haven")`) and loaded (`library(haven)`) the "haven" package, you should have access to the following functions:
-
-- **SAS**: `read_sas()` reads .sas7bdat and .sas7bcat files and `read_xpt()` reads SAS transport files (versions 5 and 8). 
-
-- **SPSS**: `read_sav()` reads .sav files and `read_por()` reads the older .por files. 
-
-- **Stata**: `read_dta()` reads .dta files (up to version 15). 
-
-
-
+You'll learn about installing and loading packages in the next chapter, but you can [click here](https://readxl.tidyverse.org/) to learn more about loading data from Excel files, and you can [click here](https://haven.tidyverse.org/) to learn more about loading data from SPSS, Stata, and SAS files.
