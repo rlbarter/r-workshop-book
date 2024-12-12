@@ -1,0 +1,437 @@
+---
+title: "R Fundamentals"
+format: html
+editor_options: 
+  chunk_output_type: console
+embed-resources: true
+---
+
+
+## Doing math with R
+
+Who needs a calculator, when you have R! For real though, I legitimately use R as a basic calculator all the time. And while R can do a lot more than just compute `1 + 1`, it's worth taking a moment to discuss the mathematical capabilities of R.
+
+Here are some helpful math symbols:
+
+* Parentheses: `(`, `)`
+* Exponents: `^` or `**`
+* Multiply: `*`
+* Divide: `/`
+* Add: `+`
+* Subtract: `-`
+
+To follow along with the code examples that I provide in this chapter (and in this book in general), I recommend creating a new quarto document and practice writing your own code in code chunks in your quarto document and running the code in the *console* by either pressing the green play/arrow button in the top right corner of the code chunks or using the Command+Return shortcut. Feel free to make some of your own notes in your quarto document outside. I recommend compiling/rendering your quarto document every now and then too!
+
+
+Some basic mathematical computations you can compute in R include power calculations:
+
+```{r}
+(3 + 5)^2
+```
+
+Division:
+
+```{r}
+2 / 7
+```
+
+Note that R doesn't really care about spaces, so this is the same as
+
+```{r}
+2/7
+```
+
+But my recommendation is to always place a single space around mathematical operators (i.e., `*`, `+`, `-`, etc, with the exception of the power operator `^`), so:
+
+```{r}
+2 + 1
+```
+
+```{r}
+5 * 3
+```
+
+```{r}
+5^2
+```
+
+When writing code, even if the language itself doesn't require certain syntax like spaces, it is a good idea to choose a syntax *style* and stick with it. 
+
+You can place multiple computations in the same code chunk, like this:
+
+
+```{{r}}
+5 + 109
+(4 + 2) * 4
+```
+
+
+When a code chunk contains multiple pieces of code, they will all be computed separately when you compile your document and the output will look like this:
+
+
+```{r}
+5 + 109
+(4 + 2) * 4
+```
+
+
+## Code comments
+
+When you have multiple pieces of code in a single code chunk (or even a single piece of code), it is recommended that you use code comments to explain what your code is doing. Since R treats everything inside a code chunk as code, if you want to write some text comments inside a code chunk, you can tell R that your text is not code by placing a `#` symbol at the beginning of your text like this:
+
+```{r}
+# compute 4 times 5
+4 * 5
+```
+
+R will ignore anything that follows a `#` symbol. So in the above code chunk, R will ignore the first line with the code comment "compute 4 times 5", and then it will compute the R code on the next line, `4 * 5`. 
+
+
+Code comments are really helpful for explaining what your code is doing. I usually reserve the text outside code chunks for more general discussion of my data, analysis, and results and I reserve code comments inside code chunks for explaining my code itself. I tend to forget the reasons behind certain decisions I made in my code, but adding explanations in code comments helps me remember my motivations and intentions days, months, or even years later.
+
+
+## Scientific notation
+
+When doing mathematical calculations in R, very quickly you are going to start encountering some very strange looking output. For example, if I compute
+
+```{r}
+1 / 70000
+```
+
+or 
+
+```{r}
+12^15
+```
+
+You can see that my output looks a little strange. 
+
+When a number is very big or very small, R gets lazy and decides that it doesn't want to print all of its digits. Rather than just making up random numbers, R is printing these numbers in scientific notation. `2e-05` means "0.00002", i.e., there is a 2 in the 5th decimal place. On the other hand, `2e+05` (with a `+` instead of `-`), corresponds to 200000, i.e., "2" with 5 0's after it. 
+
+
+::: {.callout-tip}
+## No commas allowed!
+
+Note that R doesn't allow for commas in numbers. If you want to write a large number, you have to remove the comma:
+
+```{r}
+# this is fine
+70000
+```
+
+```{r}
+#| error: true
+#| eval: false
+# this is not fine -- note the "error" message
+70,000
+```
+
+```{r}
+#| error: true
+#| echo: false
+70,000
+```
+
+:::
+
+
+
+
+## Mathematical functions
+
+While being able to do addition, subtraction, and multiplication is super awesome, sometimes you will need to use more complex mathematical operations in your computations, such as the logarithm, exponential, and square-root. Fortunately there are **functions** in R that let you compute these operations. 
+
+A function is a piece of R code that is referenced using alias or a name. A function typically takes an "argument", such as a number, and it does something to the argument, such as compute the logarithm, and then it returns the result.
+
+To apply a function to a value, you write the name of the function (e.g., `log`), followed by some parentheses `()`, inside which you provide the argument or value that you want to apply the function to, as in: `log(2)`.
+
+
+```{r}
+# compute the square root of 2
+sqrt(2)
+# compute the log of 2
+log(2)
+# compute e^2
+exp(2)
+```
+
+
+
+
+
+
+## Defining variables
+
+
+One of the main features of coding in R is defining "objects" or "variables" (I use these terms interchangeably). Creating a variable essentially involves giving a value a name, allowing you to reference that value later. When we are ready to load some actual data, we will give that data a name by storing it in a variable.
+
+
+Let's store the value `1` in a variable called `my_variable` using the **assignment operator**: `my_variable <- 1`. Think of the assignment operator `<-` as an arrow, pointing from the value on the right to the variable name on the left.   
+
+```{r}
+my_variable <- 1 
+```
+
+Note that when you define a variable, no output is shown.
+
+You can view the value of `my_variable` by writing it's name:
+
+
+```{r}
+my_variable
+```
+
+You can think of `my_variable` as an alias for the value `1`. This means that anything that I could do to the value `1`, I can now do to `my_variable`, such as adding `2` to it:
+
+```{r}
+my_variable + 2
+```
+
+
+::: {.callout-tip}
+## R is case sensitive
+
+R is case sensitive, which means that I must write my variable name exactly as it is written. For example, the following will yield an error:
+
+
+```{r}
+#| error: true
+my_Variable
+```
+
+because the variable is called `my_variable`, not `my_Variable`. 
+
+:::
+
+
+
+::: {.callout-tip}
+## Defining variables using `=` 
+
+Another way to define a variable is using "=". 
+
+Below, I create `another_variable`, assign it the value `3`
+
+```{r}
+another_variable = 3
+another_variable 
+```
+
+
+But convention in the R community prefers the use of the `<-` assignment operator over the `=` assignment operator. So while, `=` will work just fine, it is a lot less common among seasoned R programmers.
+
+:::
+
+
+Whenever we do a mathematical calculations using numeric values, we create a new numeric value, for example, the computation
+
+```{r}
+1 + 1
+```
+
+creates the value `2`. 
+
+You can also assign the *output* of mathematical calculations to a variable.
+
+```{r}
+# assign the output of 1 + 1 to the variable one_plus_one
+one_plus_one <- 1 + 1
+one_plus_one
+```
+
+
+It is important to make the distinction that `one_plus_one` does not contain the mathematical *equation* `1 + 1`. Instead, it contains the numerical value, `2`, which is the *output* of the equation `1 + 1`. 
+
+`one_plus_one` doesn't remember that it was created by computing `1 + 1`, it just knows that the value it contains is `2`.
+
+
+
+
+:::: {.panel-tabset}
+
+## Exercise
+
+Define a new object `prod` that contains the output of the product of 5 and 2. Print out `prod` by writing its name
+
+## Solution
+
+
+```{r}
+prod <- 5 * 2
+prod
+```
+
+::::
+
+
+
+
+
+
+
+
+
+
+
+### Overwriting variables
+
+
+Below I define `my_number` to be a variable containing the numeric value `5`.
+
+
+```{r}
+my_number <- 5
+```
+
+Next, I define a new variable called `result`, that contains the product of `my_number` and `7`, and I print it out:
+
+```{r}
+result <- my_number * 7
+result
+```
+
+
+Here, `result` is defined based on the value of `my_number`. 
+
+What do you think would happen to `result` if I redefine `my_number` to now contain `8`?
+
+```{r}
+# update the value of my_number to be 8
+my_number <- 8
+```
+
+Do you think `result` will have changed? Try it yourself in RStudio or click the "Answer" tab below.
+
+
+
+
+:::: {.panel-tabset}
+## Question
+
+What happens to `result`?
+
+## Answer
+
+```{r}
+# define result using `my_number`
+result <- my_number * 7
+result
+```
+
+```{r}
+# modify my_number
+my_number <- 8
+```
+
+Result does not change.
+
+```{r}
+result
+```
+
+
+::::
+
+
+
+
+When we defined `result <- my_number * 7`, we assigned result to the *output* of `my_number * 7`, which is `56`. 
+
+Once it has been defined, `result` forgets all about `my_number`, it just remembers the value `56`. 
+
+This means that changing `my_number` *after* having defined `result` will have no effect on `result`. There is no link between the two variables, despite the fact that `result` was originally defined using `my_number`!
+
+
+
+
+
+
+:::: {.panel-tabset}
+## Exercise
+
+Without running the code below, guess what the output/result will be:
+
+```{r}
+#| eval: false
+value <- 1
+computed_result <- value * 10 + 3^2
+value <- value + 2
+computed_result 
+```
+
+
+## Solution
+
+Note that the first three lines of code all involve defining variables and so no output is shown when these are run. The final line of code will print out the value of `computed_result`.
+
+The second line `computed_result <- value * 10 + 3^2` defines `computed_result` using `value`. Then the third line `value <- value + 2` updates value. Since `computed_result` is assigned to the *output* of `value * 10 + 3^2`, which is `19`, it doesn't care when `value` is subsequently updated, and so the `computed_result` is still just equal to `19`:
+
+```{r}
+value <- 1
+computed_result <- value * 10 + 3^2
+value <- value + 2
+computed_result 
+```
+::::
+
+
+
+
+
+
+
+### Variable names
+
+
+While you can give your variables *almost* any name you like, there are a few rules that you need follow. 
+
+While variable names can contain letters, numbers, underscores, and periods, recommended convention specifies that variable names should contain purely **lowercase letters and numbers, with words separated by underscores**. 
+
+For example, `var_name` and `my_var` are considered "good" variable names, whereas `varName`, `VarName`, and `var.name` are not.
+
+Note that variable names cannot *begin* with numbers or underscores. If you try to create variables whose names are illegal, you will get an error, such as:
+
+```{r}
+#| error: true
+1plus1 <- 1 + 1
+```
+
+```{r}
+#| error: true
+_var <- 1 + 1
+```
+
+
+
+:::: {.panel-tabset}
+
+## Exercise
+
+Which of the following are valid R variable names? Which ones are *good* variable names?
+
+```{r}
+#| eval: false
+min_height
+max.height
+_age
+MaxLength
+min-length
+2widths
+```
+
+
+## Solution
+
+- `min_height`: this is a **good** variable name
+
+- `max.height`: this is a **valid** variable name, but not necessarily a "good" variable name (words should be separated with `_`, not `.`)
+
+- `_age`: this is **not a valid** variable name (variable names cannot start with `_`)
+
+- `MaxLength`: this is a **valid** variable name, but not necessarily a "good" variable name (words should be lowercase and separated with underscores)
+
+- `min-length`: this is **not a valid** variable name (words should be separated with `_`, not the minus sign `-`)
+
+- `2widths`: this is **not a valid** variable name (variable names cannot start with numbers)
+::::
+

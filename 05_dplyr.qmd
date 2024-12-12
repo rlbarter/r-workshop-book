@@ -1,0 +1,866 @@
+---
+title: "Data frames with dplyr"
+format: html
+embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+In this chapter, I'm finally going to introduce the tidyverse! Are you excited? I know I am! 
+
+I don't think it's an exaggeration to say that I genuinely don't think the R programming language would be nearly as widespread and useful as it is today if it were not for the tidyverse and the human who first created it, Hadley Wickham. Since R is an open source language, anyone can be an R developer, which means that you can take the R programming language and create your own functions that enhance it. And one of the most successful R developers is Hadley Wickham, who created the ggplot2 R package (which you'll meet in the next chapter) as a part of his PhD, and later a range of other packages, including dplyr (which is the topic if this chapter). These packages, along with several others, form what is now called the "tidyverse" (because they serve to help you create "tidy" data), to which hundreds of brilliant people have contributed.
+
+The tidyverse ecosystem and its impacts are a true testament to the power of the open source community.
+
+To get started with dplyr, ggplot2, and the other tidyverse packages, you need to *install* them. To make our lives a little bit too easy, you can now simultaneously install all of the tidyverse packages (ggplot2, dplyr, reshape, purrr, readr, and many others) by just installing a single "tidyverse" library.
+
+
+## Installing and Loading R packages
+
+In case you didn't read @sec-readxl, where we introduced packages, I'm going to repeat what I wrote here. 
+
+R packages are collections of "add-on" R functions that you can "load" into your R session to provide you with additional functionality. For example, the "dplyr" package provides functions that allow you to work with data frames.
+
+To use functions from a package, you need to do two things:
+
+1. Install the package onto your computer. *You only need to do this once.*
+
+2. Load your package into your current R session. *You need to do this every time you start a new R session (i.e., every time you open up RStudio).*
+
+To install the "dplyr" package, you can write the following code *directly into your console*. I *don't* recommend saving this code in a quarto document or R script, because you only need to install a package once. 
+
+```{r}
+#| eval: false
+# run in the console: 
+install.packages("dplyr")
+```
+
+But every time you want to *use* an installed R package in a new R session, you need to *"load"* it using the library() function (we R folk use the words "library" and "package" interchangeably). 
+
+```{r}
+library(dplyr)
+```
+
+Since you need to run this every time you open RStudio, you should include this code at the top of your quarto document or R script.
+
+You will often see a lot of message "output" when you load libraries. This is *completely normal*. Don't freak out. Unless you see the word "Error" in the message. Then it's not a message at all, it's an error, and you should probably freak out. Or just check that you've installed the package. Either works, but I imagine that one is more productive than the other.
+
+If you are loading a library in a quarto document and you want to hide the message output in the resulting rendered document, you can use the chunk option `#| message: false`, such as:
+
+```{{r}}
+#| message: false
+library(dplyr)
+```
+
+
+
+## The tidyverse library
+
+Throughout the next few chapters, we are going to be working with the tidyverse library. The tidyverse library is a little bit special. While it is an R package (like the "readxl" R package from @sec-readxl and "dplyr", above), the tidyverse is actually a package that contains a bunch of different packages, one of which is the "dplyr" package that we just installed and loaded above!
+
+The tidyverse also includes the "ggplot2" library that we will be working with in a few chapters, and most of the other libraries that we will be using throughout this book. While you can install and load these libraries separately, it is actually more common to just load the "tidyverse", which will load all of the included libraries at once. 
+
+As an exercise, go ahead and install the tidyverse library (write `install.packages("tidyverse")` directly in the console) and then load it into your R session (`library(tidyverse)`). Remember that you don't want to include the `install.packages("tidyverse")` code in your quarto document or R script, because you only need to install a package once, but you will want to include the `library(tidyverse)` code at the top of your document, because you will need to run this every time you start a new R session. Note that you need quotes for "tidyverse" in the `install.packages()` function, but not in the `library()` function. 
+
+As an analogy, think of installing an R package (`install.packages("tidyverse")`) as downloading and installing an application from the internet onto your computer. Then think of loading an R package (`library(tidyverse)`) as opening that application on your computer. You only need to download and install an application once, but you need to open (load) it every time you want to use it.
+
+Therefore, the first code chunk in most of my quarto documents is just:
+
+```{{r}}
+#| message: false
+library(tidyverse)
+```
+
+```{r}
+#| message: false
+#| echo: false
+library(tidyverse)
+```
+
+
+
+
+## Tibbles and the `read_csv()` function
+
+Up until now, we have been using a base R function (`read.csv()`) to load our gapminder dataset. While it's perfectly fine to continue to use this function, it is recommended that you switch to a slightly different function that has an underscore instead of a period in its name: `read_csv()`. This function is part of the tidyverse and is a little bit more efficient and user-friendly than `read.csv()`.
+
+Let's use `read_csv()` (the tidyverse version of `read.csv()`) to load the gapminder dataset:
+
+```{r}
+gapminder <- read_csv("data/gapminder.csv")
+```
+
+If you ran this in your own console and you got an error saying "*Error in read_csv("data/gapminder.csv") : could not find function "read_csv"*", make sure you have installed the tidyverse and have run the code `library(tidyverse)` in your console! R can only find the `read_csv()` function if you have loaded the tidyverse!
+
+Now let's take a look at gapminder (*without using `head()`*)
+
+```{r}
+gapminder
+```
+
+
+Do you notice any differences between this version of `gapminder` that has been loaded using the tidyverse `read_csv()` and the version from the previous chapter that was loaded using the base R `read.csv()` function?
+
+To make your life easier, here is the version of `gapminder` that we loaded with the base R `read.csv()` function:
+
+```{r}
+#| attr-output: 'style="height: 400px"'
+gapminder_base_r <- read.csv("data/gapminder.csv")
+gapminder_base_r
+```
+
+Here are the main differences:
+
+1. The version loaded using  the base R `read.csv()` function prints out the first 1000 rows (though I've put them all in a cute a scrolly box for you), whereas the version loaded using the tidyverse `read_csv()` function only prints out the first 10 rows (and 10 columns).
+
+2. The version loaded using the tidyverse `read_csv()` function will also show you what *type*/*class* each columns has. Look underneath the column names of the tidyverse `read_csv()` version of `gapminder` above. See the `<chr>` and `<dbl>` symbols? These mean "character" and "double" ("double" means "numeric with decimals"), respectively.  
+
+3. The tidyverse `read_csv()` version prints out some information at the top that says `# A tibble: 1,704 × 6`, which tells us that our data frame has 1,704 rows and 6 columns. But what's the "tibble" part? It turns out that `read_csv()` doesn't actually load your data in as a data frame. It loads your data in as a *"tibble"*.
+
+A tibble is just a fancy data frame. In fact, for our purposes, a tibble *is* just a data frame. The only difference is that when it is printed to the console or as output in your quarto document, the tibble will only print the first 10 rows and the first 10 columns, as well as the extra pieces of information listed above.
+Overall, tibbles are just a bit more user friendly than the classic data frame, but it really doesn't matter whether you load in your data as a tibble using `read_csv()` or as a data frame using `read.csv()`. Especially because many of the functions that are going to be introduced in this chapter will output a tibble regardless of whether their input is a tibble or a data frame.
+    
+From here on, I will use the term data frame and tibble interchangeably to mean the same thing (I will usually use the term "data frame" even if the object is a tibble). If you don't understand the difference. Don't worry. Whenever you see "tibble", just replace it with "data frame" in your head, and you're good to go.
+
+
+## The dplyr library
+
+Probably the most important library in the tidyverse is the "dplyr" library. The "dplyr" library contains a bunch of functions that allow you to do things (like select columns, modify columns, filter based on conditions, etc) with data frames really easily.
+
+Like all "tidyverse" packages, to access the functions from the "dplyr" package, you just need to load the tidyverse library using `library(tidyverse)`.
+
+The main dplyr functions you need to master are:
+
+- `select()`: extract columns from your data frame
+
+- `filter()`: filter to rows of your data frame based on a condition
+
+- `mutate()`: add columns or modify columns in your data frame
+
+- `summarize()`: aggregate information in your columns
+
+- `group_by()`: perform an operation separately for each entry in a categorical column
+
+Once you feel comfortable with these five functions, you're officially a competent tidyverse R user. We're going to introduce all of them in this chapter, one by one. Then we're going to do fancy things like *combining* them together with something called the "*pipe*" (which looks like this: `|>` or like this `%>%` if you've been around the R scene for a while) 
+
+Ready? Let's go!
+
+
+
+
+## Select() for extacting columns
+
+We can use the `select()` function to extract specific named columns from our data frame. 
+
+The *first argument* of `select()` is always the data frame on which you are operating, and all of the *remaining arguments* are the names of the columns that you want to keep. Note that the column names do *not* have quotes around them. This is something that makes dplyr (and tidyverse) functions special (and involves something called "tidy evaluation" that we won't talk about any time soon).
+
+So if we want to extract just the country, year, and life expectancy columns from our gapminder data frame, we can write:
+
+```{r}
+select(gapminder, country, year, lifeExp)
+```
+
+
+We can also remove columns by using a minus sign in front of the column name. For example, the following code will return the gapminder data frame *without* the continent, year, and pop columns:
+
+```{r}
+select(gapminder, -continent, -year, -pop)
+```
+
+
+Select can also help you rename columns. If you just provide the column name as an argument, the column name will remain unchanged. However, if you provide the column name as `new_name = old_name`, the column will be renamed to whatever you provide as `new_name`. For example, the following code will return the gapminder data frame with the country, year, lifeExp, and gdpPercap columns, except the lifeExp column will be renamed to life_exp and the gdpPercap column renamed to gdp_per_cap:
+
+```{r}
+select(gapminder, country, year, life_exp = lifeExp, gdp_per_cap = gdpPercap)
+```
+
+However, since select will only return the columns that are included in its arguments, if you want to rename a column without removing any columns, you might want to use the `rename()` function instead. 
+
+For example, the following code will return *all columns* in the gapminder data frame, with the lifeExp column renamed to life_exp and the gdpPercap column renamed to gdp_per_cap:
+
+
+```{r}
+rename(gapminder, life_exp = lifeExp, gdp_per_cap = gdpPercap)
+```
+
+:::: {.panel-tabset}
+
+## Question
+
+What would happen if I replaced `rename()` in the code above with `select()`? 
+
+## Answer 
+
+```{r}
+select(gapminder, life_exp = lifeExp, gdp_per_cap = gdpPercap)
+```
+
+
+::::
+
+
+
+
+
+
+
+## The pipe `|>` (formerly `%>%`)
+
+Remember how I was being all gushy about the tidyverse? Honestly, the main reason for that is the **pipe**. The pipe makes is so we can read our code as if it is a sentence. For example, if I wanted to turn the following sentence "*I take my backpack and then I put books in it and then put it on my back*" using the pipe, I would write `backpack |> put_books_in() |> put_on_back()`. I always think of the pipe operator `|>` as the word "and then" in a sentence. 
+
+So for the following code, I can read it as "*take the gapminder data frame and then select the country, year, and lifeExp columns*":
+
+```{r}
+gapminder |> select(country, year, lifeExp)
+```
+
+
+The pipe syntax is: `object |> function()`. The way it works is that the object to the left of the pipe (`|>`) is placed into the *first argument* of the function to the right of the pipe (`|>`).
+
+This means that the following two pieces of code are equivalent:
+
+```{r}
+# apply head() to gapminder directly
+head(gapminder)
+# apply head() to gapminder using the pipe
+gapminder |> head()
+```
+
+The second version with the pipe takes the `gapminder` data frame (which is to the left of the pipe) and places it into the (first) argument of the `head()` function on the right of the pipe. The pipe always has an object (like a data frame) on its left and a function on its right.
+
+Here is another example of two pieces of equivalent code, first one with the pipe:
+
+```{r}
+# apply select to gapminder, year, and pop without the pipe
+select(gapminder, year, pop)
+```
+
+And the version with the pipe:
+
+```{r}
+# apply select to gapminder, year, and pop with the pipe
+gapminder |> select(year, pop)
+```
+
+Remember that the pipe places the object on the left of the pipe into the first argument of the function on the right of the pipe. So if the function takes more than one argument (as `select()` does), then you place the remaining arguments inside the parentheses of the function on the right of the pipe.
+
+
+:::{.callout-tip}
+## The "new" pipe `|>` versus the "old" pipe `%>%`
+
+The pipe `|>` is now a part of the R programming language. Previously, you needed to load the magrittr, dplyr, or tidyverse libraries to access the pipe and it had a different symbol: `%>%` (there are very minor differences in functionality). This still works, but it is now recommended that you use the newer "native" pipe syntax: `|>`. 
+:::
+
+
+
+
+## Filtering rows using filter()
+
+
+The filter function lets you filter to specific rows based on a condition.
+
+Imagine that we just want to look at the rows in the data corresponding to Australia. Recall that you can apply *logical operations* to a vector (in this case the "country" column of `gapminder`) as follows:
+
+```{r}
+#| attr-output: 'style="height: 400px"'
+gapminder$country == "Australia"
+```
+
+If we just take the part of this statement that follows the `$` (i.e., `country == "Australia"`) and place it in the second argument of the `filter()` function, we can filter to just the rows in the data frame where the country is Australia (Note: no `$` extraction required!):
+
+```{r}
+filter(gapminder, country == "Australia")
+```
+
+Just like `select()`, the first argument of `filter()` is always the data frame on which you are operating. The second argument of `filter()` is the condition that you want to use filter. Only the rows for which the condition is `TRUE` will be returned. However, you can refer to the column names without quotes inside dplyr functions, even though there is no `country` variable in our environment. 
+
+### Multiple filtering conditions
+
+You can provide multiple conditions using a comma, i.e., by providing multiple conditions as arguments to `filter()`. For example, the following code will filter the `gapminder` data frame to just the rows where both `country == "Australia"` AND `year > 1990` are `TRUE`. 
+
+```{r}
+filter(gapminder, country == "Australia", year > 1990)
+```
+
+And now that we have met our trusty pipe, we can rewrite this code as:
+
+```{r}
+gapminder |> filter(country == "Australia", year > 1990)
+```
+
+Remember that you can read this as "take the gapminder data frame *and then* filter to the rows where the country is Australia and the year is greater than 1970".
+
+While the pipe might not seem to be bringing much to the party just yet, rest assured the pipe is a game changer. To start to get a sense of why, let's use it to combine some sequential `filter()` and `select()` operations. 
+
+First: filter to the continent of Africa, where the year is equal to 1992
+
+Then: return just the country and lifeExp columns (rename lifeExp to be life_exp)
+
+```{r}
+gapminder |> 
+  filter(continent == "Africa", year == 1992) |> 
+  select(country, life_exp = lifeExp)
+```
+
+Note that I like to start a new line *after* each pipe `|>` to make the code more readable. 
+
+How would you read this code as a sentence? I would read it as "take the gapminder dataset *and then* filter to just the rows where the continent column is equal to "Africa" and the year is equal to 1992 *and then* select just the country and life expectancy columns, renaming life expectancy to be life_exp".
+
+If I wanted to try to write this code without the pipe, I would have to do it in a few steps like this:
+
+```{r}
+gapminder_africa_1992 <- filter(gapminder, continent == "Africa", year == 1992)
+select(gapminder_africa_1992, country, life_exp = lifeExp)
+```
+
+Without the pipe, I am forced to define an intermediate object, `gapminder_africa_1992` (or do some kind of disgusting nested function stuff), which feels inefficient now that we have the pipe. The pipe allows me to do everything in a single more readable and efficient operation.
+
+### The order of operations
+
+It turns out that the order of operations can be fairly important.
+
+For example, if I swap the order of the `select()` operation and the `filter()` operation in the code above, I will get an error:
+
+```{r}
+#| error: true
+
+# swap the filter and select steps above
+gapminder |> 
+  select(country, life_exp = lifeExp) |>
+  filter(continent == "Africa", year == 1992) 
+```
+
+Why do you think this happens? Take a look at the error message for a hint. The issue is not that the `gapminder` object itself doesn't contain a "continent" column... what data frame is being piped into the `filter()` function? You can run just the first two lines of code to see:
+
+
+```{r}
+gapminder |> 
+  select(country, life_exp = lifeExp) 
+```
+
+This is the data frame that is being piped into `filter()`. Does it contain a "continent" column? No it does not! So the `filter()` function is trying to filter to rows for which the "continent" column is equal to "Africa" in a data frame that doesn't contain a "continent" column. The following two pieces of code are therefore *not* equivalent:
+
+```{r}
+#| eval: false
+gapminder |> 
+  filter(continent == "Africa", year == 1992) |>
+  select(country, life_exp = lifeExp) 
+  
+```
+
+
+```{r}
+#| eval: false
+gapminder |> 
+  select(country, life_exp = lifeExp) |>
+  filter(continent == "Africa", year == 1992) 
+```
+
+
+### Filtering using "OR" conditions
+
+How would you go about filtering to the rows where country corresponds to Australia and Italy. You might imagine that you can just provide these two conditions separated by a comma, as in:
+
+```{r}
+gapminder |> filter(country == "Australia", country == "Italy")
+```
+
+However, this has returned an *empty* data frame with 0 rows. Why has this happened?
+
+Remember that whenever you provide two conditions to `filter()` with a comma, R filters to the rows where *both* conditions are true. That is, a comma corresponds to an "AND" condition: `filter(country == "Australia", country == "Italy")` means "filter to the rows where `country == "Australia"` AND `country == "Italy"` are both true. However, there are no rows where `country` is simultaneously equal to "Australia" and "Italy". It is only ever equal to one or the other. 
+
+Although I phrased my desire as "filter to the rows where country country corresponds to Australia **and** Italy", I really meant, "filter to the rows country corresponds to Australia **or** Italy".
+
+Can you remember how to ask an "OR" question? You use the vertical bar `|`. So to ask this question, I could provide two conditions separated by a vertical bar `(condition 1) | (condition 2)`, which will return all rows where *either* condition 1 *or* condition 2 are satisfied.
+
+
+```{r}
+gapminder |> filter((country == "Australia") | (country == "Italy"))
+```
+
+
+Or if both conditions involve the same variable (in this case, `country`), you can use the `%in%` operator! Remember that you can ask which values in a vector are also in some other vector, such as asking which values in the vector `c(1, 5, 2, 2, 1, 6)` are equal to `1` or `2` (i.e., are in the vector `c(1, 2)`) by writing:
+
+```{r}
+c(1, 5, 2, 2, 1, 6) %in% c(1, 2)
+```
+
+
+We can use this same `%in% `operator to ask which entries of `country` column are equal to `"Australia"` or `"Italy"`:
+
+```{r}
+gapminder |> filter(country %in% c("Australia", "Italy"))
+```
+
+
+:::: {.panel-tabset}
+
+## Exercise
+
+Filter gapminder to all countries on the Oceania continent for just the years 1987 and 1992 and select just the country, year, and gdpPercap columns (where you have renamed `gdpPercap` to be `gdp_per_cap`). 
+
+Save the output in an object called gapminder_oceania, and print `gapminder_oceania` to the console.
+
+## Solution
+
+```{r}
+gapminder_oceania <- gapminder |> 
+  filter(continent == "Oceania", year %in% c(1987, 1992)) |>
+  select(country, year, gdp_per_cap = gdpPercap)
+gapminder_oceania
+```
+
+
+::::
+
+
+
+
+
+
+
+
+
+
+
+## Adding and modifying columns using mutate()
+
+Let's move from filtering our rows using `filter()` onto adding and modifying our columns using `mutate()`!
+
+If I wanted to add a new column to my data, called `gdp`, which is the product of the `pop` and `gdpPercap` columns, I can do that using `mutate()`. 
+
+```{r}
+gapminder |> mutate(gdp = pop * gdpPercap) 
+```
+
+Remember that the code above hasn't actually modified gapminder. To modify gapminder I would need to *reassign* gapminder to the mutated dataframe: `gaminder <- gapminder |> mutate(gdp = pop * gdpPercap)`.
+
+What this code has done is it has created a brand new column, `gdp`, and plopped it at the end of my data frame (and it's printed out the resulting data frame without saving it as a new variable). In this case, each value in the `gdp` column contains product of the corresponding values in the `pop` and `gdpPercap` columns.
+
+The general syntax for mutate is `df |> mutate(new column name = some operation involving existing columns)`, and because `mutate()` is a tidyverse function, we can refer to the columns of our data frame without needing quotes. 
+
+
+As another example, if we wanted to create a new column that contained the population in millions, i.e., divided by 1 million, we could do that using
+
+```{r}
+gapminder |> mutate(pop_mil = pop / 1e6)
+```
+
+
+Note that `1e6` is scientific notation for `1000000` (i.e., `1` followed by 6 `0`s).
+
+While `mutate()` is often used to create *new* columns, it can also be used to *modify existing* columns. For example, the code below will modify the existing `lifeExp` column by rounding it to the nearest integer. 
+
+```{r}
+gapminder |> mutate(lifeExp = round(lifeExp)) 
+```
+
+Note that no new columns have been added to the end of our `gapminder` output. The data frame contains the exact same columns as the original `gapminder` object, except the `lifeExp` column is now an integer!
+
+
+
+
+:::: {.panel-tabset}
+
+## Exercise
+
+Modify `gapminder_tmp` using mutate() so that it contains a log(pop) column (in addition to the original `pop` column), and round the gdpPercap column to the nearest integer. The first 6 rows of your output should look like this:
+
+```{r}
+#| echo: false
+
+gapminder |> mutate(log_pop = log(pop), gdpPercap = round(gdpPercap)) |> head()
+```
+
+
+
+## Solution
+
+```{r}
+gapminder |> 
+  mutate(log_pop = log(pop), gdpPercap = round(gdpPercap)) |> 
+  head()
+```
+
+::::
+
+
+
+
+
+
+
+
+
+## Summarizing data frames using summarize()
+
+The functions that we have discussed do far in this chapter (`select()`, `filter()` and `mutate()`) are all functions that can be used to create a *modified* version of your data frame.
+
+In this section, we will introduce `summarize()`, which can be used to--you guessed it--*summarize* your data frame.
+
+As an example, let's use summarize to compute the average `lifeExp` value across all rows in the dataset. If `lifeExp` was a vector object in our space, we would compute the average value by writing `mean(lifeExp)`. But since `lifeExp` is not a variable in our space, it is a column in our data, we can compute the average `lifeExp` value by providing this `mean(lifeExp)` operation inside the `summarize()` function as follows:
+
+```{r}
+gapminder |> summarize(mean(lifeExp))
+```
+
+
+You can read this as: "take the gapminder dataset *and then* summarize it by computing `mean(lifeExp)`, i.e., the mean of the `lifeExp` column".
+
+
+However, like all of the other functions we have used in this chapter, the output of `summarize()` function is itself a data frame (albeit with just a single row and column). But notice that the name of the column in our summary data frame is just the function that was computed, `mean(lifeExp)`. Wouldn't it be nice if we could give this column a nicer name? Yes it would. Fortunately, this is super easy to do, by just providing a name for our summary operation inside the summary() function:
+
+```{r}
+gapminder |> summarize(mean_life_exp = mean(lifeExp))
+```
+
+In this version, our one-row-one-column data frame has the column name `mean_life_exp`, instead of `mean(lifeExp)`. In general, I don't like having characters like `()` in the column names of my data frames, but this only really matters if I plan to use my data frame for something where I need to reference the column names (it matters less if I just want to look at it)!
+
+
+It's also super easy to compute multiple summaries at once using our trusty comma:
+
+```{r}
+gapminder |> 
+  summarize(mean_life_exp = mean(lifeExp), 
+            max_population = max(pop))
+```
+
+
+You don't need to put each summary computation on a new line, but it makes it a bit easier to read (e.g., compared with ` summarize(mean_life_exp = mean(lifeExp), max_population = max(pop))`).
+
+## Grouped operations with group_by()
+
+Computing a `summary()` operation across all of the rows at once is nice and all, but I'll forgive you if you're sitting there thinking "Ok Rebecca, I know you love the tidyverse, and you want to pipe everything into everything else, but honestly it's just easier to use base R notation to do this, like:"
+
+```{r}
+mean(gapminder$lifeExp)
+```
+
+And my response to you would be: yeah. It is. But just wait. The next thing I'm going to show you will blow your mind and force you to eat your words. 
+
+What if... I asked you to compute the average life expectancy again, but to do it separately *for each continent*. 
+
+While you could preceed your `summarize()` operation with a `filter()` operation for each continent like this:
+
+```{r}
+gapminder |> filter(continent == "Asia") |> summarize(mean(lifeExp))
+gapminder |> filter(continent == "Americas") |> summarize(mean(lifeExp))
+gapminder |> filter(continent == "Africa") |> summarize(mean(lifeExp))
+gapminder |> filter(continent == "Europe") |> summarize(mean(lifeExp))
+gapminder |> filter(continent == "Oceania") |> summarize(mean(lifeExp))
+```
+
+
+Or even use a for loop (if you so desired...), it turns out that there is a better way!
+
+The true value of the `summarize()` function lies in its friendship with the `group_by()` function. The following code concisely computes the average `lifeExp` separately for each `continent` by "grouping" the gapminder data frame by continent (using `group_by()`) *before* summarizing.
+
+```{r}
+gapminder |> 
+  group_by(continent) |> 
+  summarize(mean_life_exp = mean(lifeExp))
+```
+
+
+You can think about this as if `group_by()` is creating a separate data frame for each continent and then it is computing the `summarize()` operation *separately* for each continent data frame, and it is then combining the summary output into a two-column data frame, where the first column contains the respective `continent` value, and the second column contains the result of the `summary()` operation for that particular `continent`.
+
+Now that's rad as heck!
+
+
+:::: {.panel-tabset}
+## Exercise
+
+Use group_by() and summarize() to compute the standard deviation of the `gdpPercap` column separately for each country.
+
+## Solution
+
+```{r}
+gapminder |> 
+  group_by(country) |> 
+  summarize(max_pop = max(pop))
+```
+::::
+
+
+
+
+
+
+
+### Group_by multiple columns simultaneously
+
+Just in case you weren't already impressed enough by the group_by/summarize duo, you can also do more sophisticated grouping operations, such as computing the average `lifeExp` for each continent-year * combination* by gropuing by both `continent` and `year`:
+
+```{r}
+# compute the average life expectancy for each continent-year combination
+gapminder |> 
+  group_by(continent, year) |> 
+  summarize(mean_life_exp = mean(lifeExp))
+```
+
+
+With `filter()`, `mutate()`, `group_by()`, and `summarize()` up your sleeve, there is almost no summarization of your data you can't do!
+
+
+:::: {.panel-tabset}
+## Exercise
+
+Compute the mean and standard deviation of the GDP (the product of `pop` and `gdpPercap`) separately for each year and continent after the year 2000. Your output should look like this:
+
+```{r}
+#| echo: false
+gapminder |>
+  filter(year > 2000) |>
+  mutate(gdp = pop * gdpPercap) |>
+  group_by(year, continent) |>
+  summarize(mean(gdp))
+```
+
+## Hint
+
+One suggested order of operations is 
+
+```{{r}}
+gapminder |>
+  filter() |>
+  mutate() |>
+  group_by() |>
+  summarize()
+```
+
+## Solution
+
+```{r}
+gapminder |>
+  filter(year > 2000) |>
+  mutate(gdp = pop * gdpPercap) |>
+  group_by(year, continent) |>
+  summarize(mean(gdp))
+```
+::::
+
+
+While `group_by()` is most often used with `summarize()`, this doesn't mean that it can *only* be used with `summarize()`!
+
+#### Grouped mutates
+
+Below, I group by `continent` and then I conduct a `mutate()` to add a new column `max_life_exp`, containing the maximum life expectancy for the corresponding country:
+
+```{r}
+gapminder_new <- gapminder |> 
+  group_by(country) |>
+  mutate(max_life_exp = max(lifeExp)) 
+print(gapminder_new, n = 30)
+```
+
+Take a close look at the new `max_life_exp` column that I've tacked onto the end of my data frame. It contains the same value within each country! This time, I have created a new data frame object called `gapminder_new` because I want to continue working with this data frame object.
+
+
+### Don't forget to `ungroup()`
+
+So we've got our `gapminder_new` object that contains our `max_life_exp` column which contains the maximum life expectancy value where the average is computed just using the corresponding country's rows.
+
+If I then wanted to conduct a subsequent summarize operation on this `gapminder_new` object, such as computing the average `max_life_exp` value, with the goal of computing this average *over all rows in the data* (i.e., I should get a single value), I might write the following code:
+
+```{r}
+gapminder_new |> summarize(mean(max_life_exp))
+```
+
+
+Is there anything surprising about the output here? The `summary()` operation is still *grouped by country*, despite the fact that I didn't conduct another `group_by(country)` operation before my `summarize()` operation!
+
+This is because `gapminder_new` is not technically a simple data frame... it is a *grouped* data frame. 
+
+
+```{r}
+gapminder_new
+```
+
+
+In defining `gapminder_new`, I used a `group_by()` operation, and you can see that when I print out `gapminder_new`, at the very top (well, technically, just under the very top) you will see some text that says: `# Groups:   country [142]`. This tells me that `gapminder_new` is *grouped* by the country column (and there are 142 groups). This means that any operations that I conduct on `gapminder_new` will also be grouped (by `country`). 
+
+
+If you are going to continue working with a data frame that was created using a `group_by()` operation, it is important to remember to `ungroup()`, unless you want your subsequent operations to also be grouped. This is what I really wanted to do: 
+
+```{r}
+gapminder_new |> ungroup() |> summarize(mean(max_life_exp))
+```
+
+I could write all of this code without defining my intermediate `gapminder_new` object as follows:
+
+```{r}
+gapminder |> 
+  group_by(country) |>
+  mutate(max_life_exp = max(lifeExp)) |>
+  ungroup() |>
+  summarize(mean(max_life_exp))
+```
+
+But if I forgot the `ungroup()` operation (the second-last line above), I get:
+
+```{r}
+gapminder |> 
+  group_by(country) |>
+  mutate(max_life_exp = max(lifeExp)) |>
+  summarize(mean(max_life_exp))
+```
+
+
+### Grouped filtering
+
+You can also conduct grouped filtering, which will apply your filter condition separately for each group. The most common scenario in which I find myself doing this is when I want to do something like filter to the row in each group with the maximum value in one of the columns, such as filtering to the rows with the highest `lifeExp` separately *within each continent*:
+
+```{r}
+gapminder |>
+  group_by(continent) |>
+  filter(lifeExp == max(lifeExp))
+```
+
+
+## Count
+
+The second-last function I want to show you in this chapter is the `count()` function. `count()` is just a really handy function for summarizing categorical (character/factor) variables. `count()` creates a two-column data frame, where the first column contains the unique values in the variable provided to `count()`, in this case `continent`, and the second column, `n`, contains the number of times that each `continent` value appears:
+
+```{r}
+gapminder |>
+  count(continent)
+```
+
+
+
+
+
+
+
+## Arrange
+
+The final function I have for you is `arrange()`, which lets you arrange the rows of your data frame in ascending or descending order of the values in a specific column. By default, `arrange()` will arrange the rows in ascending order. The following will rearrange all of the rows so that the row with the smallest `lifeExp` value will be at the top and the row with the largest `lifeExp` value will be at the bottom:
+
+```{r}
+gapminder |>
+  arrange(lifeExp)
+```
+
+
+For some reason, the way that you specify that the rows should be arranged in *descending* order instead is to wrap the variable name in the `desc()` function. Now the row with the largest `lifeExp` value will be at the top and the row with the smallest `lifeExp` value will be at the bottom:
+
+```{r}
+gapminder |>
+  arrange(desc(lifeExp))
+```
+
+Technically, you could also just arrange by the negative of the column to arrange in descending order, but I usually use the `desc()` approach myself. 
+
+```{r}
+gapminder |>
+  arrange(-lifeExp)
+```
+
+
+
+
+
+
+
+
+
+To finish up and make sure you were paying attention, here are a bunch of fun exercises for you to complete:
+
+:::: {.panel-tabset}
+
+## Exercise
+
+Compute the *median* lifeExp and maximum `pop` value for each country, and then arrange the countries in descending order of their maximum `pop` value.
+
+## Solution
+
+```{r}
+gapminder |>
+  group_by(country) |>
+  summarize(median_life_exp = median(lifeExp),
+            max_pop = max(pop)) |>
+  arrange(desc(max_pop))
+```
+
+::::
+
+:::: {.panel-tabset}
+
+## Exercise
+
+
+Identify the 5 countries with the highest *average* life expectancy.
+
+## Solution
+
+```{r}
+gapminder |>
+  group_by(country) |>
+  summarize(mean_life_exp = mean(lifeExp)) |>
+  ungroup() |>
+  arrange(desc(mean_life_exp)) |> 
+  head(5)
+```
+
+::::
+
+:::: {.panel-tabset}
+
+## Exercise
+
+What are the three most populous countries on the "Asia" continent?
+
+## Solution
+
+```{r}
+gapminder |>
+  filter(continent == "Asia") |>
+  group_by(country) |>
+  summarize(max_pop = max(pop)) |>
+  ungroup() |>
+  arrange(desc(max_pop)) |>
+  head(3)
+```
+::::
+
+
+:::: {.panel-tabset}
+
+## Exercise
+
+Identify the country with the highest total GDP for each continent.
+
+## Hint
+
+Apply a filter after a group_by -- this will apply the filtering separately for each group.
+
+## Solution
+
+These are the countries with the highest total GDP for each continent:
+
+```{r}
+gapminder |>
+  mutate(gdp = gdpPercap * pop) |>
+  group_by(continent) |>
+  filter(gdp == max(gdp)) |>
+  select(country, continent, gdp)
+```
+
+::::
+
+:::: {.panel-tabset}
+
+## Exercise
+
+Compute the average GDP per capita for each continent based only on countries with `gdpPercap` greater than 20,000.
+
+## Solution
+
+```{r}
+gapminder |>
+  filter(gdpPercap > 20000) |>
+  group_by(continent) |>
+  summarize(mean(gdpPercap))
+```
+
+::::

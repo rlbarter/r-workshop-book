@@ -1,0 +1,33 @@
+project:
+  type: book
+
+book:
+  title: "The R Workshop"
+  author: "Rebecca Barter"
+  date: "8/15/2024"
+  chapters:
+    - index.qmd
+    - part: "Getting Started"
+      chapters:
+        - 00_rstudio_quarto.qmd
+    - part: "R Fundamentals"
+      chapters:
+        - 01_r_fundamentals.qmd
+        - 02_types.qmd
+        - 03_vectors.qmd
+        - 04_data_frames.qmd
+    - part: "The Tidyverse"
+      chapters:
+        - 05_dplyr.qmd
+        - 06_ggplot2.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
+
+
+

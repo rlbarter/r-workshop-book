@@ -1,0 +1,719 @@
+---
+title: "Data Frames"
+format: html
+embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+Let's imagine that you have an actual dataset containing a collection of columns ("variables" in data terminology) and rows ("observations" in data terminology). For example, maybe your dataset is:
+
+
+|Name|Age|Favorite Color|
+|:----|:----|:----|
+|Dean | 12 | Blue |
+|Xiao | 18 | Green |
+|Sara | 22 | Red |
+|Ravi | 21 | Purple |
+|Maya | 17 | Blue |
+
+In this case, your dataset has three *"variables"* (name, age, and favorite color), and five *"observations"* for each of these variables (corresponding the values for 5 unique people). You might even recognize this data from the previous chapter: the values in the "Age" column are the values from our `age` vector and the names correspond to the names that we gave our age vector, along with some extra "Favorite Color" information.
+
+While we could define a separate vector variable in R for each column in our data, such as
+
+```{r}
+# three vectors containing info on each person's name, age, and favorite color
+name_vec <- c("Dean", "Xiao", "Sara", "Ravi", "Maya")
+age_vec <- c(12, 18, 22, 21, 17)
+color_vec <- c("blue", 'green', 'red', 'purple', 'blue')
+```
+
+Once we started analyzing this data, it would quickly become hard to keep track of which age corresponded to which name, and what their corresponding favorite color is since the variables are each stored in three separate objects. For example, if I look at the `color_vec` vector by typing its name:
+
+```{r}
+color_vec
+```
+
+It isn't clear whose color preference is whose.
+
+It would be much nicer if we could create a *single* object containing all three of these variables such that the corresponding values are "aligned" in such a way that it is very clear that "Ravi" has age 21 and favorite color "purple".
+
+Fortunately, the creators of R share our desires, and so they let us store each of our vectors in an object called a "**data frame**". 
+
+If I already have the columns of my data stored as separate vectors, I can create a data frame using the `data.frame()` function as follows:
+
+```{r}
+my_data <- data.frame(name = name_vec,
+                      age = age_vec, 
+                      color = color_vec)
+```
+
+Where the name to the left of the `=` symbol in my `data.frame()` arguments defines the corresponding "column name" in my data frame.
+
+Since `my_data` is an R object, I can view it by typing its name:
+
+```{r}
+my_data
+```
+
+Now our three variables are neatly arranged in rows and columns, where there is one row for each person and one column for each variable *and* this is all stored in a single variable/object called `my_data`. 
+
+The integer numbers 1, 2, 3, 4, and 5 shown along the left-hand side of the rows are not actually a part of the data object itself (notice that there is no "column name" printed above these integers). These numbers are just visual aids provided by the R console when you print a data frame object to make it a little bit easier to count the rows in the data.
+
+
+If I ask R what kind of object `my_data` is, it tells me it's a "data.frame". 
+
+```{r}
+class(my_data)
+```
+
+And I can get a quick summary of what my data frame contains using the `str` function:
+
+```{r}
+str(my_data)
+```
+
+In particular, the things that I find helpful in this summary are the number of "obs." (5) and "variables" (3), and the type/class of each variable shown after its name, which tells me that the `name` and `color` columns have a "chr" (character) type, and the `age` variable has a "num" (numeric) type. 
+
+Each column in a data frame can have a different type, but *each entry within a single column must be the same type* (because each column corresponds to a vector).
+
+There are several techniques for extracting the vectors stored in a data frame. For instance, if I wanted to extract the `age` column, or specifically, the vector corresponding to the `age` column, I can write:
+
+
+```{r}
+my_data$age
+```
+
+or 
+
+```{r}
+my_data['age']
+```
+
+These two approaches both extracted the `age` column, but notice that the output of these two column extraction techniques look a little different. 
+
+Can you guess out why? Hint: What type/class do you think each output object has? Look at its formatting. Learning to recognize what type each object has based on the way it looks is a really helpful skill. 
+
+The output of `my_data$age` *looks* is an ordinary vector. I can tell because the values are arranged horizontally, and there is a `[1]` at the beginning of the output. But this isn't the case for the output of `my_data['age']`. The output here looks more like our data frame output (but with only one column).
+
+Indeed, if I ask R to tell me the class of each of these two objects that I have extracted, I learn that the `my_data$age` object has a "numeric" type (remember that a vector containing numeric values will have a "numeric" type!)
+
+```{r}
+class(my_data$age)
+```
+
+and I learn that the `my_data['age']` object has a "data.frame" type:
+
+```{r}
+class(my_data['age'])
+```
+
+Since data frames and vectors have different behaviors, there will be some scenarios where you prefer your extracted column to be a vector, and others where you will prefer your extracted column to be a single-column data frame.
+
+While I will occasionally want to extract columns from my data as a vector using one of these techniques, I typically conduct my data analyses and modifications using the data frame object itself. You'll see a range of techniques for working with data frames themselves in the next chapter.
+
+But first, I want to show you how to load a dataset that you have saved on your computer into a data frame in R.
+
+
+## Loading in data from external files
+
+
+To create the `my_data` data frame object above, I first created the individual vectors, which I then used to define the individual columns of my data frame within the `data.frame()` function. Imagine if your data had hundreds of observations/values for each of hundreds of variables. No one wants to manually type their data into R. 
+
+More often than not, the data you want to analyze will already live in a file on your computer, such as a .csv file or an Excel spreadsheet. In this section, I will show you how to "load" data from such files into an R data frame.
+
+
+
+
+### Loading data from .csv data files
+
+.csv files are one of the *simplest* data formats. "csv" stands for "comma separated value". In a .csv file:
+
+- Columns are separated by commas
+
+- New rows are created by starting a new line
+
+The .csv version of our data above looks like this:
+
+```{verbatim}
+name, age, color
+Dean, 12, blue
+Xiao, 18, green
+Sara,  22, red
+Ravi, 21, purple
+Maya, 17, blue
+```
+
+
+To load in a dataset (as a data frame) from a .csv file, we can use the `read.csv()` function. However, in order for R to be able to find your file you need to provide a "filepath" argument (as a character/text value) to your csv file.
+
+The file path corresponds to the location where your file lives on your computer relative to where the current R file you are working in is saved. Ideally, you are working in a quarto document. If so, identify where on your computer you have saved your quarto document. If your csv data file lives in the same folder as your quarto document, then you will write 
+
+```{r}
+#| eval: false
+data <- read.csv("filename.csv")
+```
+
+where you replace `"filename.csv"` which the actual file name of your .csv file. 
+
+If your .csv data file lives in a `data/` subfolder, then you will write 
+
+```{r}
+#| eval: false
+data <- read.csv("data/filename.csv")
+```
+
+
+However, if you are running your code in the console, so that R knows where to start looking for the file, your console's "working directory" needs to match the location of your quarto document. The **working directory** is the folder on your computer where R looks for files to read and saves files you create.
+
+All file paths in code that you run in the console will be relative to your current working directory, regardless of where your current quarto document is saved. 
+
+If you opened RStudio by opening a quarto document or R script directly, your working directory will (probably) be automatically set to the folder containing your quarto file. However, if you opened your IDE without opening a file, your working directory will most likely be your computer's home folder.
+
+If your console's working directory does not match the location in which you saved your quarto document or R script (wherever you are saving the code that you are running), R will not be able to find your data files.
+
+::: {.callout-tip}
+## Identifying the console's current working directory
+
+You can see your console's current working directory by looking at the top of the console. In the image below, the working directory is the "Documents" folder. If you just see `~`, then your console's current working directory is your computer's home folder.
+
+```{r}
+#| echo: false
+knitr::include_graphics("figures/working_directory.png")
+```
+
+:::
+
+:::{.callout-tip}
+## Changing your console's working directory
+
+It is recommended that your working directory matches the location of the quarto document that you are working in. 
+
+You can update your console's working directory to be the location of your current quarto document in RStudio by choosing "Session > Set Working Directory > To Source File Location". 
+:::
+
+
+Let's load an actual .csv file. If you are working in a quarto document or an R script on your computer, take note of where you saved it. Create a new folder called "data" in the same location as your current document. Then [download the gapminder dataset] and move it to your new "data" folder.
+
+Then, assuming that your console's working directory matches the location where your quarto document or R script has been saved, you should be able to run this code below to load in the gapminder csv data file and save it as an object called `gapminder` using the `read.csv()` function.
+
+```{r}
+gapminder <- read.csv(file = "data/gapminder.csv")
+```
+
+If you get an error that says `"Warning message: In file(file, "rt") : cannot open file 'data/gapminder.csv': No such file or directory"`, this means that either you did not set up your file in the right place, or your console's working directory is incorrect!
+
+Hopefully you figured out how to tell R to find and load your dataset! If your code above worked, you should then be able to take a look at the gapminder object by typing its name:
+
+```{r}
+#| attr-output: 'style="height: 400px"'
+gapminder
+```
+
+But this clearly prints out A LOT of data! 
+
+In general, you will want to try to avoid printing your entire dataset in your R console or quarto output. Try printing just the first few (6, to be exact) rows using the `head()` function:
+
+```{r}
+head(gapminder)
+```
+
+So what is this "gapminder" data? The gapminder dataset contains information on life expectancy, population, and GDP per capita for 142 countries over the years 1952 to 2007. If you want to learn more about it for some reason, head on over to the [gapminder website](https://www.gapminder.org/).
+
+
+### Describing attributes of a data frame
+
+Now that we have a data frame containing our data, we can print out just the column names using the `colnames()` function:
+
+```{r}
+colnames(gapminder)
+```
+
+This is particularly useful for data frames with a lot of columns.
+
+We can also ask things like how many rows and columns our data frame has:
+
+```{r}
+# compute the number of rows (nrow)
+nrow(gapminder)
+# compute the number of columns (ncol)
+ncol(gapminder)
+# do both at the same time (dim)
+dim(gapminder)
+```
+
+We can use our trusty `str()` function from earlier to take a sneak peak at the "structure" of our data:
+
+```{r}
+str(gapminder)
+```
+
+And we can use the `summary()` function to get some statistical summaries (like the minimum, median, mean, maximum and the quartiles) of each of the numeric columns in our data frame (this summary is fairly useless for character columns though):
+
+```{r}
+# use summary() to look at a summary of gapminder
+summary(gapminder)
+```
+
+
+
+:::: {.panel-tabset}
+
+## Exercise
+
+Your turn: load the world happiness dataset from the `whr_2023.csv` file. Save it as a variable called `world_happiness`. Then print out the first 10 rows, the column names, create a summary of the data, report its dimension.
+
+
+## Solution
+
+```{r}
+world_happiness <- read.csv("data/whr_2023.csv")
+head(world_happiness, 10)
+```
+
+
+```{r}
+str(world_happiness)
+summary(world_happiness)
+```
+
+
+```{r}
+dim(world_happiness)
+```
+
+
+::::
+
+
+
+
+
+## Installing and loading R packages {#sec-readxl}
+
+If you are unfortunate enough to receive your data in the format of an Excel file, you can still load it into R! However, to load excel files, you will need to **install the "readxl" R package**. 
+
+R packages are collections of "add-on" R functions that you can "load" into your R session to provide you with additional functionality. For example, the "readxl" package provides functions that allow you to read in data from Excel files.
+
+To use functions from a package, you need to do two things:
+
+1. Install the package onto your computer. You only need to do this once.
+
+2. Load your package into your current R session. You need to do this every time you start a new R session (i.e., every time you open up RStudio).
+
+To install the "readxl" package, you can write the following code *directly into your console*. I *don't* recommend saving this code in a quarto document or R script, because you only need to install a package once. 
+
+```{r}
+#| eval: false
+# run in the console: 
+install.packages("readxl")
+```
+
+But every time you want to *use* an installed R package in a new R session, you need to *"load"* it using the library() function (we R folk use the words "library" and "package" interchangeably). 
+
+```{r}
+library(readxl)
+```
+
+Since you need to run this every time you open RStudio, you should include this code at the top of your quarto document or R script.
+
+You will often see a lot of message "output" when you load libraries. This is *completely normal*. Don't freak out. Unless you see the word "Error" in the message. Then it's not a message at all, it's an error, and you should probably freak out. Or just check that you've installed the package. Either works, but I imagine that one is more productive than the other.
+
+If you are loading a library in a quarto document and you want to hide the message output in the resulting rendered document, you can use the chunk option `#| message: false`, such as:
+
+```{{r}}
+#| message: false
+library(readxl)
+```
+
+
+## Loading data from Excel files 
+
+Ok, so now that we've loaded our "readxl" library, we should be able to use the `read_excel()` function! As you may have surmised, the `read_excel()` function will load in a dataset from an Excel file.
+
+Just for fun, I have also created an excel version of the gapminder data, `gapminder.xls`. Let's load that in using the `read_excel()` function from the "readxl" library. This code will only work if you have first installed the "readxl" package at some time in the past, and in this session you have run the `library("readxl")` code to "load" the library into your R session. 
+
+```{r}
+gapminder_excel <- read_excel("data/gapminder.xls")
+```
+
+If you have an excel file with lots of sheets, be aware that this function will only load the *first* sheet. However, you can use the `sheet` argument to load other sheets.
+
+In the `gapminder.xls` file, you will see that there is in fact a second sheet, containing the rows for Australia only. To load in this second sheet, we use our `read_excel()` function with the `sheet = 2` argument:
+
+```{r}
+# use the "sheet" argument to load in just the second sheet containing Australia's data
+gapminder_excel_australia <- read_excel("data/gapminder.xls", sheet = 2)
+```
+
+
+## Loading data from SPSS, Stata and SAS files using the haven package
+
+I'm not going to go into details here, but if you happen to have data in SPSS, Stata, or SAS file formats, the "haven" package has functions that you can use to load in these files.
+
+Once you've installed (`install.packages("haven")`) and loaded (`library(haven)`) the "haven" package, you should have access to the following functions:
+
+- **SAS**: `read_sas()` reads .sas7bdat and .sas7bcat files and `read_xpt()` reads SAS transport files (versions 5 and 8). 
+
+- **SPSS**: `read_sav()` reads .sav files and `read_por()` reads the older .por files. 
+
+- **Stata**: `read_dta()` reads .dta files (up to version 15). 
+
+## Data Frames
+
+
+Let me preface the rest of this chapter by saying that I don't actually want you to read it, because there is a better way to do literally everything that is shown from this point in this chapter. Like way better. And that'll be the topic of the next chapter.
+
+So why did I even write the following content? I wrote it because I want to show you the misery of working with data frames without the tidyverse. Without this content, you won't be able to fully appreciate the beauty of the tidyverse that will be introduced in the next chapter. If your only exposure to working with data in R is through the tidyverse, you'll take it for granted. Don't take the tidyverse for granted. It's special, Ok? Besides, if you haven't already, at some point in your R journeys you're going to encounter code written by other people that uses a lot of the syntax from this chapter, and I want to make sure that you understand it.
+
+
+
+The rest of this chapter is all about working with data using "base R". When I say "base R" here, I mean R functions and syntax that are available to you without requiring that you install and load any additional packages. That is, they are part of the "base" R language itself. Since this chapter corresponds to a new quarto document, I'm going to go ahead and load our trust gapminder data frame using the `read.csv()` function (which is itself a base R function!!).
+
+```{r}
+gapminder <- read.csv("data/gapminder.csv")
+```
+
+And let's take a look at the first few rows:
+
+```{r}
+head(gapminder)
+```
+
+
+
+## Extracting columns from a data frame using the `$` operator
+
+If you only take away one thing from this chapter, let it be that you can extract a column from a data frame using a dollar sign: `$`. Despite the fact that this is technically a "base R" technique for working with data frames, I do actually use it all the time. 
+
+For example, if I want to extract the `country` column from `gapminder` as a *vector*, I can write:
+
+```{r}
+#| attr-output: 'style="height: 400px"'
+gapminder$country
+```
+
+What kind of object is this? It's a (very long) vector! You can use the `head()` function on vectors too to just look at the first 6 values:
+
+```{r}
+head(gapminder$country)
+```
+
+:::: {.panel-tabset}
+
+## Exercise 
+
+Extract the `lifeExp` column from gapminder (I recommend using the `head()` function to limit the size of your output)
+
+## Solution
+
+```{r}
+head(gapminder$lifeExp)
+```
+
+
+::::
+
+
+
+## Extracting individual entries from a data frame
+
+For the rest of this chapter, I'm going to show you several base R techniques of extracting subsets of rows and columns from your data frame. I give you permission to skim.
+
+To extract individual entries from a data frame using base R, you can write the name of the data frame object (such as `gapminder`) immediately followed by some *square* parentheses with two values separated by a comma. The first value will correspond to the row-number of the value you want to extract, and the second value will correspond to the column position of the value, which can either be the numeric index position (e.g., `2` for the second column) or the name of the column as a character value, such as `"country"`. 
+
+For example, to extract the entry in the 3rd row and 4th column of `gapminder`, you can write:
+
+```{r}
+gapminder[3, 4]
+```
+
+Or you can use the column name in the second (column) position of the square parentheses:
+
+```{r}
+gapminder[3, "lifeExp"]
+```
+
+
+If you want to extract multiple values, you can use the `c()` function to create a vector of row or column indices. For example, to extract the entries in the 3rd and 4th rows and 4th column, you can write:
+
+```{r}
+gapminder[c(3, 4), 4]
+```
+
+and if you want to extract the entries in the 3rd and 4th rows and the 4th and 5th columns, you can write:
+
+```{r}
+gapminder[c(3, 4), c(4, 5)]
+```
+
+Or you can use the column names:
+
+```{r}
+gapminder[c(3, 4), c("lifeExp", "pop")]
+```
+
+
+:::: {.panel-tabset}
+
+## Exercise
+
+What type of object do each of these extraction techniques output? Before using the `class()` function to check, try and just look at the output and visually identify what type of object (vector, data frame, numeric value, etc) each output is.
+
+
+## Solution
+
+Any output object that contains an individual value is just a standalone value. Any output object that contains a single column is a vector. Any output object that contains multiple columns are a data frame. 
+
+
+::::
+
+
+### Extracting entire columns from a data frame
+
+
+
+There are many ways to extract a single *column* from a data frame using base R syntax. You've already seen one:
+
+```{r}
+head(gapminder$lifeExp)
+```
+
+But you can also use the square parenthesis syntax to extract an entire column by leaving the first row index position in the square parentheses blank. For example, the following code will extract the entire fourth column (and just print out the head):
+
+```{r}
+head(gapminder[, 4])
+```
+
+And the following code will do the same thing using the name of the fourth column instead of its index position:
+
+```{r}
+head(gapminder[, "lifeExp"])
+```
+
+
+
+Here's a fun question for you (and don't try to tell me I don't know what "fun" means!)... What do you think the output of the following code will be:
+
+```{r}
+#| eval: false
+head(gapminder[3])
+```
+
+And what about:
+
+```{r}
+#| eval: false
+head(gapminder["year"])
+```
+
+How is this code different from what we were just doing above? 
+
+Above whenever we were using the square parenthesis syntax, we provided two values: the row position and the column position. If we wanted all of the rows, we left the row position blank, but we still had the comma, for example `gapminder[,3]`. But in the code above, we only provided one value, and no commas inside the square parentheses! 
+
+If you tried it out yourself, you will have seen that the output of these two pieces of code above where we just provide a number of a column name inside the square parentheses without any commas is the relevant column, but what type of object is it? Is `gapminder["year"]` different from `gapminder[, "year"]`? Take a look at the two outputs:
+
+```{r}
+head(gapminder[, "year"])
+```
+
+```{r}
+head(gapminder["year"])
+```
+
+What type of objects are they? The first one is a vector, and the second one is a single-column data frame!
+
+
+And just to confuse you even further, there is yet another way to extract a column: you can use double square parentheses `[[]]`. 
+
+```{r}
+head(gapminder[[3]])
+head(gapminder[["year"]])
+```
+
+If you want the technical explanation of why this works, a data frame can be thought of as a "list" of vectors, and the way that you extract entries from a list is using double square parentheses, so `df[[3]]` will extract the third vector of the list, which is the same as the third column of the data frame. If you've never seen a list before, don't worry for now. We will talk about lists later in this book, but I'll introduce them properly when that time comes. We don't really need to know about lists to work with data frames.
+
+
+:::: {.panel-tabset}
+## Exercise
+
+
+1. Extract the `gdpPercap` entry for the fourth and fifth rows
+
+
+2. Extract the entire `lifeExp` column in as many different ways as you can (you may want to just look at the head() of your outputs).
+
+
+## Solution
+
+1. 
+
+```{r}
+gapminder[c(4, 5), "gdpPercap"]
+gapminder[c(4, 5), 6]
+gapminder[c(4, 5), ncol(gapminder)]
+```
+
+
+2. 
+
+```{r}
+# 7 ways of extracting the lifeExp column
+head(gapminder[, 4])
+head(gapminder[, "lifeExp"])
+
+head(gapminder$lifeExp)
+
+head(gapminder[4])
+head(gapminder["lifeExp"])
+
+head(gapminder[[4]])
+head(gapminder[["lifeExp"]])
+```
+
+::::
+
+
+
+## Using logical indexing to extract subsets of data frames
+
+While being able to extract subsets of your data frame using row and column position, you probably don't want to have to figure out the row and column positions of every value that you want to extract. Fortunately, you don't have to! You can use that logical subsetting stuff that I went on and on about way back in @sec-logical-subsetting.
+
+Let's use logical subsetting to create a logical vector, called `is_aus` that is `TRUE` when the corresponding row's country value is "Australia" and `FALSE` otherwise.
+
+
+```{r}
+is_aus <- gapminder$country == "Australia"
+```
+
+Remember that `vec == "value"` will ask whether every value in the vector `vec` (in our example, this is the country column of gapminder `gapminder$country`) is equal to `"Australia"`, and will return `TRUE` if it is and `FALSE` if it is not. So the `is_aus` variable will contain a vector of `TRUE` and `FALSE` values. Since this vector is going to be long (its length equals the number of rows in `gapminder`), let's just look at the first 100 entries using `head()` (we can specify how many rows we want to look at by providing a second argument to head, in this case, `100`):
+
+```{r}
+head(is_aus, 100)
+```
+
+One trick to ask how many `TRUE` values there are in a logical vector is to use the `sum()` function. This is because `TRUE` is treated as `1` and `FALSE` is treated as `0`, so the sum of a logical vector will be the number of `TRUE` values in the vector.
+
+```{r}
+sum(is_aus)
+```
+
+So why do we want to create this logical vector? It turns out that we can use it to filter to just the rows for Australia by providing it in the row indexing position of our square parentheses like this:
+
+```{r}
+gapminder[is_aus, ]
+```
+
+Since I didn't provide anything in the second position `[is_aus, ]`, this returned all of the columns.
+
+This is pretty helpful, but it can get kind of messy, especially if we want to avoid defining intermediate objects (which I generally do). The way I wrote the code above involved defining an "intermediate object" corresponding to the `is_aus` logical vector:
+
+```{r}
+is_aus <- gapminder$country == "Australia"
+gapminder[is_aus, ]
+```
+
+But I could have done this all in one row by writing:
+
+```{r}
+gapminder[gapminder$country == "Australia", ]
+```
+
+You will often see this kind of code. For now, it's still fairly readable, but if I want to proide multiple conditions for my filtering, for example I just want to subset to the rows corresponding to `country == "Australia"` and `year > 1990`, I can do this by using the `&` operator to combine the two logical vectors:
+
+```{r}
+gapminder[(gapminder$country == "Australia") & (gapminder$year > 1990), ]
+```
+
+Where our row condition `(gapminder$country == "Australia") & (gapminder$year > 1990)` will return a logical vector that is `TRUE` when both conditions are met and `FALSE` otherwise:
+
+```{r}
+#| attr-output: 'style="height: 400px"'
+(gapminder$country == "Australia") & (gapminder$year > 1990)
+```
+
+This gets messy fairly quickly, and I personally find it kind of hard to read. But don't worry, in the next chapter, I will show you a much nicer way to do this!
+
+
+
+
+
+## Removing columns using negative indexing
+
+Remember how you could remove a value from a vector by providing a negative value inside the indexing parentheses, such as `vec[-2]` for removing the second entry of the vector. 
+
+You can use negative indexing to remove columns of a data frame too! The following code will remove the third column (`year`) from gapminder, and show just the first 6 rows:
+
+```{r}
+head(gapminder[-3])
+```
+
+Note that this doesn't modify the original `gapminder` object, because I have not reassigned `gapminder` (which would involve writing `gapminder <- gapminder[-3]`). This code above just shows you what `gapminder` would look like if you removed the third column (And then looked at its head).
+
+
+
+
+
+
+## Adding columns
+
+
+Just as you can remove columns from a data frame using the square parenthesis index syntax, you can also *add* new columns to a data frame. However, since adding a column involve *assigning* the new column to somthing, this *will* modify the gapminder object. To avoid modifying our original `gapminder` object, let's create a new version of it called `gapminder_tmp` (for "gapminder temporary"). I can do that by assigning `gapminder_tmp` to `gapminder`:
+
+```{r}
+gapminder_tmp <- gapminder
+```
+
+If I wanted to add a new column to `gapminder_tmp`, I can use the `$` syntax to define `gapminder_tmp$gdp` (the column I want to create that does not yet exist) by assigning it to the vector of values that I want it to contain.
+
+The `gdp` column that I want to create will correspond to the product of the `gdpPercap` column and the `pop` column (note that `gapminder_tmp$gdpPercap` and `gapminder_tmp$pop` are both vectors and their product is also a vector):
+
+```{r}
+gapminder_tmp$gdp <- gapminder_tmp$gdpPercap * gapminder_tmp$pop
+```
+
+Let's take a look at our modified `gapminder_tmp` data frame:
+
+```{r}
+head(gapminder_tmp)
+```
+
+Notice that there is a new `gdp` column at the end!
+
+Note that we could alternatively do this using the square parenthesis syntax:
+
+```{r}
+gapminder_tmp[, "gdp"] <- gapminder_tmp[, "gdpPercap"] * gapminder_tmp[, "pop"]
+```
+
+As well as the using version of indexing that doesn't involve a row index position (i.e., `df["col"]` instead of `df[, "col"]`:
+
+```{r}
+gapminder_tmp["gdp"] <- gapminder_tmp["gdpPercap"] * gapminder_tmp["pop"]
+```
+
+
+
+These all do the same thing!
+
+
+
+:::: {.panel-tabset}
+
+## Exercise
+
+Modify the `lifeExp` column of `gapminder_tmp` so that it is rounded to the nearest integer (use `round()`). 
+
+*Hint:* you can undo your changes to `gapminder_tmp` by reassigning it to the original `gapminder` object (`gapminder_tmp <- gapminder`)
+
+## Solution
+
+```{r}
+# for all rows:
+gapminder_tmp$lifeExp <- round(gapminder_tmp$lifeExp)
+head(gapminder_tmp)
+```
+
+::::
+
+In the next chapter I'm going to show you better ways of doing literally everything that I just showed you. So feel free to forget everything you just read. Get ready to enter into the tidyverse!

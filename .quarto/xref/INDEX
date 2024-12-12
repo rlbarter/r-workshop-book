@@ -1,0 +1,80 @@
+{
+  "index.qmd": {
+    "index.html": "66183a1f"
+  },
+  "00_rstudio_quarto.qmd": {
+    "00_rstudio_quarto.html": "ebd1d7f9"
+  },
+  "01_r_code_intro.qmd": {
+    "01_r_code_intro.html": "42bc922c"
+  },
+  "02_variables.qmd": {
+    "02_variables.html": "9b71b2c6"
+  },
+  "03_types.qmd": {
+    "03_types.html": "a238cf8f"
+  },
+  "04_vectors.qmd": {
+    "04_vectors.html": "21d1e601"
+  },
+  "05_data_loading.qmd": {
+    "05_data_loading.html": "1b346e46"
+  },
+  "06_df_base_r.qmd": {
+    "06_df_base_r.html": "6975fd30"
+  },
+  "07_dplyr.qmd": {
+    "07_dplyr.html": "7bece32f"
+  },
+  "08_ggplot2.qmd": {
+    "08_ggplot2.html": "347ecce5"
+  },
+  "09_custom_functions.qmd": {
+    "09_custom_functions.html": "67b8d016"
+  },
+  "10_iteration_purrr.qmd": {
+    "10_iteration_purrr.html": "9ecf8129"
+  },
+  "11_across.qmd": {
+    "11_across.html": "efbbe31c"
+  },
+  "12_recoding_variables.qmd": {
+    "12_recoding_variables.html": "fd035bf0"
+  },
+  "13_pivoting.qmd": {
+    "13_pivoting.html": "64ecb871"
+  },
+  "14_joining.qmd": {
+    "14_joining.html": "f0457659"
+  },
+  "01_r_fundamentals.qmd": {
+    "01_r_fundamentals.html": "5edbc606"
+  },
+  "02_types.qmd": {
+    "02_types.html": "1ee6d2c8"
+  },
+  "03_vectors.qmd": {
+    "03_vectors.html": "2e9b45f5"
+  },
+  "04_data_loading.qmd": {
+    "04_data_loading.html": "e8625392"
+  },
+  "05_df_base_r.qmd": {
+    "05_df_base_r.html": "216d8416"
+  },
+  "06_dplyr.qmd": {
+    "06_dplyr.html": "eb668f49"
+  },
+  "07_ggplot2.qmd": {
+    "07_ggplot2.html": "b603872a"
+  },
+  "04_data_frames.qmd": {
+    "04_data_frames.html": "4c5da62a"
+  },
+  "05_dplyr.qmd": {
+    "05_dplyr.html": "29243ed4"
+  },
+  "06_ggplot2.qmd": {
+    "06_ggplot2.html": "705335d2"
+  }
+}
