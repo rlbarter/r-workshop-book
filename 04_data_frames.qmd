@@ -193,7 +193,8 @@ You can update your console's working directory to be the location of your curre
 :::
 
 
-Let's load an actual .csv file. If you are working in a quarto document or an R script on your computer, take note of where you saved it. Create a new folder called "data" in the same location as your current document. Then [download the gapminder dataset] and move it to your new "data" folder.
+Let's load an actual .csv file. If you are working in a quarto document or an R script on your computer, take note of where you saved it. Create a new folder called "data" in the same location as your current document. Then [download the gapminder dataset](https://raw.githubusercontent.com/rlbarter/r-book/refs/heads/main/data/gapminder.csv) and move it to your new "data" folder.
+<a href="https://raw.githubusercontent.com/rlbarter/r-book/refs/heads/main/data/gapminder.csv" download>Download CSV</a>
 
 Then, assuming that your console's working directory matches the location where your quarto document or R script has been saved, you should be able to run this code below to load in the gapminder csv data file and save it as an object called `gapminder` using the `read.csv()` function.
 

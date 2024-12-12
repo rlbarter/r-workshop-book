@@ -5074,8 +5074,8 @@ vertical-align: -.125em;
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/filename.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>However, if you are running your code in the console, so that R knows where to start looking for the file, your console’s “working directory” needs to match the location of your quarto document. The <strong>working directory</strong> is the folder on your computer where R looks for files to read and saves files you create.</p>
-<p>All file paths in code that you run in the console will be relative to your current <strong>working directory</strong>, regardless of where your current quarto document is saved.</p>
-<p>If you opened RStudio or positron or whichever IDE you are working in by opening a quarto document or R script directly, your working directory will (probably) be automatically set to the folder containing your quarto file. However, if you opened your IDE without opening a file, your working directory will most likely be your computer’s home folder.</p>
+<p>All file paths in code that you run in the console will be relative to your current working directory, regardless of where your current quarto document is saved.</p>
+<p>If you opened RStudio by opening a quarto document or R script directly, your working directory will (probably) be automatically set to the folder containing your quarto file. However, if you opened your IDE without opening a file, your working directory will most likely be your computer’s home folder.</p>
 <p>If your console’s working directory does not match the location in which you saved your quarto document or R script (wherever you are saving the code that you are running), R will not be able to find your data files.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -5087,7 +5087,7 @@ Identifying the console’s current working directory
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>You can see your console’s current working directory by looking at the top of the console. In the image below, the working directory is the “Documents” folder. If you just see <code>~</code>, then your console’s current working directory is your computer’s home page.</p>
+<p>You can see your console’s current working directory by looking at the top of the console. In the image below, the working directory is the “Documents” folder. If you just see <code>~</code>, then your console’s current working directory is your computer’s home folder.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -5099,7 +5099,7 @@ Identifying the console’s current working directory
 </div>
 </div>
 </div>
-<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -5113,7 +5113,7 @@ Changing your console’s working directory
 <p>You can update your console’s working directory to be the location of your current quarto document in RStudio by choosing “Session &gt; Set Working Directory &gt; To Source File Location”.</p>
 </div>
 </div>
-<p>Let’s load a csv file. If you are working in a quarto document or an R script on your computer, take note of where you saved it. Create a new folder called “data” in the same location as your current document. Then download the gapminder dataset and move it to your new “data” folder.</p>
+<p>Let’s load an actual .csv file. If you are working in a quarto document or an R script on your computer, take note of where you saved it. Create a new folder called “data” in the same location as your current document. Then <a href="https://raw.githubusercontent.com/rlbarter/r-book/refs/heads/main/data/gapminder.csv">download the gapminder dataset</a> and move it to your new “data” folder. <a href="https://raw.githubusercontent.com/rlbarter/r-book/refs/heads/main/data/gapminder.csv" download="">Download CSV</a></p>
 <p>Then, assuming that your console’s working directory matches the location where your quarto document or R script has been saved, you should be able to run this code below to load in the gapminder csv data file and save it as an object called <code>gapminder</code> using the <code>read.csv()</code> function.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>gapminder <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/gapminder.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
