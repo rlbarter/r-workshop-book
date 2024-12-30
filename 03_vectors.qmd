@@ -1,7 +1,6 @@
 ---
 title: "Vectors"
 format: html
-embed-resources: true
 editor_options: 
   chunk_output_type: console
 ---
@@ -27,7 +26,7 @@ age
 
 But unlike our previous variables, `age` contains many values, and this is because `age` is a vector, which is defined by "concatenating" values together using the `c()` function.
 
-Note that the `[1]` at the beginning of the output is just telling you that the first value is at location 1. If our vector was so long that it would spill onto multiple lines in our output, such as the vector below, notice that the second line in the has a different number inside the square parentheses. This is just telling you which entry (in terms of its position in the vector) the first entry on the second line is.
+Note that the `[1]` at the beginning of the output is just telling you that the first value is at index position/location 1 (i.e., that it is the *first* entry). If our vector is so long that its output spills onto multiple lines, such as the vector below, notice that the second line in the output has a different number inside the square parentheses. This is just telling you which index position the *first entry on the second* line has (and it may change based on the width of your window when the code was run).
 
 ```{r}
 long_age <- c(12, 19, 22, 35, 18, 44, 23, 56, 23, 12, 18, 19, 50, 60, 77, 54, 
@@ -36,12 +35,10 @@ long_age <- c(12, 19, 22, 35, 18, 44, 23, 56, 23, 12, 18, 19, 50, 60, 77, 54,
 long_age
 ```
 
-Notice that the second line in the "output" has a different number inside the square parentheses. This is just telling you which entry (in terms of its index position) that first entry on the second line is.
-
 
 The `c()` function asks R to place all of the values provided inside the parentheses of `c()`, which are separated by commas, into a single vector object.
 
-You might think that when we apply `class()` to our `age` vector object, that it would return "vector". However, the *type* or *class* of a vector is actually just the *type* or *class* of the values it contains, which in this case, is "numeric"
+You might think that when we apply `class()` to our `age` vector object, it would return "vector". However, the *type* or *class* of a vector is actually just the *type* or *class* of the values it contains, which in this case, is "numeric"
 
 ```{r}
 class(age)
@@ -141,7 +138,7 @@ class(vector_example)
 
 ## Working with vectors: vectorization
 
-While it's super neat that we can collect all of our numbers and words in a single vector object (although with no mixing of words and numbers), the actual cool thing about vectors is that it makes it really easy to do computations on all of our values at once.
+While it's super neat that we can collect all of our numbers and words in a single vector object (although no mixing of words and numbers), the actual cool thing about vectors is that it makes it really easy to do computations on all of our values at once.
 
 If we define our `age` vector below:
 
@@ -149,21 +146,21 @@ If we define our `age` vector below:
 age <- c(12, 18, 22, 21, 17)
 ```
 
-then we can demonstrate a really neat property of vectors: if I subtract `1` from the vector object `age`, R will kindly subtract `1` from *every value in the vector* at once:
+Then we can demonstrate a really neat property of vectors: if I subtract `1` from the vector object `age`, R will subtract `1` from *every value in the vector* at once:
 
 
 ```{r}
 age - 1
 ```
 
-Let's do something else neat. Let's create an entirely new vector object, that I'm going to creatively call `age2`, which contains the original `age` vector multiplied by 2.
+Let's create an entirely new vector object, that I'm going to creatively call `age2`, which contains the original `age` vector multiplied by 2.
 
 
 ```{r}
 age2 <- age * 2
 ```
 
-If we want to look at what values `age2` contains, we can print out its name and lo and behold, all of the values in `age2` correspond to the original values in `age`, multiplied by 2:
+If we want to look at what values `age2` contains, we can print out its name, and lo and behold, all of the values in `age2` correspond to the original values in `age`, multiplied by 2:
 
 ```{r}
 age2
@@ -173,7 +170,7 @@ age2
 The fact that mathematical operations applied to a vector are applied separately to each individual value in the vector is called **vectorization**.
 
 
-While this might not seem *that* cool to you. Trust me when I say that this 100% *is* cool. Imagine how tired your fingers would get if you had to subtract `1` from every individual value in a vector containing 1000 values. With vectorization I just have to subtract `1` from the vector object itself, and I'm done.
+While this might not seem *that* cool to you. Trust me when I say that this 100% *is* cool. Imagine how tired your fingers would get if you had to subtract `1` from every individual value in a vector containing 1000 values. With vectorization, I just have to subtract `1` from the vector object itself, and I'm done.
 
 
 
@@ -193,7 +190,7 @@ What do you think will happen if I try to add these two vectors together?
 age2 + age
 ```
 
-Because vectors are *vectorized*, the entries were added *element-wise*. This means that the first value in `age` was added to the first value in `age2`, and similarly for the second value, and so on and so forth.
+Because vectors are *vectorized*, the entries were added *element-wise*. This means that the first value in `age` was added to the first value in `age2`, and similarly for the second value, and so on.
 
 Note that in the `age2 + age` computation above, I printed out the resulting vector, but I did not *save* this vector as an object. Having been computed, the `age2 + age` vector has now been lost to the ether. If I wanted to use this resulting vector for something, I would need to *save* it as a new variable (such as `age3 <- age2 + age`).
 
@@ -216,7 +213,7 @@ age - c(1, 2)
 ```
 
 
-Interestingly, it worked, but we got a warning message that says "*longer object length is not a multiple of shorter object length*". Take a look at the output of the code above. Can you figure out what R did here?
+Interestingly, it worked, but we got a warning message "*longer object length is not a multiple of shorter object length*". Take a look at the output of the code above. Can you figure out what R did here?
 
 R is being very presumptuous. Without even bothering to ask me, it went ahead and repeated the values in the shorter vector, `c(1, 2)`, to match the length of the longer vector, `age`, i.e., until it gets to 5 values in total, so it is essentially doing this:
 
@@ -247,7 +244,7 @@ length(age)
 ### Vectorized logical operations
 
 
-Do you remember when we asked questions about the values that we had stored in our variables/objects, like `x == 1`? Well it turns out that we can ask the same questions of vectors! And, you guessed it, those questions will be asked *element-wise*.
+Do you remember when we asked questions about the values we stored in our variables/objects, like `x == 1`? Well, it turns out that we can ask the same questions of vectors! And, you guessed it, those questions will be asked *element-wise*.
 
 Let's keep working with our `age` vector:
 
@@ -317,9 +314,9 @@ age == c(18, 17, 18, 17, 18)
 ```
 
 
-And the question is being asked element-wise (is the first entry equal to `18`? Is the second entry equal to `17`? Is the third entry equal to `18`?, etc). The only reason we got the correct answer the first time is because we got lucky with our recycling. 
+And the question is being asked element-wise (is the first entry equal to `18`? Is the second entry equal to `17`? Is the third entry equal to `18`?). The only reason we got the correct answer the first time is because we got lucky with our recycling. 
 
-The moral of the story: *don't ignore* the warning message "*longer object length is not a multiple of shorter object length*". Check your lengths!
+The moral of the story is: *don't ignore* the warning message "*longer object length is not a multiple of shorter object length*". Check your lengths!
 
 
 
@@ -346,7 +343,7 @@ age %in% c(17, 18)
 
 ## Summary functions for vectors
 
-So I showed you earlier that you can use the `length()` function to compute the number of values in a vector, but this is just one of many function that you can use to summarize a vector. 
+So I showed you earlier that you can use the `length()` function to compute the number of values in a vector, but this is just one of many functions you can use to summarize a vector. 
 
 
 For example, the `sum()` function can be used to add up all the entries in a (numeric) vector:
@@ -480,7 +477,7 @@ age[4]
 ```
 
 
-If you want to extract the final entry in a vector and you don't immediately know it's length, you can do something clever like this:
+If you want to extract the final entry in a vector and you don't immediately know its length, you can do something clever like this:
 
 ```{r}
 age[length(age)]
@@ -506,7 +503,7 @@ age[-1]
 
 So `age[1]` *extracts* the first entry from `age` and `age[-1]` *removes* the first entry from age.
 
-Keep in mind, none of these operations so far have modified the original `age` object:
+Keep in mind that none of these operations so far have modified the original `age` object:
 
 ```{r}
 age
@@ -554,7 +551,7 @@ If I try to provide two values inside my `[ ]` parentheses, I get an error. For 
 age[1, 3]
 ```
 
-But I got an error :(. The error` `"incorrect number of dimensions"` is telling me that it only wants one object, not two inside the square parentheses!
+But I got an error :(. The error `"incorrect number of dimensions"` is telling me that it only wants one object, not two inside the square parentheses!
 
 So I need to provide two position values (1 and 3), but I can only provide one object inside. How could I create *one* object that contains *two* values? One object... two values... Hmmmmmmmm. Have you figured it out yet? Why don't you put the two values inside a *vector*! Wow! Neat idea!
 
@@ -607,7 +604,7 @@ my_long_vector
 ```
 
 
-Writing this out made my fingers really tired. And if you're learned anything about me so far, you'll know how much I hate it when my fingers get tired. 
+Writing this out made my fingers really tired. And if you've learned anything about me so far, you'll know how much I hate it when my fingers get tired. 
 
 Fortunately, there's a better way. If I want to define a vector containing a sequence of consecutive integers like in `my_long_vector`, I can use the `:` syntax. For example, to create the vector `c(1, 2, 3, 4)`, I could write:
 
@@ -629,7 +626,7 @@ vector1to4
 
 
 
-The syntax to create a sequential vector of integers is `start:stop`. So if `1:4` created the vector `c(1, 2, 3, 4)`, how might you create the long vector that I saved in `my_long_vector` above? Well the starting value is 101 and the last (stop) value is 200, so maybe we can try `101:200`:
+The syntax to create a sequential vector of integers is `start:stop`. So if `1:4` created the vector `c(1, 2, 3, 4)`, how might you create the long vector I saved in `my_long_vector` above? Well the starting value is 101 and the last (stop) value is 200, so maybe we can try `101:200`:
 
 ```{r}
 101:200
@@ -652,9 +649,9 @@ age[1:4]
 
 ## Logical subsetting {#sec-logical-subsetting}
 
-Sometimes you might want to extract all the entries from a vector that satisfy a certain condition. To do that, you first need to understand how you can use a logical vector to extract values. 
+Sometimes you might want to extract all the entries from a vector that satisfy a certain condition. To do that, you first need to understand how to use a logical vector to extract values. 
 
-If I provide a vector of `TRUE`s and `FALSE`s inside the square parentheses, R will extract all of the values whose position in the logical vector have a `TRUE`.
+If I provide a vector of `TRUE`s and `FALSE`s inside the square parentheses, R will extract all the values whose corresponding entry in the logical vector are `TRUE`.
 
 For example, the following code will extract the first, fourth, and fifth entries:
 
@@ -663,7 +660,7 @@ age[c(TRUE, FALSE, FALSE, TRUE, TRUE)]
 ```
 
 
-OK. So I would never actually write out such a vector, because I have a life, but remember earlier, when we asked logical questions of our vectors, such as, which entries in `age` are greater than or equal to 18:
+OK. So I would never actually write out such a vector, because I have a life, but remember when we asked logical questions of our vectors, such as, which entries in `age` are greater than or equal to 18?
 
 ```{r}
 age >= 18
@@ -680,16 +677,16 @@ age[age >= 18]
 ```
 
 
-This is great for simple conditions, but what about more complex conditions, such as ages that are at least 17 but less than 20. Unfortunately, the R code that would correspond to the mathematical syntax $17 \leq x \leq 20$ doesn't work in R:
+This is great for simple conditions, but what about more complex conditions, such as ages that are at least 17 but less than 20? Unfortunately, the R code that would correspond to the mathematical syntax $17 \leq x \leq 20$ doesn't work in R:
 
 ```{r}
 #| error: true
 17 <= age < 20
 ```
 
-Instead, we have to combine multiple conditions in R, using `|` if we want *either* condition to be true (the logical "OR") and `&` for if we want *both* conditions to be true (the logical "AND").
+Instead, we have to combine multiple conditions in R, using `|` if we want *either* condition to be true (the logical "OR") and `&` if we want *both* conditions to be true (the logical "AND").
 
-The condition that the age is at least 17 but less than 20 is the combination of the two conditions `age >= 17` and `age < 20`, and we need both of these things to be true, so we can write
+The condition that the age is at least 17 but less than 20 is the combination of the two conditions `age >= 17` and `age < 20`, and we need both of these things to be true so we can write
 
 ```{r}
 # age at least 17 and less than 20
@@ -788,7 +785,7 @@ vec[(vec < 10) | (vec == 55)]
 ## Named vectors
 
 
-If we wanted each entry in `age` to have it's own name, we could use the `names()` function. 
+If we wanted each entry in `age` to have its own name, we could use the `names()` function. 
 
 Note that `names(age)` extracts an attribute of `age` (its names, which are currently nonexistent), and by assigning `names(age)` to something, we can update the names.
 
@@ -806,14 +803,14 @@ age
 ```
 
 
-While you can define a vector and then update its names later, you can alternatively create the names when you actually create the vector using the syntax below.
+While you can define a vector and then update its names later, you can alternatively create the names when you initially create the vector using the syntax below.
 
 ```{r}
 age <- c("Dean" = 12, "Xiao" = 18, "Sara" = 22, "Ravi" = 21, "Maya" = 17)
 age
 ```
 
-Take a look at the output of this "named vector". How does it look different to the original unnamed `age` vector? The name for each entry appears above the value, and the `[1]` at the beginning of the vector that denotes the first entry is gone! I have no explanation for why this second thing happens.
+Take a look at the output of this "named vector". How does it look different from the original unnamed `age` vector? The name for each entry appears above the value, and the `[1]` at the beginning of the vector that denotes the first entry is gone! I have no explanation for why this second thing happens.
 
 The cool thing about named vectors is that you can extract an entry from a vector using its name. For example, if I just wanted Ravi's age, I could write:
 
@@ -838,7 +835,7 @@ age[c("Maya", "Ravi")]
 
 Before moving on to actually working with data (yay!), I want to talk briefly about factors. 
 
-Factors are essentially vectors coupled with a set of allowed values. For example, you will often find states (e.g., US states CA, OR, NY, etc) stored as a factor, since there are a pre-defined set of states.
+Factors are essentially vectors coupled with a set of allowed values. For example, you will often find states (e.g., US states CA, OR, NY, etc) stored as a factor since there are a pre-defined set of states.
 
 As an example, let's create a character vector of 10 Australian states (where some states appear more than once--there are only 7 states total):
 
@@ -848,7 +845,7 @@ australia_states <- c("New South Wales", "New South Wales", "Queensland", "Tasma
 australia_states
 ```
 
-and let's create a factor variable version of this vector using the `factor()` function:
+And let's create a factor variable version of this vector using the `factor()` function:
 
 ```{r}
 australia_states_fct <- factor(australia_states)
@@ -859,7 +856,7 @@ What are two differences between the output of the character vector, `australia_
 
 1. The factor entries are not surrounded by quotes
 
-2. Underneath the factor output there is some text that says `7 Levels: ACT New South Wales ... Western Australia` -- these list the unique levels in the vector.
+2. Underneath the factor output some text says `7 Levels: ACT New South Wales ... Western Australia` -- these list the unique levels in the vector.
 
 
 
@@ -876,7 +873,7 @@ It turns out that we can convert a factor to a numeric vector:
 as.numeric(australia_states_fct)
 ```
 
-But what is it doing? It is replacing all instances of the first level, `ACT`, with `1`, all instances of the second level, `New South Wales`, with `2`, etc. This can be very handy, but also very dangerous. 
+But what is it doing? It replaces all instances of the first level, `ACT`, with `1`, all instances of the second level, `New South Wales`, with `2`, etc. This can be very handy, but also very dangerous. 
 
 To demonstrate why, let's create a factor containing numbers (factors are not just reserved for text!)
 
@@ -885,9 +882,9 @@ fct <- factor(c(5, 1, 1, 3, 6, 5, 5, 6, 1))
 fct
 ```
 
-Notice that the factor *levels* are unique (i.e,. `1` only appears once in the levels, despite the fact that there are three `1`s in the factor itself)
+Notice that the factor *levels* are unique (i.e,. `1` only appears once in the levels, even though there are three `1`s in the factor itself)
 
-If I try to convert the factor to a numeric variable, the numbers got all messed up:
+If I try to convert the factor to a numeric variable, the numbers get all messed up:
 
 ```{r}
 as.numeric(fct)
@@ -897,4 +894,4 @@ What R is doing here is replacing the first level entry, `1`, with `1` (so the `
 
 
 
-It's hard to give concrete advice about factors at this stage, because they only really become relevant when you start doing fancy statistical modelling or creating sophisticated graphics using categorical data. For the most part, unless you are using a model that requires factor variables, your life will be ever so slightly easier if you store your categorical/text information as character vectors and your numeric information as numeric vectors rather than factors. Once you get to the modeling stage, you'll see that 80% of the functions that require your categorical data to be a factor will automatically convert them to a factor for you anyway.
+It's hard to give concrete advice about factors at this stage because they only really become relevant when you start doing fancy statistical modeling or creating sophisticated graphics using categorical data. For the most part, unless you are using a model that requires factor variables, your life will be slightly easier if you store your categorical/text information as character vectors and your numeric information as numeric vectors rather than factors. Once you get to the modeling stage, you'll see that 80% of the functions that require your categorical data to be a factor will automatically convert them to a factor for you anyway.

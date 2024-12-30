@@ -3,18 +3,19 @@ title: "Visualization with ggplot2"
 format: html
 editor_options: 
   chunk_output_type: console
-embed-resources: true
 ---
 
-????Add that you can put your aesthetics in the ggplot() function
+
 
 
 
 Now that we have learned how to manipulate our data, it's time to learn how to visualize it! 
 
-The bread-and-butter of data visualization in R is the ggplot2 library. Just as the dplyr functions we learned in the previous chapter, together with the pipe `|>`, equipped us with an intuitive "flowy" data manipulation "grammar", if you will; ggplot2's "layered grammar of graphics" equips us with a similarly intuitive grammar for creating data visualizations. In fact, the "*gg*" in "*ggplot2*" stands for "*grammar of graphics*"; the "*plot*" stands for "*plot*", and the "*2*" stands for "*2*" (as in, this is the second iteration of the ggplot library that Hadley Wickham created, the first being lost to the ether.)
+The "one tool to rule them all" for data visualization in R is the ggplot2 library, originally created by Hadley Wickham. Ggplot2's "layered grammar of graphics" equips us with a grammar for data visualization that is similar to the grammar we learned for data manipulation, which used the pipe to add dplyr operations together. 
 
-In this chapter, we're going to continue working with the gapminder dataset, and since this is a new quarto document, we need to load it again:
+The "*gg*" in "*ggplot2*" stands for "*grammar of graphics*" and the "*2*" stands for "*2*" (as in, this is the second iteration of the ggplot library that Hadley Wickham created, the first being lost to the ether.)
+
+In this chapter, we're going to continue working with the gapminder dataset, and since this is a new quarto document, to do that, we need to load it again:
 
 ```{r}
 #| message: false
@@ -23,9 +24,9 @@ gapminder <- read_csv("data/gapminder.csv")
 gapminder
 ```
 
-Note that I also loaded the tidyverse library again. While all of the data visualization functions I'm going to use in this chapter come from the ggplot2 library; ggplot, like dplyr from the previous chapter, is one of the core tidyverse packages. This means that rather than loading ggplot2 independently (`library(ggplot2)`), I typically just load the tidyverse library instead (`library(tidyverse)`), since this will load both the ggplot2 library and the dplyr library at the same time.
+Note that I also loaded the tidyverse library again--it turns out that ggplot2, like the dplyr package from the previous chapter, is one of the core tidyverse packages. This means that rather than loading ggplot2 independently (`library(ggplot2)`), I typically just load the tidyverse library instead (`library(tidyverse)`), which will simultaneously load both the ggplot2 library and the dplyr library (along with a few others).
 
-Our goal in this chapter is to learn how to write the code to create really nice publication-ready data visualizations (as well as quick-and-dirty non-publication ready visualizations--but those are less impressive) like this:
+Our goal in this chapter is to learn how to write the code to create publication-ready data visualizations (as well as quick-and-dirty non-publication-ready visualizations--but those are less impressive). For example, with just a few lines of ggplot2 code, you can create this figure (click the "code" button to see the code):
 
 ```{r}
 #| code-fold: true
@@ -35,20 +36,25 @@ gapminder |>
   geom_point(aes(x = gdpPercap, 
                  y = lifeExp, 
                  color = continent,
-                 size = pop),
+                 size = pop / 1000000),
              alpha = 0.6) + 
   scale_x_log10() + 
-  labs(x = "GDP per capita", y = "Life expectancy", title = "GDP per cap vs life expectancy", size = "population") + 
+  scale_size_continuous(range = c(1, 20)) +
+  labs(x = "GDP per capita", 
+       y = "Life expectancy", 
+       title = "GDP per cap vs life expectancy", 
+       size = "Population (millions)",
+       color = "Continent") + 
   theme_classic()
 ```
 
 
-It's worth also noting what this chapter *won't* cover, which is the principles for creating data visualiations that tell a clear and unambiguous story, and deciding *which* data visualizations to use to answer your specific question (or how to come up with good questions, for that matter). I can, however, point you in the direction of some resources that *do* teach you some of these things, such as [Storytelling with Data](https://www.storytellingwithdata.com/books) by Cole Nussbaumer Knaflic, which is a great resources for learning how to produce effective graphics in general, [R for the Rest of Us: A Statistics-Free Introduction](https://book.rfortherestofus.com/) by David Keyes, and even the chapter on data visualization of my book with Bin Yu, [Veridical Data Science](https://vdsbook.com/05-data_viz).
+By the end of this chapter, you will be able to create a version of this plot yourself! However, it is worth noting what this chapter *won't* cover, which is the actual principles for creating effective data visualizations that tell a compelling story, and deciding *which* data visualizations to use to answer your specific question (or how to come up with good questions, for that matter). While I'd love to cover these things here, at the end of the day, this is an R book, which teaches you how to do practical things in R. 
+
+Fortunately, there are many resources that *do* teach these things, such as [Storytelling with Data](https://www.storytellingwithdata.com/books) by Cole Nussbaumer Knaflic, which is a favorite of mine (and a great resource for learning how to produce effective graphics in general) and even the chapter on data visualization of my book with Bin Yu, [Veridical Data Science](https://vdsbook.com/05-data_viz).
 
 
-Fortunately, once armed with the dplyr functions from the previous chapter, and the ggplot2 functions from this chapter, you'll have the coding skills you need to tackle almost any dataset that comes your way.
-
-## The ggplot2 canvas
+## The layered grammar of graphics
 
 To create a ggplot figure, you start by creating an empty ggplot2 "canvas" using the `ggplot()` function. Our "canvas" here is the following grey box:
 
@@ -56,16 +62,16 @@ To create a ggplot figure, you start by creating an empty ggplot2 "canvas" using
 ggplot()
 ```
 
-The first thing I need to do is to tell ggplot which dataset object (generally, a data frame/tibble) I am going to use to create my plot, and I do that by providing the name of my data object as the argument of `ggplot()`:
+The first thing I need to do is to tell ggplot which dataset object (a data frame/tibble) to use to create my plot, and I do that by providing the name of my data object as the argument of `ggplot()`:
 
 ```{r}
 ggplot(gapminder)
 ```
 
 
-Nothing has changed on our canvas, but now when we add some "layers" to our plot, ggplot can find the variables that exist within our dataset. 
+Nothing has changed on our canvas, but now, when we add some "layers" to our plot, ggplot now knows where to look for the variables that I will refer to. 
 
-To *add* a layer to my plot, I literally use the plus symbol, `+`. The name of the layer that creates a scatterplot is `geom_point()` (because a scattplot is made up of a collection of "points").
+To *add* a layer to my plot, I literally use the plus symbol, `+`. The name of the layer that creates a scatterplot is `geom_point()` (because a scatterplot is made up of a collection of "points").
 
 I can add my points layer like this:
 
@@ -74,7 +80,9 @@ I can add my points layer like this:
 ggplot(gapminder) + geom_point()
 ```
 
-But I got an error because I haven't told ggplot which columns/variables in my data I want to use to define my scatterplot. Specifically, I need to tell it which columns should define the x- and y-coordinates of my scatterplot points. I do that by providing an "aesthetics" function as the argument of my points layer, in which I specify which column defines the x-coordinate (`x = gdpPercap`) and which column defines the y-coordinate (`y = lifeExp`).
+But I got an error because I haven't told ggplot which columns/variables in my data I want to use to define my scatterplot. Specifically, I need to tell it which columns should define the x- and y-coordinates of my scatterplot points. 
+
+I do that by providing an "aesthetics", `aes()`, function as the argument of my points layer, in which I specify which column defines the x-coordinate (`x = gdpPercap`) and which column defines the y-coordinate (`y = lifeExp`).
 
 
 ```{r}
@@ -82,12 +90,9 @@ ggplot(gapminder) +
   geom_point(aes(x = gdpPercap, y = lifeExp))
 ```
 
-Now we have our scatterplot, and ggplot has even very kindly provided x- and y-axis names! Gee, thanks!
+Now we have our scatterplot, and ggplot has even very kindly provided x- and y-axis names! 
 
-
-Unfortunately ggplot is a little bit dumb, and it can only find your data frame columns when they are referenced inside the `aes()` function.
-
-If I reproduced this code without the `aes()` function, I get an error telling me that `'gdpPercap'` cannot be found:
+Note the error that I get if I forget to place my `x` and `y` coordinates inside the `aes()` function, like this:
 
 ```{r}
 #| error: true
@@ -95,13 +100,26 @@ ggplot(gapminder) +
   geom_point(x = gdpPercap, y = lifeExp)
 ```
 
-Basically, if I try to reference a column from my data frame outside of the `aes()` function, ggplot will look for an object in my space with the same name as the column, in this case `gdpPercap`, and it won't be able to find one! 
+Unfortunately, ggplot can only find your data frame columns (such as `gdpPercap`) when they are referenced inside the `aes()` function.
 
 I like to think of the aesthetics function `aes()` as a secret code that tells ggplot that the objects I'm referring to are columns of my data frame.
 
 
+A common mistake to make is to use a pipe `|>` instead of a `+` to add layers to your ggplot, like this:
 
-Since `ggplot()` is just a function, I can also pipe my data into it like this:
+```{r}
+#| error: true
+ggplot(gapminder) |> 
+  geom_point(aes(x = gdpPercap, y = lifeExp))
+```
+
+Fortunately, the error is quite helpful here--it says "*Did you use `%>%` or `|>` instead of `+`?*" This is hinting that the pipe on the first line of my code should have been a `+`.
+
+If you remember that the pipe works by taking the object on its left-hand-side and placing it into the first argument of the function on its right-hand-side, then it kind of makes sense that the pipe doesn't work for creating layered ggplot objects. 
+
+The code `ggplot(gapminder) |> geom_point(aes(x = gdpPercap, y = lifeExp))`  would be equivalent to `geom_point(ggplot(gapminder), aes(x = gdpPercap, y = lifeExp))`, but the `geom_point()` function doesn't want a `ggplot()` object as its first argument, it wants an `aes()` object!
+
+Although I can't use the pipe `|>` to create my layered ggplot2 figure, the `ggplot()` function itself wants our data object (`gapminder`, in this case) as its first argument, so I *can* pipe my *data* into my `ggplot()` function like this:
 
 ```{r}
 gapminder |> 
@@ -109,9 +127,10 @@ gapminder |>
   geom_point(aes(x = gdpPercap, y = lifeExp))
 ```
 
-Why might I want to do that? I do this a lot, usually because I often want to make minor modifications to my data before plotting it (but I don't want to create a new intermediate object).
 
-For example, if I want to recreate this scatterplot just for the year 2007, I could conduct a filter step and then pipe my filtered data frame into `ggplot()`:
+Why might I want to do this? I actually do this a lot, usually because I often want to make temporary minor modifications to my data before plotting it (but I don't necessarily want to create a new intermediate object).
+
+For example, if I want to recreate the scatterplot above just for the year 2007, I could conduct a filter step and then pipe the resulting filtered data frame object into `ggplot()`:
 
 ```{r}
 gapminder |>
@@ -120,9 +139,9 @@ gapminder |>
   geom_point(aes(x = gdpPercap, y = lifeExp))
 ```
 
+Pay attention to where I have used `|>` and `+` in the code above!
 
-
-:::{.warning}
+:::{.callout-warning}
 ## `+` versus `|>`
 
 Probably one of the most common errors I make when doing data analysis is getting confused about when I should use `+` and when I should use `|>`. 
@@ -131,20 +150,11 @@ When we are adding ggplot layers, we always use `+`, but when we are chaining fu
 
 To understand why, remember that the pipe, `|>` takes the object on the left and places it into the first argument of the function on the right. This is not what our ggplot2 functions are doing though, these are layering objects on top of one another, and so they use `+` instead of `|>`.
 
-Take a look at this code, and notice when we use `+` versus `|>`.
-
-```{r}
-#| eval: false
-gapminder |>
-  filter(year == 2007) |>
-  ggplot() +
-  geom_point(aes(x = gdpPercap, y = lifeExp))
-```
-
 :::
 
 
-The alternative to applying my filtering step and creating my plot all at once is defining a new object just containing the gapminder data for 2007, and providing this filtered data frame object as the argument of the `ggplot()` function:
+
+Alternatively, I could have defined a new object containing the `gapminder` data for 2007, and provided this filtered data frame object as the argument of the `ggplot()` function:
 
 ```{r}
 # define a new data frame
@@ -175,11 +185,11 @@ ggplot(gapminder_2007) +
 ```
 
 
-Basically, if I am going to use the filtered version of data for anything other than just this single plot (e.g., if I am going to create several plots using just the data from 2007), then I would prefer to define the `gapminder_2007` object and use this in my `ggplot()` argument, rather than conduct the filtering every time. But if this is the only time I am going to use this 2007 data, then I would prefer to avoid defining an unnecessary object. 
+If I am going to use this filtered 2007 version of the data for anything other than this single plot (e.g., if I am going to create several plots using just the data from 2007), then I would prefer the latter approach, which defines the `gapminder_2007` object, rather than conducting the filtering every time. But if this is the only time I am going to use this 2007 data, then I would prefer the former approach, which avoids defining an unnecessary object, `gapminder_2007`. 
 
-In general, if you are performing the same action multiple times, for example, to create several different plots, then it's more efficient to create an object that you can reuse.
+In general, if you are going to be performing the same action multiple times, for example, to create several different plots, then it's more efficient to create an object that you can reuse.
 
-For instance, having defined `gapminder_2007`, I can use it to also create a different plot, this time a histogram of `lifeExp` values in 2007:
+Having defined `gapminder_2007`, I can now use it to create a new plot, this time a histogram of `lifeExp` values in 2007:
 
 ```{r}
 ggplot(gapminder_2007) +
@@ -223,14 +233,41 @@ gapminder |>
 
 
 
+## Global versus local aesthetics
 
 
+In the examples above, I provided the aesthetic properties as an argument of the `geom_point()` and `geom_histogram()` layers of my ggplot object. However, I could have provided these aesthetic properties inside the initial `ggplot()` function itself, leaving the `geom_point()` function without any arguments: 
+
+```{r}
+ggplot(gapminder_2007, aes(x = gdpPercap, y = lifeExp)) +
+  geom_point()
+```
+
+This is common when you want to add many layers, all of which have the same aesthetic properties, for example, by adding a `geom_smooth()` layer, which will add a LOESS fitted curve to our scatterplot.
+
+```{r}
+ggplot(gapminder_2007, aes(x = gdpPercap, y = lifeExp)) +
+  geom_point() +
+  geom_smooth()
+```
+
+I could specify the aesthetic properties separately in each layer, but this is less efficient since it involves repeating the `aes(x = gdpPercap, y = lifeExp)` code in each layer like this:
+
+```{r}
+ggplot(gapminder_2007) +
+  geom_point(aes(x = gdpPercap, y = lifeExp)) +
+  geom_smooth(aes(x = gdpPercap, y = lifeExp))
+```
 
 
+When you specify the aesthetics inside the `ggplot()` function, you are specifying **global** aesthetics that will be applied to all layers of your ggplot figure, but when you specify the aesthetics inside the individual `geom_` layers, you are specifying **local** aesthetics that will be applied to that layer only.
 
-## Defining ggplot2 aesthetics
+For whatever reason, I tend to find myself mostly specifying local aesthetics unless I have many layers all of which are using the same aesthetics. This is just my personal preference though, and it may differ from yours.
 
-`x` and `y` are "aesthetic" properties of the points in a scatterplot, and `x` is an "aesthetic" property of the bars in a histogram. But they aren't the *only* aesthetic properties that we can specify! 
+## Additional ggplot2 aesthetics
+
+
+So far we have seen that `x` and `y` are "aesthetic" properties of the points in a scatterplot, and `x` is an "aesthetic" property of the bars in a histogram. But they aren't the *only* aesthetic properties that we can specify.
 
 For example, some other scatterplot aesthetic properties that we can specify include `color`, `size`, and `shape`.
 
@@ -241,27 +278,22 @@ ggplot(gapminder_2007) +
   geom_point(aes(x = gdpPercap, y = lifeExp, color = continent))
 ```
 
-In this example, I'm specifying `color = continent` inside the `aes()` function, which, because it is inside the `aes()` function, this tells ggplot2 that `continent` is a column in my data and that it should come up with a unique color for each unique `continent` value. 
+In this example, I'm specifying `color = continent` inside the `aes()` function, which, because it is inside the `aes()` function, tells ggplot2 that `continent` is a column in my data and that it should come up with a unique color for each unique `continent` value. 
 
-What if I wanted to just make all of the points in my scatterplot "blue" instead of based on the continent column, like this:
+What if I wanted to just make all of the points in my scatterplot "blue", instead of based on the `continent` column?
 
-```{r}
-#| echo: false 
-ggplot(gapminder_2007) + 
-  geom_point(aes(x = gdpPercap, y = lifeExp), color = "blue")
-```
-
-
-If I try to just replace `color = continent` with `color = "blue"` (where I'm providing quotes around "blue" because I want to specifically pass the *character* value "blue", not a column or variable callued `blue`), it doesn't work:
+If I just replace `color = continent` with `color = "blue"` (where I'm providing quotes around "blue" because I want to specifically pass the *character* value "blue"), I get pink-red (salmon?) points instead of blue points!
 
 ```{r}
 ggplot(gapminder_2007) + 
   geom_point(aes(x = gdpPercap, y = lifeExp, color = "blue"))
 ```
 
-Since `color = "blue"` is specified *inside* the `aes()` function, ggplot is looking for a column inside the `gapminder` data frame called `"blue"`, and since it can't find one, it just creates one and populates it entirely with the value "blue" for all data points, so what we end up with is a scatterplot whose color is deteremined by a categorical variable whose value consists of a single value, which is just the word "blue", and since this variable only has a single value, ggplot only provides one color, and this color is just the first default ggplot2 color which is this nice "salmony" color.
+Why does this happen? The issue arises because a character value (rather than a column name) is provided inside the `aes()` function, which is intended for referencing columns of your data frame. When ggplot sees `"blue"` inside `aes()`, it temporarily creates a new column in the data frame filled entirely with the value `"blue"` for all data points. This effectively creates a categorical variable with only one category: `"blue"`.
 
-If you want to define an aesthetic of your plot that does *not* depend on a column in your data, you need to specify it *outside* the `aes()` function. If we just move the `color = "blue"` argument *outside* `aes()`, we get what we wanted:
+Since this new "column" has just one unique value, ggplot assigns a single color to represent it. However, ggplot doesn't care what the value is--it just uses the first default color from the ggplot2 palette, which happens to be this nice salmony color (and definitely not blue).
+
+If you want to define an aesthetic of your plot that does *not* depend on a column in your data, you need to specify it *outside* the `aes()` function. So if we just move the `color = "blue"` argument *outside* `aes()`, we get what we wanted (pay close attention to the closing parentheses and compare with the code in the previous chunk):
 
 ```{r}
 ggplot(gapminder_2007) + 
@@ -269,17 +301,57 @@ ggplot(gapminder_2007) +
 ```
 
 
+Note that when I start having several aesthetic properties, I tend to place each one on its own line, but pay attention to the indentation of each line. Arguments of the inner `aes()` function, such as `x` and `y` are placed further to the right than arguments of the outer `geom_point()` function (such as `color`). RStudio will do this automatically for you when you hit "return" to move an argument to a new line. This indentation makes it a bit easier to see which arguments are for which function in a series of nested functions.
+
+```{r}
+ggplot(gapminder_2007) + 
+  geom_point(aes(x = gdpPercap, 
+                 y = lifeExp), 
+             color = "blue")
+
+```
 
 
+::: {.callout-tip}
+## Keyboard shortcut for fixing code indentation
+
+A handy keyboard shortcut for fixing the indentation of your code in RStudio is to highlight the misaligned code and use Cmd + I. 
+
+This shortcut will turn the following code with wacky nonsensical indentation:
+
+```{r}
+#| eval: false
+ggplot(gapminder_2007) + 
+      geom_point(aes(x = gdpPercap, 
+           y = lifeExp), 
+               color = "blue")
+```
 
 
+into nice, properly indented code like this:
 
-
+```{r}
+#| eval: false
+ggplot(gapminder_2007) + 
+  geom_point(aes(x = gdpPercap, 
+                 y = lifeExp), 
+             color = "blue")
+```
+:::
 
 :::: {.panel-tabset}
 ## Exercise
 
-Recreate the scatterplot of `lifeExp` and `gdpPercap` in 2007, but use the `continent` column to specify the `shape` aesthetic
+Recreate the scatterplot of `lifeExp` and `gdpPercap` in 2007, but use the `continent` column to specify the `shape` aesthetic like this:
+
+```{r}
+#| echo: false
+ggplot(gapminder_2007) + 
+  geom_point(aes(x = gdpPercap, 
+                 y = lifeExp, 
+                 shape = continent))
+```
+
 
 ## Solution
 
@@ -296,7 +368,7 @@ ggplot(gapminder_2007) +
 :::: {.panel-tabset}
 ## Exercise
 
-Recreate the scatterplot of `lifeExp` and `gdpPercap` in 2007, but make all points have a "triangle" shape.
+Recreate the scatterplot of `lifeExp` and `gdpPercap` in 2007, but make *all* points have a "triangle" shape.
 
 ## Solution
 
@@ -316,13 +388,14 @@ ggplot(gapminder_2007) +
 
 ### Transparency
 
-Sometimes when you have a lot of data points all sitting ontop of one another, it can be helpful to add some transparency. You can do this using the `alpha` argument. 
+Sometimes when you have a lot of data points all sitting on top of one another, it can be helpful to add some transparency. You can do this using the `alpha` argument. 
 
 `alpha` takes values between 0 and 1. `alpha = 1` is not transparent at all, and `alpha = 0` is completely transparent. The scatterplot below has `alpha = 0.5`:
 
 ```{r}
 ggplot(gapminder_2007) + 
-  geom_point(aes(x = gdpPercap, y = lifeExp), 
+  geom_point(aes(x = gdpPercap, 
+                 y = lifeExp), 
              alpha = 0.5)
 ```
 
@@ -333,14 +406,26 @@ Since we are not using a column/variable in the data frame to specify `alpha`, n
 :::: {.panel-tabset}
 ## Exercise 
 
-Recreate the 2007 `gdpPercap` vs `lifeExp` plot where each point has color determined by `continent`, size determined by `pop`, and all the points have a transparency of 0.5.
+Recreate the 2007 `gdpPercap` vs `lifeExp` plot where each point has color determined by `continent`, size determined by `pop`, and all the points have a transparency of 0.5 like this:
+
+```{r}
+#| echo: false
+ggplot(gapminder_2007) + 
+  geom_point(aes(x = gdpPercap, 
+                 y = lifeExp, 
+                 color = continent, 
+                 size = pop), 
+             alpha = 0.5)
+```
 
 ## Solution
 
 ```{r}
 ggplot(gapminder_2007) + 
-  geom_point(aes(x = gdpPercap, y = lifeExp, 
-                 color = continent, size = pop), 
+  geom_point(aes(x = gdpPercap, 
+                 y = lifeExp, 
+                 color = continent, 
+                 size = pop), 
              alpha = 0.5)
 ```
 
@@ -359,8 +444,7 @@ If I want to see how `lifeExp` changes by year, I can try to create a line plot 
 
 ```{r}
 ggplot(gapminder) + 
-  geom_line(aes(x = year, 
-                y = lifeExp))
+  geom_line(aes(x = year, y = lifeExp))
 ```
 
 Ugh. gross. I don't like this plot at all. It looks terrible. What's with all the zigzags?
@@ -376,9 +460,9 @@ gapminder |>
 ```
 
 
-so the vertical lines we see in our "line plot" above correspond to the range of `lifeExp` values for each year, and then it probably just connects the final `lifeExp` value that year to the first `lifeExp` value for the next year, and those are the diagonal lines that we see.
+So the vertical lines we see in our "line plot" above correspond to the range of `lifeExp` values for each year, and then it probably just connects the final `lifeExp` value that year to the first `lifeExp` value for the next year, and those are the diagonal lines that we see.
 
-In general, to create a single line, we want just *one* value for the y-axis (e.g., `lifeExp`) per x-axis value (e.g., `year`). To satisfy this requirement, we can look at the data for just *one* country
+In general, to create a single line, we want just *one* value for the y-axis (e.g., `lifeExp`) per x-axis value (e.g., `year`). To satisfy this requirement, we can look at the data for just *one* country:
 
 ```{r}
 gapminder |> 
@@ -397,7 +481,7 @@ gapminder |>
 ```
 
 
-Gee wiz! That looks way better! It's a single line, and boy-oh-boy it sure looks like we Aussies are living longer and longer! Onya Mate!
+Gee, wiz! That looks way better! It's a single line, and boy-oh-boy it sure looks like we Aussies are living longer and longer! Onya, Mate!
 
 I could make the same plot for the US, by filtering to the US instead of Australia:
 
@@ -408,49 +492,52 @@ gapminder |>
   geom_line(aes(x = year, y = lifeExp))
 ```
 
-What if I wanted to make a plot with *both* of these lines on it?
+But what if I wanted to make a plot with *both* of these lines on it?
 
+There are at least two ways I could do that. One is good, and the other is not so good.
 
-Well there are a few ways I could do that. One is good, and another is not so good.
+I'll show you the not-so-good approach first (so you can really appreciate the good approach.)
 
-I'll show you the not-so-good approach first, just so you can really appreciate the good approach.
-
-The not-so-good approach involfe creating data frames for Australia and the US and adding multiple line layers. The first line layer will be just using `gapminder_us`, the data frame for the US and the second line layer will have its own `data` argument to which I'll pass `gapminder_au`, the data frame for Australia:
+The not-so-good approach involves creating separate data frames for Australia and the US and adding a separate line layer for each country. The first line layer will be just using `gapminder_us`, the data frame for the US, and the second line layer will have its own `data` argument to which I'll pass `gapminder_au`, the data frame for Australia:
 
 ```{r}
 # define the data frame for the US
 gapminder_us <- gapminder |>
   filter(country == "United States")
 
-# define the data frame for the australia
+# define the data frame for the Australia
 gapminder_au <- gapminder |>
   filter(country == "Australia")
 
 # Create a line plot for the US and then add a line plot layer for Australia
 ggplot(gapminder_us) +
   geom_line(aes(x = year, y = lifeExp)) +
-  geom_line(aes(x = year, y = lifeExp),
-            data = gapminder_au)
+  geom_line(aes(x = year, y = lifeExp), data = gapminder_au)
 ```
 
-Here the first `geom_line()` layer is based on the `gapminder_us` data frame provided as the argument of `ggplot()`, and the second one is based on the `gapminder_au` data frame provided in the `data` argument of the second `geom_line()` layer (when you don't provide a `data` argument, each layer will be based on the data frame provided to `ggplot()`)
+Here the first `geom_line()` layer is based on the "global" `gapminder_us` data frame provided as the argument of `ggplot()`, and the second line is based on the "local" `gapminder_au` data frame provided in the `data` argument of the second `geom_line()` layer (when you don't provide a `data` argument, each layer will be based on the global data frame provided to `ggplot()`)
 
-While this technically works, this approach sucks for a few reasons. First, I can't tell which line is which. There is no legend (and it's unfortunately not all that easy to add a legend manually to a ggplot2 figure). Another reason this approach sucks is that it's not scalable. If I wanted to do this for 10 countries, I'd have to create 10 different data frames and add 10 line layers to my plot! No thanks.
+While this technically works, this approach isn't great for a few reasons. First, I can't tell which line is which. There is no legend (and it's unfortunately not all that easy to add a legend manually to a ggplot2 figure). Another reason this approach sucks is that it's not scalable. If I wanted to do this for 10 countries, I'd have to create 10 different data frames and add 10 line layers to my plot. No thanks.
 
 
-Instead of adding separate line layers for each country, I can instead use the `color` or `group` aesthetic to tell `ggplot()` that I want separate lines for each country, say.
+Instead of adding separate line layers for each country, I can use the `color` or `group` aesthetic to tell `ggplot()` that I want separate lines for each country.
 
-In the code below, I create a data frame that contains the data for both Australia and the US, and then I create a ggplot2 line plot, specifying `color = country` inside my `aes()` function, which will give me a separate line for each country:
+In the code below, I create a single data frame that contains the data for Australia and the US only, and then I create a ggplot2 line plot, specifying `color = country` inside my `aes()` function, which will give me a separate line for each country:
 
 ```{r}
 gapminder |>
   filter(country %in% c("Australia", "United States")) |>
   ggplot() +
-  geom_line(aes(x = year, y = lifeExp, color = country))
+  geom_line(aes(x = year, 
+                y = lifeExp, 
+                color = country))
 ```
 
+Now, each country's line has a different color *and* ggplot has created a legend for me.
 
-An alternative if I want a separate line for each country, but I don't want each line to have a different color, is to use the `group` aesthetic instead of the `color` aesthetic:
+
+
+An alternative if I want a separate line for each country, but don't want each line to have a different color, is to use the `group` aesthetic instead of the `color` aesthetic:
 
 
 
@@ -458,12 +545,14 @@ An alternative if I want a separate line for each country, but I don't want each
 gapminder |>
   filter(country %in% c("Australia", "United States")) |>
   ggplot() +
-  geom_line(aes(x = year, y = lifeExp, group = country))
+  geom_line(aes(x = year, 
+                y = lifeExp, 
+                group = country))
 ```
 
 
 
-The following code create a line plot of lifeExp by year for each country on the Americas content (with no colors or legend).
+For example, the following code creates a line plot of `lifeExp` by `year` for each country on the entire "Americas" `content` (with no colors or legend).
 
 ```{r}
 gapminder |> 
@@ -479,7 +568,7 @@ gapminder |>
 
 ## Exercise
 
-Compute the average life expectancy for each continent for each year, and then create a line plot of the average life expectancy for each continent over time (each continent should have it's own different colored line).
+Compute the average life expectancy for each continent for each year, and then create a line plot of the average life expectancy for each continent over time (each continent should have its own different colored line).
 
 Here is an example of the plot I want you to make:
 
@@ -514,18 +603,18 @@ gapminder |>
 
 ### Boxplots
 
-Like scatterplots created with `geom_point()`, boxplots created with a `geom_boxplot()` layer desire an `x` and a `y` aesthetic, however, unlike `geom_point()` which wants both the `x` and `y` variables to be continuous numeric variables, `geom_boxplot()` wants *one* of the `x` and `y` aesthetics to be a categorical (character or factor) variable and the other one to be numeric--`geom_boxplot()` will create a separate boxplot for each categorical value.
+Like scatterplots created with `geom_point()`, boxplots created with a `geom_boxplot()` layer desire an `x` and a `y` aesthetic, however, unlike `geom_point()` which wants both the `x` and `y` variables to be continuous numeric variables, `geom_boxplot()` wants *one* of the `x` and `y` aesthetics to be a categorical (character or factor) variable and the other one to be numeric and `geom_boxplot()` will create a separate boxplot for each categorical value.
 
-For example, below we create a boxplot of `lifeExp` for each value of `continent`:
+For example, below we create a boxplot of `lifeExp` for each `continent`:
 
 ```{r}
 ggplot(gapminder) + 
   geom_boxplot(aes(x = continent, y = lifeExp))
 ```
 
-The bottom of the box of a boxplot corresponds to $Q_1$, the first quartile of the variable (the value for which 25% of values are less than it) and the top of the box corresponds to the third quartile, $Q_3$ of the variable (the value for which 75% of values are less than it). The bar in the middle is the median, which corresponds to the second quartile, $Q_2$ (the value for which 50% of values are less than it). The lines that extend from the bottom and top of the boxplot reach as far as $Q_1 - 1.5 (Q_3 - Q_1)$ and $Q_3 + 1.5 (Q_3 - Q_1)$, respectively, and all values that are outside this range are shown as points and are called "outliers."
+The bottom of the box part of a boxplot corresponds to $Q_1$, the first quartile of the variable (the value for which 25% of values are less than it) and the top of the box corresponds to the third quartile, $Q_3$ of the variable (the value for which 75% of values are less than it). The bar in the middle is the median, which corresponds to the second quartile, $Q_2$ (the value for which 50% of values are less than it). The lines that extend from the bottom and top of the boxplot reach as far as $Q_1 - 1.5 (Q_3 - Q_1)$ and $Q_3 + 1.5 (Q_3 - Q_1)$, respectively, and all values that are outside this range are shown as points and are called "outliers."
 
-If you switch the `x` and the `y` so that the `y` aesthetic is the categorical/character `continent` variable, then you get horizontal boxplots instead.
+If you switch the `x` and the `y` so the `y` aesthetic is the categorical/character `continent` variable, then you get horizontal boxplots instead.
 
 ```{r}
 ggplot(gapminder) + 
@@ -542,7 +631,7 @@ ggplot(gapminder) +
   geom_boxplot(aes(y = lifeExp))
 ```
 
-But I rarely do this--I find that boxplots are most helpful for *comparing* the distributions of a variable across different groups.
+But I rarely do this--I find boxplots to be most helpful for *comparing* the distributions of a variable across different groups.
 
 
 
@@ -557,7 +646,7 @@ ggplot(gapminder) +
 
 A histogram essentially takes the range of a continuous numeric variable, chops it up into binned intervals, and then uses bars to represent how many values fall into each binned interval.
 
-I don't really like that the histogram doesn't provide outlines for each of the bars, so I often add them in by providing a `color` value *outside* the `aes()` function:
+I don't like that the histogram doesn't provide outlines for each of the bars, so I often add them in by providing a `color` value *outside* the `aes()` function in my `geom_histogram()` function:
 
 ```{r}
 ggplot(gapminder) + 
@@ -581,29 +670,32 @@ You can also provide a `fill` to your histogram where the bars are colored using
 
 ```{r}
 ggplot(gapminder) + 
-  geom_histogram(aes(x = lifeExp, fill = continent), 
+  geom_histogram(aes(x = lifeExp, 
+                     fill = continent), 
                  color = "white")
 ```
 
 
-But be warned that these bars are *"stacked"* on top of one another, so the overall shape is the same as that of the entire variable in the histograms above.
+But be warned that these bars are *"stacked"* on top of one another, so the overall shape is the same as that of the entire variable in the histogram above.
 
-If you want to compare the distributions of the `lifeExp` variable across each continent where each continent's histogram starts from 0, you need to specify an additional argument to `geom_histogram()` that is `position = "identity"`. 
+If you want to *compare* the distributions of the `lifeExp` variable across each continent where each continent's histogram starts from 0, you need to specify an additional argument to `geom_histogram()`,  `position = "identity"`. 
 
 ```{r}
 ggplot(gapminder) + 
-  geom_histogram(aes(x = lifeExp, fill = continent), 
+  geom_histogram(aes(x = lifeExp, 
+                     fill = continent), 
                  color = "white",
                  position = "identity")
 ```
 
-Now each continent's histograms start at y = 0, but because they are opaque, it is a hard to see the distributions where they overlap.
+Now each continent's histograms start at y = 0, but because they are opaque, it's hard to properly see how the distributions overlap.
 
-This is another place where transparency comes in handy! If we set `alpha = 0.5`, we can see a bit more easily how the distributionso overlap.
+This is another place where transparency comes in handy! If we set `alpha = 0.5`, it becomes slightly easier to see how the distributions overlap.
 
 ```{r}
 ggplot(gapminder) + 
-  geom_histogram(aes(x = lifeExp, fill = continent), 
+  geom_histogram(aes(x = lifeExp, 
+                     fill = continent), 
                  color = "white",
                  position = "identity",
                  alpha = 0.5)
@@ -616,7 +708,8 @@ This plot is a bit busy though, so it might be a bit easier to just compare two 
 gapminder |>
   filter(continent %in% c("Europe", "Africa")) |>
   ggplot() + 
-  geom_histogram(aes(x = lifeExp, fill = continent), 
+  geom_histogram(aes(x = lifeExp, 
+                     fill = continent), 
                  color = "white",
                  position = "identity",
                  alpha = 0.5)
@@ -627,7 +720,7 @@ gapminder |>
 
 ### Bar charts
 
-A bar chart is like a histogram, but for categorical variables instead of continuous numeric ones.
+A bar chart is like a histogram but for categorical variables instead of continuous numeric ones.
 
 
 You can create a *count* bar chart, by providing a categorical (character/factor) variable as your x-aesthetic to `geom_bar()`, which will then add up how many times each value of the categorical variable appears and use this as the height of the bars:
@@ -638,44 +731,43 @@ ggplot(gapminder) +
   geom_bar(aes(x = continent))
 ```
 
+So the `"Africa"` continent appears over 600 times in the data, while the `"Asia"` appears around 400 times.
 
+If you want to create bar charts in which you manually specify the height of each bar based on a variable in your data, you want to use `geom_col()` instead of `geom_bar()`.
 
-If you want to create bar charts where you specify the height of each bar based on a variable in your data, you want to use `geom_col()` instead of `geom_bar()`.
-
-For example, below, I create a bar chart that shows the *average life expectancy* for each continent, first you have to calculate the average life expectancy for each continent, and then you can pipe that into ggplot with a `geom_col()` layer that uses `x = continent` as the x-aesthetic that specifies how many bars there are (and their names), and your calculated `y = mean_life_exp` as the height aesthetic.
+For example, below, I create a bar chart that shows the *average life expectancy* for each continent, first you have to calculate the average life expectancy for each continent, and then you can pipe that into ggplot with a `geom_col()` layer that uses `x = continent` as the x-aesthetic which will be used to determine how many bars there are (and their names), and your calculated `y = mean_life_exp` as the height aesthetic.
 
 ```{r}
-gapminder |>
+mean_life_exp <- gapminder |>
   group_by(continent) |>
-  summarize(mean_life_exp = mean(lifeExp)) |>
-  ggplot() +
-  geom_col(aes(x = continent, y = mean_life_exp))
+  summarize(mean_life_exp = mean(lifeExp))
+
+ggplot(mean_life_exp) +
+  geom_col(aes(x = continent, 
+               y = mean_life_exp))
 ```
 
 
-Note that like histograms, you can give each bar a color using the `fill` aesthetic.
+Like histograms, you can color your bars using the `fill` aesthetic.
 
 To give each bar a different color per continent, provide `fill = continent` *inside* the `aes()` function:
 
 ```{r}
-gapminder |>
-  group_by(continent) |>
-  summarize(mean_life_exp = mean(lifeExp)) |>
-  ggplot() +
-  geom_col(aes(x = continent, y = mean_life_exp, fill = continent))
+ggplot(mean_life_exp) +
+  geom_col(aes(x = continent, 
+               y = mean_life_exp, 
+               fill = continent))
 ```
 
 
-And to give each bar the same global color, provide your color to `fill` *outside* the `aes()` function:
+And to give each bar the same global color, provide your color to `fill` *outside* the `aes()` function (pay close attention to the closing parentheses and indentation):
 
 
 
 ```{r}
-gapminder |>
-  group_by(continent) |>
-  summarize(mean_life_exp = mean(lifeExp)) |>
-  ggplot() +
-  geom_col(aes(x = continent, y = mean_life_exp),
+ggplot(mean_life_exp) +
+  geom_col(aes(x = continent, 
+               y = mean_life_exp), 
            fill = "cornflowerblue")
 ```
 
@@ -685,7 +777,7 @@ gapminder |>
 
 ## Getting fancy with ggplot2
 
-Now that you've seen the most common ggplot2 layers that I typically use, let's talk about how to do even fancier things with them.
+Now that you've seen the most common ggplot2 layers I typically use, let's talk about how to do even fancier things with them.
 
 ### Transformations
 
@@ -714,14 +806,14 @@ life_gdp_scatter <- ggplot(gapminder_2007) +
   scale_x_log10()
 ```
 
-As usual, when I define this variable, no output is shown, but I can look at the object contained in this variable by typing its name:
+As usual, when I define a variable, no output is shown, but I can look at the object contained in this variable by typing its name:
 
 ```{r}
 life_gdp_scatter
 ```
 
 
-And the super neat thing is that because this is just a ggplot object, I can keep adding things to it!
+And the super neat thing is that because this is just a ggplot object, I can keep adding things to it using `+`!
 
 
 ### Labels
@@ -735,7 +827,7 @@ life_gdp_scatter +
        title = "GDP per cap vs life expectancy")
 ```
 
-This is equivalent to replacing `life_gdp_scatter` with the code that was used to define it
+This is equivalent to replacing `life_gdp_scatter` with the code that was used to define it:
 
 ```{r}
 
@@ -750,7 +842,7 @@ ggplot(gapminder_2007) +
 ```
 
 
-And I'm going to update my scatterplot object to contain these new labels:
+And I'm going to update my scatterplot object to contain these new labels by overwriting my `life_gdp_scatter` object with the old one plus the labels layer:
 
 ```{r}
 life_gdp_scatter <- life_gdp_scatter + 
@@ -810,7 +902,7 @@ gapminder |>
 
 I might find myself wishing that I had a separate plot for each country, but I don't want to actually write the code to create a separate line plot for each country manually.
 
-Fortunately, `facet_wrap()` (and `facet_grid()`) can do this for me. Below I take the exact same code and I add a `facet_wrap()` layer where I specify which categorical variable in my data I want to use to specify the different plot panels (I write `~country` to create a separate panel for each value in country). This is essentially just taking each line in the plot above and giving it its own plot. Each plot will inherit the aesthetic properties of the `geom_line()` layer.
+Fortunately, `facet_wrap()` (and `facet_grid()`) can do this for me. Below I take the same code and add a `facet_wrap()` layer where I specify which categorical variable in my data I want to use to specify the different plot panels (I write `~country` to create a separate panel for each value in `country`). This is essentially just taking each line in the plot above and giving it its own plot. Each plot will inherit the aesthetic properties of the `geom_line()` layer. Note that the `ncol = 4` argument of `facet_wrap()` tells ggplot2 that I want my plot grid to have 4 columns.
 
 ```{r}
 
@@ -819,10 +911,12 @@ gapminder |>
   ggplot() + 
   geom_line(aes(x = year, 
                 y = lifeExp)) +
-  facet_wrap(~country)
+  facet_wrap(~country, ncol = 4)
 ```
 
-This plot is all cramped, but if I add some `#| fig-height` and `#| fig-width` options to the top of my code chunk, I can control its size, such as
+### Controlling figure output size in quarto
+
+My previous plot is all cramped, but if I add some `#| fig-height` and `#| fig-width` options to the top of my quarto code chunk, I can control the size of the output in my rendered quarto document, such as
 
 
 ```{{r}}
@@ -833,7 +927,7 @@ gapminder |>
   ggplot() + 
   geom_line(aes(x = year, 
                 y = lifeExp)) +
-  facet_wrap(~country)
+  facet_wrap(~country, ncol = 4)
 ```
 
 
@@ -846,41 +940,26 @@ gapminder |>
   ggplot() + 
   geom_line(aes(x = year, 
                 y = lifeExp)) +
-  facet_wrap(~country) +
+  facet_wrap(~country, ncol = 4) +
   theme(axis.text.x = element_text(angle = 90, 
                                    hjust = 0, 
                                    vjust = 0.5))
 ```
 
 
-Note that I also rotated my x-axis text 90 degrees using a `theme()` layer. If you want to start truly customizing your your ggplots, you're going to get intimately familiar with the `theme()` layer options.
+Note that I also rotated my x-axis text 90 degrees using a `theme()` layer. If you want to start truly customizing your your ggplots, you're going to get intimately familiar with the `theme()` [layer options](https://ggplot2.tidyverse.org/reference/theme.html).
 
 
-
-You can also specify the number of columns in your faceted grid using the `ncol` argument:
-
-
-
-```{r}
-#| fig-height: 8
-#| fig-width: 8
-gapminder |>
-  filter(continent == "Americas") |>
-  ggplot() + 
-  geom_line(aes(x = year, 
-                y = lifeExp)) +
-  facet_wrap(~country, ncol = 4)
-```
 
 
 :::: {.panel-tabset}
 ## Exercise
 
-Create a faceted grid of scatterplots of `lifeExp` against `gdpPercap` in 2007 for each continent. Do some fancy things to make your plot sparkle!
+Create a faceted grid of scatterplots of `lifeExp` against `gdpPercap` in 2007 for each continent (i.e., there is a separate panel for each continent). Do some fancy things to make your plot sparkle!
 
 ## Solution
 
-Here is a base plot without any fun:
+Here is a plot without much fun:
 
 ```{r}
 gapminder_2007 |>

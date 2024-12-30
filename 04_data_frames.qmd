@@ -1,7 +1,6 @@
 ---
 title: "Data Frames"
 format: html
-embed-resources: true
 editor_options: 
   chunk_output_type: console
 ---
@@ -17,7 +16,7 @@ Let's imagine that you have an actual dataset containing a collection of columns
 |Ravi | 21 | Purple |
 |Maya | 17 | Blue |
 
-In this case, your dataset has three *"variables"* (name, age, and favorite color), and five *"observations"* for each of these variables (corresponding the values for 5 unique people). You might even recognize this data from the previous chapter: the values in the "Age" column are the values from our `age` vector and the names correspond to the names that we gave our age vector, along with some extra "Favorite Color" information.
+In this case, your dataset has three *"variables"* (name, age, and favorite color), and five *"observations"* for each of these variables (corresponding to the values for 5 unique people). You might even recognize this data from the previous chapter: the values in the "Age" column are the values from our `age` vector and the names correspond to the names that we gave our age vector, along with some extra "Favorite Color" information.
 
 While we could define a separate vector variable in R for each column in our data, such as
 
@@ -38,7 +37,7 @@ It isn't clear whose color preference is whose.
 
 It would be much nicer if we could create a *single* object containing all three of these variables such that the corresponding values are "aligned" in such a way that it is very clear that "Ravi" has age 21 and favorite color "purple".
 
-Fortunately, the creators of R share our desires, and so they let us store each of our vectors in an object called a "**data frame**". 
+Fortunately, the creators of R share our desires, so they let us store each of our vectors in an object called a "**data frame**". 
 
 If I already have the columns of my data stored as separate vectors, I can create a data frame using the `data.frame()` function as follows:
 
@@ -92,7 +91,7 @@ my_data['age']
 
 These two approaches both extracted the `age` column, but notice that the output of these two column extraction techniques look a little different. 
 
-Can you guess out why? Hint: What type/class do you think each output object has? Look at its formatting. Learning to recognize what type each object has based on the way it looks is a really helpful skill. 
+Can you guess why? Hint: What type/class do you think each output object has? Look at its formatting. Learning to recognize what type each object has based on the way it looks is a really helpful skill. 
 
 The output of `my_data$age` *looks* is an ordinary vector. I can tell because the values are arranged horizontally, and there is a `[1]` at the beginning of the output. But this isn't the case for the output of `my_data['age']`. The output here looks more like our data frame output (but with only one column).
 
@@ -102,7 +101,7 @@ Indeed, if I ask R to tell me the class of each of these two objects that I have
 class(my_data$age)
 ```
 
-and I learn that the `my_data['age']` object has a "data.frame" type:
+And I learn that the `my_data['age']` object has a "data.frame" type:
 
 ```{r}
 class(my_data['age'])
@@ -110,15 +109,13 @@ class(my_data['age'])
 
 Since data frames and vectors have different behaviors, there will be some scenarios where you prefer your extracted column to be a vector, and others where you will prefer your extracted column to be a single-column data frame.
 
-While I will occasionally want to extract columns from my data as a vector using one of these techniques, I typically conduct my data analyses and modifications using the data frame object itself. You'll see a range of techniques for working with data frames themselves in the next chapter.
-
-But first, I want to show you how to load a dataset that you have saved on your computer into a data frame in R.
+While I occasionally want to extract columns from my data as a vector using one of these techniques, I typically conduct my data analyses and modifications on the data frame object itself. You'll encounter some sophisticated techniques for working with data frames in the next chapter. But first, I want to show you how to load a dataset that you have saved on your computer into a data frame in R.
 
 
 ## Loading data from external files
 
 
-To create the `my_data` data frame object above, I first created the individual vectors, which I then used to define the individual columns of my data frame within the `data.frame()` function. Imagine if your data had hundreds of observations/values for each of hundreds of variables. No one wants to manually type their data into R. 
+To create the `my_data` data frame object above, I first created the individual vectors, which I then used to define the columns of my data frame within the `data.frame()` function. Imagine if your data had hundreds of observations/values for each of hundreds of variables. No one wants to manually type their data into R. 
 
 More often than not, the data you want to analyze will already live in a file on your computer, such as a .csv file or an Excel spreadsheet. In this section, I will show you how to "load" data from such files into an R data frame.
 
@@ -145,7 +142,7 @@ Maya, 17, blue
 ```
 
 
-To load in a dataset (as a data frame) from a .csv file, we can use the `read.csv()` function. However, in order for R to be able to find your file you need to provide a "filepath" argument (as a character/text value) to your csv file.
+To load in a dataset (as a data frame) from a .csv file, we can use the `read.csv()` function. However, for R to be able to find your file you need to provide a "filepath" argument (as a character/text value) to your csv file.
 
 The file path corresponds to the location where your file lives on your computer relative to where the current R file you are working in is saved. Ideally, you are working in a quarto document. If so, identify where on your computer you have saved your quarto document. If your csv data file lives in the same folder as your quarto document, then you will write 
 
@@ -154,7 +151,7 @@ The file path corresponds to the location where your file lives on your computer
 data <- read.csv("filename.csv")
 ```
 
-where you replace `"filename.csv"` which the actual file name of your .csv file. 
+where you replace `"filename.csv"` with the actual file name of your .csv file. 
 
 If your .csv data file lives in a `data/` subfolder, then you will write 
 
@@ -163,14 +160,15 @@ If your .csv data file lives in a `data/` subfolder, then you will write
 data <- read.csv("data/filename.csv")
 ```
 
+When you compile a quarto document (which will involve sequentially running all of the code in the code chunks), R automatically searches for any referenced files in the folder where the quarto document is saved.
 
-However, if you are running your code in the console, so that R knows where to start looking for the file, your console's "working directory" needs to match the location of your quarto document. The **working directory** is the folder on your computer where R looks for files to read and saves files you create.
+However, if you run the code in the console, R might not automatically know to look for files in the same folder as your quarto document. To ensure R can locate your files, your console's working directory needs to match the folder containing your quarto document. The **working directory** is the folder where your R console looks for files to load (and where it saves any files you create).
 
-All file paths in code that you run in the console will be relative to your current working directory, regardless of where your current quarto document is saved. 
+All file paths in code that is run in the console are relative to your console's current working directory, regardless of where your quarto document is saved.
 
-If you opened RStudio by opening a quarto document or R script directly, your working directory will (probably) be automatically set to the folder containing your quarto file. However, if you opened your IDE without opening a file, your working directory will most likely be your computer's home folder.
+If you open RStudio by directly opening a quarto document or an R script, the working directory is typically set to the folder containing that file. However, if you open your IDE without opening a specific file, the working directory is likely set to your computer's home folder.
 
-If your console's working directory does not match the location in which you saved your quarto document or R script (wherever you are saving the code that you are running), R will not be able to find your data files.
+If the console's working directory doesn’t match the folder where your quarto document or R script is saved (the location of the code you're running), R won’t be able to find your data files.
 
 ::: {.callout-tip}
 ## Identifying the console's current working directory
@@ -187,7 +185,7 @@ knitr::include_graphics("figures/working_directory.png")
 :::{.callout-tip}
 ## Changing your console's working directory
 
-It is recommended that your working directory matches the location of the quarto document that you are working in. 
+It is recommended that your working directory matches the location of the quarto document you are working in. 
 
 You can update your console's working directory to be the location of your current quarto document in RStudio by choosing "Session > Set Working Directory > To Source File Location". 
 :::
@@ -214,14 +212,14 @@ gapminder <- read.csv(file = "data/gapminder.csv")
 
 If you get an error that says `"Warning message: In file(file, "rt") : cannot open file 'data/gapminder.csv': No such file or directory"`, this means that either you did not move the "data" folder containing "gapminder.csv" in the right place, or your console's working directory is incorrect!
 
-Hopefully you figured out how to tell R to find and load your dataset! If your code above worked, you should then be able to take a look at the gapminder object by typing its name:
+Hopefully you figured out how to tell R to find and load your dataset! If your code above worked, you should then be able to take a look at the `gapminder` object by typing its name:
 
 ```{r}
 #| attr-output: 'style="height: 400px"'
 gapminder
 ```
 
-This prints out A LOT of data (I've contained the output in a nice scrolly box, but if you did this in a standard quarto document, the entire thing will be printed out, sans scrolly box). In general, you want to avoid printing your entire dataset in your R console or rendered quarto document. 
+This prints out A LOT of data (I've contained the output in a nice scrolly box, but if you did this in a standard quarto document or in your console, the entire thing will be printed out, sans scrolly box). In general, you want to avoid printing your entire dataset in your R console or rendered quarto document. 
 
 Instead, try printing just the first few (6, to be exact) rows using the `head()` function:
 
@@ -249,7 +247,8 @@ nrow(gapminder)
 ```
 
 
-How many columns our data frame has using the `ncol()` function:
+We can ask how many columns our data frame has using the `ncol()` function:
+
 ```{r}
 ncol(gapminder)
 ```
@@ -262,13 +261,13 @@ dim(gapminder)
 
 
 
-We can use our trusty `str()` function from earlier to take a sneak peak at the "structure" of our data:
+We can use our trusty `str()` function from earlier to take a sneak peek at the "structure" of our data:
 
 ```{r}
 str(gapminder)
 ```
 
-And we can use the `summary()` function to get some statistical summaries (like the minimum, median, mean, maximum and the quartiles) of each of the numeric columns in our data frame (this summary is fairly useless for character/categorical columns though):
+And we can use the `summary()` function to get some statistical summaries (like the minimum, median, mean, maximum, and the quartiles) of each of the numeric columns in our data frame (this summary is fairly useless for character/categorical columns though):
 
 ```{r}
 # use summary() to look at a summary of gapminder
@@ -281,9 +280,9 @@ summary(gapminder)
 
 ## Exercise
 
-Your turn: [download the following world happiness dataset](https://github.com/rlbarter/r-book/raw/refs/heads/main/data/whr.zip). Load the the `whr_2023.csv` file into R, saving it as a variable called `world_happiness`. 
+Your turn: [download the following world happiness dataset](https://github.com/rlbarter/r-book/raw/refs/heads/main/data/whr.zip). Load the `whr_2023.csv` file into R, saving it as a variable called `world_happiness`. 
 
-Then print out the first 6 rows, the column names, create a summary of the data, report its dimension.
+Then print out the first 6 rows, the column names, create a summary of the data, and report its dimension.
 
 
 ## Solution
@@ -317,6 +316,6 @@ dim(world_happiness)
 
 ## Loading data from Excel, SPSS, Stata, and SAS files 
 
-Loading data from Excel, SPSS, Stata, and files is almost as easy as loading data from .csv files, except that you will need to install some add-on packages to do so. Specifically, to load Excel files, you will need to install the "readxl" package, and to load in SPSS, Stata, or SAS files, you'll need to install the "haven" package.
+Loading data from Excel, SPSS, Stata, and files is almost as easy as loading data from .csv files, except that you will need to install some add-on packages to do so. Specifically, to load Excel files, you will need to install the "readxl" package, and to load SPSS, Stata, or SAS files, you'll need to install the "haven" package.
 
-You'll learn about installing and loading packages in the next chapter, but you can [click here](https://readxl.tidyverse.org/) to learn more about loading data from Excel files, and you can [click here](https://haven.tidyverse.org/) to learn more about loading data from SPSS, Stata, and SAS files.
+You'll learn about installing and loading packages in the next chapter. [Click here](https://readxl.tidyverse.org/) to learn more about loading data from Excel files and [click here](https://haven.tidyverse.org/) to learn more about loading data from SPSS, Stata, and SAS files.

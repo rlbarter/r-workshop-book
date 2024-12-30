@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Rebecca Barter">
-<meta name="dcterms.date" content="2024-08-15">
+<meta name="dcterms.date" content="2024-12-27">
 
 <title>The R Workshop</title>
 <style>
@@ -177,7 +177,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05_dplyr.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data frames with dplyr</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data Frames in the Tidyverse</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -201,7 +201,10 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a>
   <ul class="collapse">
   <li><a href="#teaching-from-this-book" id="toc-teaching-from-this-book" class="nav-link" data-scroll-target="#teaching-from-this-book">Teaching from this book</a></li>
+  <li><a href="#learn-from-me" id="toc-learn-from-me" class="nav-link" data-scroll-target="#learn-from-me">Learn from me!</a></li>
   <li><a href="#inspiration-attribution" id="toc-inspiration-attribution" class="nav-link" data-scroll-target="#inspiration-attribution">Inspiration attribution</a></li>
+  <li><a href="#errors-typos-and-contributions" id="toc-errors-typos-and-contributions" class="nav-link" data-scroll-target="#errors-typos-and-contributions">Errors, typos, and contributions</a></li>
+  <li><a href="#get-in-touch" id="toc-get-in-touch" class="nav-link" data-scroll-target="#get-in-touch">Get in touch</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -228,7 +231,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 15, 2024</p>
+      <p class="date">December 27, 2024</p>
     </div>
   </div>
   
@@ -242,18 +245,30 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="preface" class="level1 unnumbered">
 <h1 class="unnumbered">Preface</h1>
-<p>Welcome to <em>The R Workshop Book</em>!</p>
-<p>This book was originally designed as a companion to two R workshops that I developed and taught at the University of Utah: “Introduction to R for Data Analysis”, which I teach over 2 days, and “Advanced R for Data Analysis”, which is just a 1 day workshop. So far, I’ve only released the book content for the first workshop, but keep an eye on this space as I’ll be progressively releasing the advanced workshop chapters.</p>
-<p>This book, like the original workshops on which it is based, is designed to get you up and running with using R for the analysis of tabular data (i.e., data that comes in a table) using the tidyverse, focusing on data manipulation and data visualization.</p>
-<p>My approach is a somewhat less fancy approach to teaching R than many of the existing modern R books out there, such as <a href="https://r4ds.hadley.nz/">R for Data Science</a>, which starts working working with data and creating visualizations up front. These are great books, but I personally prefer to teach beginners in a more linear fashion, which takes a more linear step-by-step approach, starting with understanding how the programming language works and building up to fancy things like actually working with data. If you’re looking to be inspired, <em>R for Data Science</em> is probably a better book for you. But if you’re looking for a resource to give you the building blocks for learning R, starting with the absolute basics, then you’re in the right place.</p>
+<p>Welcome to <em>The R Workshop</em> Book by <a href="www.rebeccabarter.com">Rebecca L Barter</a>.</p>
+<p>This book was designed as a companion to two R workshops that I originally developed and taught at the University of Utah: “Introduction to R for Data Analysis”, which I teach over 2 days, and “Advanced R for Data Analysis”, which is just a 1 day workshop. So far, this book only contains the content for the first workshop, but keep an eye on this space as I’ll be progressively releasing the advanced R workshop chapters.</p>
+<p>This book, like the original workshops on which it is based, is designed to get you up and running using R for the analysis of tabular data (i.e., data that comes in a table) using the tidyverse, focusing on data manipulation and data visualization. Rather than teaching you everything there is to know about R, this book just teaches what you need to actually start doing data analysis within the modern “tidyverse” ecosystem.</p>
+<p>My approach is a somewhat less fancy approach to teaching R than many of the existing modern R books out there, such as <a href="https://r4ds.hadley.nz/">R for Data Science</a>, which starts working with data and creating visualizations up front. These are great books, but I personally prefer to teach beginners in a more linear fashion, which takes a more step-by-step approach, starting with understanding how the programming language works and building up to fancy things like actually working with data. If you’re looking to be inspired, <em>R for Data Science</em> is probably a better book for you. But if you’re looking for a resource to give you the building blocks for learning R, starting with the absolute basics, then you’re in the right place.</p>
 <p>The R programming language is constantly evolving, and my goal is to keep this book up-to-date as new developments emerge.</p>
 <section id="teaching-from-this-book" class="level2">
 <h2 class="anchored" data-anchor-id="teaching-from-this-book">Teaching from this book</h2>
 <p>You are absolutely welcome to teach from this book however you like, but I do request that you provide appropriate attribution.</p>
 </section>
+<section id="learn-from-me" class="level2">
+<h2 class="anchored" data-anchor-id="learn-from-me">Learn from me!</h2>
+<p>Feel free to reach out if you’re interested in hiring me to teach custom versions of these workshops.</p>
+</section>
 <section id="inspiration-attribution" class="level2">
 <h2 class="anchored" data-anchor-id="inspiration-attribution">Inspiration attribution</h2>
-<p>Original inspiration for the first parts of this book came from Software Carpentry, which is where I first encountered the gapminder dataset that is used throughout (however, the materials you will find in this book bear little-to-no resemblance to any of the R Software Carpentry workshops.)</p>
+<p>The original inspiration for the first parts of this book came from Software Carpentry, which is where I first encountered the gapminder dataset that is used throughout (however, the materials you will find in this book bear little-to-no resemblance to any of the R Software Carpentry workshops.)</p>
+</section>
+<section id="errors-typos-and-contributions" class="level2">
+<h2 class="anchored" data-anchor-id="errors-typos-and-contributions">Errors, typos, and contributions</h2>
+<p>If you notice any errors or typos, feel free to let me know by filing an issue on the book’s <a href="https://github.com/rlbarter/r-workshop-book">GitHub repository</a>.</p>
+</section>
+<section id="get-in-touch" class="level2">
+<h2 class="anchored" data-anchor-id="get-in-touch">Get in touch</h2>
+<p>Feel free to email me at rlbarter at gmail dot com if you’d like to get in touch.</p>
 
 
 </section>

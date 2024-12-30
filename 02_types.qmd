@@ -3,7 +3,6 @@ title: "Types"
 format: html
 editor_options: 
   chunk_output_type: console
-embed-resources: true
 ---
 
 
@@ -100,7 +99,7 @@ And like numbers, you can save character type values in a variable:
 char_var <- "my first character variable"
 ```
 
-And to view the contents of our character variable, you just type its name as usual:
+To view the contents of our character variable, you just type its name as usual:
 
 ```{r}
 char_var
@@ -185,7 +184,7 @@ The purpose of character values is to store categorical and text information, wh
 ### Logical values
 
 
-Let's move onto "logical" or "Boolean" type values. These are fairly simple because there is only two of them: `TRUE` and `FALSE`. 
+Next up are the "logical" ("Boolean") type values. These are fairly simple because there are only two of them: `TRUE` and `FALSE`. 
 
 ```{r}
 TRUE
@@ -202,7 +201,7 @@ For your logical value to be recognized as a logical value it must be in all cap
 True
 ```
 
-R says `Error: object 'True' not found`, which, if you were paying attention earlier, is code for "there is no *variable* named `True`. R is trying to find a variable called `True` and it's failing to do so which is unsurprising... because you haven't defined one! It doesn't know you're trying to use a logical `TRUE` value, because you didn't use all caps (i.e, you weren't yelling loudly enough).
+R says `Error: object 'True' not found`, which, if you were paying attention earlier, is code for "there is no *variable* named `True`. R is trying to find a variable called `True` and it's failing to do so which is unsurprising... because you haven't defined one! It doesn't know you're trying to use a logical `TRUE` value, because you didn't use all caps.
 
 As with everything else, we can use `class()` to ask the class of logical values, and unsurprisingly, it tells us that the class of logical values are "logical":
 
@@ -243,7 +242,7 @@ If you replaced `logical_var` (which contains `TRUE`) with `1` and `FALSE` with 
 
 ## Exercise
 
-Before you run the following code, predict which of the following four computations will work and what will their output be?
+Before you run the following code, predict which of the following four computations will work and what their output will be.
 
 ```{r}
 #| eval: false
@@ -302,10 +301,6 @@ Let's define a numeric variable.
 numeric_var <- 12.5
 ```
 
-What if I told you that I could convert this numeric variable to another type? You'd probably say "*Wow, really*?!"
-
-
-
 Let's try to convert the numeric object to a character type using the `as.character()` function. As you may have guessed, `as.character()` tries to convert whatever object given inside its parentheses (i.e., its "argument") to a character type.
 
 ```{r}
@@ -313,7 +308,9 @@ Let's try to convert the numeric object to a character type using the `as.charac
 as.character(numeric_var)
 ```
 
-Did it work? Notice that the 12.5 has some quotes around it now. That means that it's not a numeric value anymore. It's now a *text* (character) value that contains a number. This means that you can't do math with it. I'm a rebel though, so I'm going to try anyway: 
+Did it work? Notice that the 12.5 has some quotes around it now. That means that it's not a numeric value anymore. It's now a *text* (character) value that contains a number. This means that you can't do math with it. 
+
+But just to prove it to you, I'm going to try anyway (and unsurprisingly, I get an error): 
 
 
 ```{r}
@@ -321,7 +318,7 @@ Did it work? Notice that the 12.5 has some quotes around it now. That means that
 as.character(numeric_var) * 5
 ```
 
-Dang. Well I guess this should have been expected since the output (result) of `as.character()` is probably going to be a character... I can apply the `class()` function to the character value created by `as.character(numeric_var)` by placing `as.character(numeric_var)` inside the `class()` parentheses:
+To confirm that `as.character(numeric_var)` is indeed a character, I can apply the `class()` function to the character value created by `as.character(numeric_var)` by placing `as.character(numeric_var)` inside the `class()` parentheses:
 
 ```{r}
 #| error: true
@@ -359,7 +356,7 @@ numeric_var
 
 Just as there is an `as.character()` function, there is also an `as.numeric()` function (there's also an `as.logical()` function, but I don't think I've ever actually had used it)
 
-Rather than bore you to bits by outlining all of the possible conversions you can do with `as.numeric()` and `as.character()`, I'm going to make you do it for me. Use the `as.numeric()` and `as.character()` functions to fill in the following table (I've already filled in the first row for you!):
+Rather than bore you to bits by outlining all of the possible conversions you can do with `as.numeric()` and `as.character()`, you're going to do it for me. Use the `as.numeric()` and `as.character()` functions to fill in the following table (I've already filled in the first row for you):
 
 | `value` | Original type | `as.character(value)` | `as.numeric(value)`|
 |:-----|:----|:----|:-----|
@@ -384,7 +381,7 @@ as.numeric("howdy")
 
 Unlike an error, which means that your code did not actually run, when you get a *warning*, your code has run, but R is telling you it's not happy with you. When you get a warning, it's a good idea to take a pause and consider that perhaps your code may not have done what you expected.
 
-The warning here, `NAs introduced by coercion` happens when you try to convert characters to numbers. **Characters cannot be converted to numbers**, unless the character contains a number without any additional characters, as you should have seen when filling in your table above. 
+The warning `NAs introduced by coercion` happens when you try to convert characters to numbers. **Characters cannot be converted to numbers**, unless the character contains a number without any additional characters, as you should have seen when filling in your table above. 
 
 This means that this works:
 
@@ -398,7 +395,7 @@ But this does not:
 as.numeric("1,200")
 ``` 
 
-`1,200` may look like a number, but the presence of the comma `,` means that R cannot parse the number inside the quotes. R is a bit dumb sometimes. What is obvious to us is not always obvious to our computer overlords.
+`1,200` may look like a number, but the presence of the comma `,` means that R cannot parse the number inside the quotes. What is obvious to us is not always obvious to our computer overlords.
 
 ::: {.callout-tip}
 ## Extracting numeric values from characters
@@ -438,7 +435,7 @@ na
 ```
 
 
-`NA` values are annoying, because the result of any mathematical operation with an `NA` is always `NA`:
+`NA` values are annoying mostly because the result of any mathematical operation with an `NA` is always `NA`:
 
 ```{r}
 NA + 5
@@ -502,7 +499,7 @@ as.character(as.numeric("35"))
 
 
 
-Let's go ahead and create two band-new numeric variables. And because I lack originality, I'll just call them `x` and `y`:
+Let's go ahead and create two band-new numeric variables, `x` and `y`:
 
 ```{r}
 x <- 2
@@ -517,7 +514,7 @@ First question: *"Is x equal to 2?"*
 x == 2
 ```
 
-R answered is "Yes!" But in R-speak, "Yes!" is `TRUE`. 
+R answered "Yes!" But in R, "Yes!" is `TRUE`. 
 
 To ask a question of equality, we used two equals symbols `==`.
 
@@ -527,7 +524,7 @@ Next question: *"Is `x` less than or equal to `1`?"*
 x <= 1
 ```
 
-Again, R came through with an answer (this time `FALSE`). To ask a question of "less than or equal to", we used a "less than" symbol `<` followed by an equals symbols `=`, giving me `<=`.
+Again, R came through with an answer (this time `FALSE`). To ask a question of "less than or equal to", we used a "less than" symbol `<` followed by an equals symbol `=`, giving me `<=`.
 
 Although both `==` and `<=` kind of look like the assignment operators `=` and `<-`, they're not affiliated in any way. 
 
@@ -547,11 +544,13 @@ As well as "is `x` *not* equal to y" using the "not equal to" logical question o
 x != y
 ```
 
-In fact, for any logical question we ask, we can ask it's *inverse* by placing the original question in parentheses and prefacing with a `!`. So the following is another way to ask `x != y`:
+In fact, for any logical question we ask, we can ask its *inverse* by placing the original question in parentheses and prefacing it with a `!`. So the following is another way to ask `x != y`:
 
 ```{r}
 !(x == y)
 ```
+
+The parentheses are necessary to tell R that we want the inverse of the entire question `x == y` (not just of `x`).
 
 Here are some more questions:
 
@@ -575,7 +574,7 @@ x < y
 
 
 
-Cool stuff. It's almost like we're talking to R and it's *replying!* Hint: this is going to be really important in a little while, so I hope you're paying attention. 
+It's almost like we're talking to R and it's *replying!* This is going to be really important later, since we will use these kinds of logical operations to filter to various subsets of our data based on logical conditions/questions.
 
 
 

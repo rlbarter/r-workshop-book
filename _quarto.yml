@@ -4,7 +4,7 @@ project:
 book:
   title: "The R Workshop"
   author: "Rebecca Barter"
-  date: "8/15/2024"
+  date: "12/27/2024"
   chapters:
     - index.qmd
     - part: "Getting Started"
