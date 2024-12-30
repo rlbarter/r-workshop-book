@@ -2,11 +2,17 @@ project:
   type: book
 
 book:
-  title: "The R Workshop"
-  author: "Rebecca Barter"
+  title: "The R Workshop Book"
+  author: "[Rebecca L. Barter](https://www.rebeccabarter.com)"
   date: "12/27/2024"
   google-analytics:
     tracking-id: "G-QXD5CL0YRD"
+  license: "[CC BY-NC-ND](https://creativecommons.org/licenses/by-nc-sa/4.0/)"
+  navbar: 
+    title: "The R Workshop Book"
+    left:
+      - text: "Rebecca L. Barter"
+        href: https://www.rebeccabarter.com
   chapters:
     - index.qmd
     - part: "Getting Started"
@@ -27,7 +33,7 @@ bibliography: references.bib
 
 format:
   html:
-    theme: cosmo
+    theme: yeti
   pdf:
     documentclass: scrreprt
 

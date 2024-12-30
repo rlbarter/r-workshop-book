@@ -2,7 +2,7 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "The R Workshop",
+    "title": "The R Workshop Book",
     "section": "",
     "text": "Preface\nWelcome to The R Workshop Book by Rebecca L Barter.\nThis book was designed as a companion to two R workshops that I originally developed and taught at the University of Utah: “Introduction to R for Data Analysis”, which I teach over 2 days, and “Advanced R for Data Analysis”, which is just a 1 day workshop. So far, this book only contains the content for the first workshop, but keep an eye on this space as I’ll be progressively releasing the advanced R workshop chapters.\nThis book, like the original workshops on which it is based, is designed to get you up and running using R for the analysis of tabular data (i.e., data that comes in a table) using the tidyverse, focusing on data manipulation and data visualization. Rather than teaching you everything there is to know about R, this book just teaches what you need to actually start doing data analysis within the modern “tidyverse” ecosystem.\nMy approach is a somewhat less fancy approach to teaching R than many of the existing modern R books out there, such as R for Data Science, which starts working with data and creating visualizations up front. These are great books, but I personally prefer to teach beginners in a more linear fashion, which takes a more step-by-step approach, starting with understanding how the programming language works and building up to fancy things like actually working with data. If you’re looking to be inspired, R for Data Science is probably a better book for you. But if you’re looking for a resource to give you the building blocks for learning R, starting with the absolute basics, then you’re in the right place.\nThe R programming language is constantly evolving, and my goal is to keep this book up-to-date as new developments emerge.",
     "crumbs": [
@@ -12,7 +12,7 @@
   {
     "objectID": "index.html#teaching-from-this-book",
     "href": "index.html#teaching-from-this-book",
-    "title": "The R Workshop",
+    "title": "The R Workshop Book",
     "section": "Teaching from this book",
     "text": "Teaching from this book\nYou are absolutely welcome to teach from this book however you like, but I do request that you provide appropriate attribution.",
     "crumbs": [
@@ -22,7 +22,7 @@
   {
     "objectID": "index.html#learn-from-me",
     "href": "index.html#learn-from-me",
-    "title": "The R Workshop",
+    "title": "The R Workshop Book",
     "section": "Learn from me!",
     "text": "Learn from me!\nFeel free to reach out if you’re interested in hiring me to teach custom versions of these workshops.",
     "crumbs": [
@@ -32,7 +32,7 @@
   {
     "objectID": "index.html#inspiration-attribution",
     "href": "index.html#inspiration-attribution",
-    "title": "The R Workshop",
+    "title": "The R Workshop Book",
     "section": "Inspiration attribution",
     "text": "Inspiration attribution\nThe original inspiration for the first parts of this book came from Software Carpentry, which is where I first encountered the gapminder dataset that is used throughout (however, the materials you will find in this book bear little-to-no resemblance to any of the R Software Carpentry workshops.)",
     "crumbs": [
@@ -42,7 +42,7 @@
   {
     "objectID": "index.html#errors-typos-and-contributions",
     "href": "index.html#errors-typos-and-contributions",
-    "title": "The R Workshop",
+    "title": "The R Workshop Book",
     "section": "Errors, typos, and contributions",
     "text": "Errors, typos, and contributions\nIf you notice any errors or typos, feel free to let me know by filing an issue on the book’s GitHub repository.",
     "crumbs": [
@@ -52,9 +52,19 @@
   {
     "objectID": "index.html#get-in-touch",
     "href": "index.html#get-in-touch",
-    "title": "The R Workshop",
+    "title": "The R Workshop Book",
     "section": "Get in touch",
     "text": "Get in touch\nFeel free to email me at rlbarter at gmail dot com if you’d like to get in touch.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "index.html#license",
+    "href": "index.html#license",
+    "title": "The R Workshop Book",
+    "section": "License",
+    "text": "License\nThis book is licensed under Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.",
     "crumbs": [
       "Preface"
     ]
