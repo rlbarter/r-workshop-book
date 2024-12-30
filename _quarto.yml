@@ -5,6 +5,8 @@ book:
   title: "The R Workshop"
   author: "Rebecca Barter"
   date: "12/27/2024"
+  google-analytics:
+    tracking-id: "G-QXD5CL0YRD"
   chapters:
     - index.qmd
     - part: "Getting Started"
