@@ -5,6 +5,11 @@ format: html
 ---
 
 
+:::{.callout-tip}
+## Learn R live!
+
+Prefer to learn via **live instruction**? Register for my [Introduction to R for Data Analysis](https://instats.org/seminar/introduction-to-r-for-data-analysis-2014) seminar via Instats on January 15-16 2025.
+:::
 
 
 ## What is R?
@@ -14,7 +19,7 @@ R is a "programming language" that once we can speak (write) it, we can use it t
 
 Many of you may be familiar with other software programs, like Excel, SAS, SPSS, STATA, or MATLAB. The main issues with these software programs, is that they are proprietary and they cost money.
 
-R, however, is what is called an "\*open source\*" programming language. This means that it is completely *free*, and also that anyone can be an R developer. The result is that there are massive diverse communities of people who have come together to contribute to the R programming language, helping turn it into the powerful programming tool that it is today. 
+R, however, is what is called an "*open source*" programming language. This means that it is completely *free*, and also that anyone can be an R developer. The result is that there are massive diverse communities of people who have come together to contribute to the R programming language, helping turn it into the powerful programming tool that it is today. 
 
 ## What is RStudio?
 
@@ -40,7 +45,7 @@ If you will be using R "locally" (i.e., on your own computer, rather than in the
 ## Updating R and RStudio
 Even if you already have R and RStudio on your computer, I recommend that you re-download them to ensure that you have the latest versions.
 
-It is good practice to keep up to date with the latest versions in general--I recommend actively re-installing the latest new versions of R and RStudio at least every 6 months or so.
+It is good practice to keep up-to-date with the latest versions. In general, I recommend actively re-installing the latest new versions of R and RStudio at least every 6 months or so.
 :::
 
 
@@ -73,7 +78,7 @@ knitr::include_graphics("figures/rstudio_first_doc.png")
 ```
 
 
-Congratulations, you've just created your first R document! Technically, this is called a *quarto* document, but you can think of it like a Word document in which you are going to write both regular text and R code text to tell a data-driven story! We will talk about the contents of this document in a moment.
+Congratulations, you've just created your first R document (the top-left panel that just appeared in your RStudio application)! Technically, this is called a *quarto* document, but you can think of it like a Word document in which you are going to write both regular text and R code text to tell a data-driven story! We will talk about the contents of this document in a moment.
 
 
 
@@ -349,7 +354,7 @@ I strongly prefer the second option of "chunk output in console", but R users ar
 
 My suggestion is try both options for a few hours and see which one sparks joy.  
 
-Regardless of where your output appears (inline or in the console), I strongly suggest that you write all your code in a quarto document (rather than directly in the console). Writing your code in a quarto document will save your code and results in a *reproducible* way AND help you to communicate your findings to other people.
+Regardless of where your output appears (inline or in the console), I strongly suggest that you write all your code in a quarto document (rather than directly in the console). Writing your code in a quarto document will save your code and results in a *reproducible* way AND let you create a document that you can use to communicate your findings to other people.
 
 
 ### Creating new code chunks in quarto
@@ -369,9 +374,9 @@ Since it's a pain to type all that every time you want to create a new code chun
 
 
 
-In your quarto document, create three new code chunks, one in each of the three ways described above. Conduct some basic mathematical calculations in each code chunk and run the code using any of the approaches described in the previous section (your output should appear either inline or in the console, depending on the settings). Then render your quarto document and look at the html output. 
+Give it a go yourself: In your quarto document, create three new code chunks, one in each of the three ways described above. Conduct some basic mathematical calculations in each code chunk and run the code using any of the approaches described in the previous section (your output should appear either inline or in the console, depending on the settings). Then render your quarto document and look at the html output. 
 
-Add a chunk option to hide the code `#| echo: false` to one of your chunks (this echo: false chunk option must go on the first line of the chunk) and re-run your code (nothing should be different) and re-render your document and look at the output. What has changed?
+Next, add a chunk option to hide the code `#| echo: false` to one of your chunks (this echo: false chunk option must go on the first line of the chunk) and re-run your code (nothing should be different) and re-render your document and look at the output. What has changed?
 
 
 ::: {.callout-warning}

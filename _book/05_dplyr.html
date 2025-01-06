@@ -139,6 +139,7 @@ gtag('config', 'G-QXD5CL0YRD', { 'anonymize_ip': true});
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
+    <a href="https://github.com/rlbarter/r-workshop-book" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -282,7 +283,7 @@ gtag('config', 'G-QXD5CL0YRD', { 'anonymize_ip': true});
   <li><a href="#count" id="toc-count" class="nav-link" data-scroll-target="#count"><span class="header-section-number">6.10</span> Count</a></li>
   <li><a href="#arrange" id="toc-arrange" class="nav-link" data-scroll-target="#arrange"><span class="header-section-number">6.11</span> Arrange</a></li>
   </ul>
-</nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/rlbarter/r-workshop-book" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -306,6 +307,19 @@ gtag('config', 'G-QXD5CL0YRD', { 'anonymize_ip': true});
 </header>
 
 
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Learn R live!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Prefer to learn via <strong>live instruction</strong>? Register for my <a href="https://instats.org/seminar/introduction-to-r-for-data-analysis-2014">Introduction to R for Data Analysis</a> seminar via Instats on January 15-16 2025.</p>
+</div>
+</div>
 <p>R is an open source programming language, which means that anyone can extend it by creating their own R functions. When someone creates a collection of related R functions, they typically bundle them into what is called a “package” or a “library” (I use these terms interchangeably), which can then be downloaded and used by other people.</p>
 <p>I don’t think it’s an exaggeration to say that you probably wouldn’t be learning R today were it not for one particular package called the “tidyverse” (so named because it helps you create and work with <a href="https://vita.had.co.nz/papers/tidy-data.pdf">“tidy” data</a>). The tidyverse is actually a collection of several important R packages, including one called “dplyr” and another one called “ggplot2” (this chapter will introduce dplyr and you’ll get to know ggplot2 in the next chapter).</p>
 <p>Although the tidyverse was originally created by Hadley Wickham, it has since grown to include contributions from hundreds of brilliant R developers. Together, they have revolutionized the way we use R for the better. The tidyverse and its impacts are a true testament to the power of the open source community.</p>
@@ -2257,7 +2271,7 @@ dbl (4): year, lifeExp, pop, gdpPercap
 </section>
 <section id="renaming-columns-with-rename" class="level3" data-number="6.4.3">
 <h3 data-number="6.4.3" class="anchored" data-anchor-id="renaming-columns-with-rename"><span class="header-section-number">6.4.3</span> Renaming columns with <code>rename()</code></h3>
-<p>However, since <code>select()</code> will only return the columns included in its arguments. If you want to rename a column without also having to list all the other columns you want in your output data frame, you can use the <code>rename()</code> function instead.</p>
+<p>However, <code>select()</code> will only return the columns included in its arguments. If you want to rename a column without also having to list all the other columns you want in your output data frame, you can use the <code>rename()</code> function instead.</p>
 <p>For example, the following code will return <em>all columns</em> in the <code>gapminder</code> data frame, with the <code>lifeExp</code> column renamed to <code>life_exp</code> and the <code>gdpPercap</code> column renamed to <code>gdp_per_cap</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rename</span>(gapminder, <span class="at">life_exp =</span> lifeExp, <span class="at">gdp_per_cap =</span> gdpPercap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3956,4 +3970,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-</body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/rlbarter/r-workshop-book" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

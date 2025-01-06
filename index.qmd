@@ -1,5 +1,12 @@
 # Preface {.unnumbered}
 
+
+:::{.callout-tip}
+## Learn R live!
+
+Prefer to learn via **live instruction**? Register for my [Introduction to R for Data Analysis](https://instats.org/seminar/introduction-to-r-for-data-analysis-2014) seminar via Instats on January 15-16 2025.
+:::
+
 Welcome to *The R Workshop* Book by [Rebecca L Barter](www.rebeccabarter.com). 
 
 This book was designed as a companion to two R workshops that I originally developed and taught at the University of Utah: "Introduction to R for Data Analysis", which I teach over 2 days, and "Advanced R for Data Analysis", which is just a 1 day workshop. So far, this book only contains the content for the first workshop, but keep an eye on this space as I'll be progressively releasing the advanced R workshop chapters.

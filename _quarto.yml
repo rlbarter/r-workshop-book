@@ -7,12 +7,19 @@ book:
   date: "12/27/2024"
   google-analytics:
     tracking-id: "G-QXD5CL0YRD"
+  repo-url: https://github.com/rlbarter/r-workshop-book
+  issue-url: https://github.com/rlbarter/r-workshop-book
   license: "[CC BY-NC-ND](https://creativecommons.org/licenses/by-nc-sa/4.0/)"
   navbar: 
     title: "The R Workshop Book"
     left:
       - text: "Rebecca L. Barter"
         href: https://www.rebeccabarter.com
+    tools:
+      - icon: github
+        menu:
+          - text: Report Typo/Issue
+            url:  https://github.com/rlbarter/r-workshop-book
   chapters:
     - index.qmd
     - part: "Getting Started"
@@ -29,7 +36,6 @@ book:
         - 05_dplyr.qmd
         - 06_ggplot2.qmd
 
-bibliography: references.bib
 
 format:
   html:

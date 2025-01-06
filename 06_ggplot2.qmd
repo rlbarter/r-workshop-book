@@ -6,6 +6,11 @@ editor_options:
 ---
 
 
+:::{.callout-tip}
+## Learn R live!
+
+Prefer to learn via **live instruction**? Register for my [Introduction to R for Data Analysis](https://instats.org/seminar/introduction-to-r-for-data-analysis-2014) seminar via Instats on January 15-16 2025.
+:::
 
 
 
@@ -678,7 +683,7 @@ ggplot(gapminder) +
 
 But be warned that these bars are *"stacked"* on top of one another, so the overall shape is the same as that of the entire variable in the histogram above.
 
-If you want to *compare* the distributions of the `lifeExp` variable across each continent where each continent's histogram starts from 0, you need to specify an additional argument to `geom_histogram()`,  `position = "identity"`. 
+If you want to *compare* the distributions of the `lifeExp` variable across each continent where each continent's histogram starts from 0, you need to specify an additional argument to `geom_histogram()`, which is `position = "identity"`. 
 
 ```{r}
 ggplot(gapminder) + 
@@ -720,7 +725,7 @@ gapminder |>
 
 ### Bar charts
 
-A bar chart is like a histogram but for categorical variables instead of continuous numeric ones.
+A bar chart is like a histogram, but for categorical variables instead of continuous numeric ones.
 
 
 You can create a *count* bar chart, by providing a categorical (character/factor) variable as your x-aesthetic to `geom_bar()`, which will then add up how many times each value of the categorical variable appears and use this as the height of the bars:
@@ -735,14 +740,20 @@ So the `"Africa"` continent appears over 600 times in the data, while the `"Asia
 
 If you want to create bar charts in which you manually specify the height of each bar based on a variable in your data, you want to use `geom_col()` instead of `geom_bar()`.
 
-For example, below, I create a bar chart that shows the *average life expectancy* for each continent, first you have to calculate the average life expectancy for each continent, and then you can pipe that into ggplot with a `geom_col()` layer that uses `x = continent` as the x-aesthetic which will be used to determine how many bars there are (and their names), and your calculated `y = mean_life_exp` as the height aesthetic.
+For example, below, I create a bar chart that shows the *average life expectancy* for each continent, first you have to calculate the average life expectancy for each continent (I save the resulting data frame as a new variable, `mean_life_exp_df`):
+
 
 ```{r}
-mean_life_exp <- gapminder |>
+mean_life_exp_df <- gapminder |>
   group_by(continent) |>
   summarize(mean_life_exp = mean(lifeExp))
+mean_life_exp_df
+```
 
-ggplot(mean_life_exp) +
+And then I can use ggplot with a `geom_col()` layer that has `x = continent` as the x-aesthetic (which will be used to determine how many bars there are and their names), and my calculated `y = mean_life_exp` as the height aesthetic.
+
+```{r}
+ggplot(mean_life_exp_df) +
   geom_col(aes(x = continent, 
                y = mean_life_exp))
 ```
@@ -750,10 +761,10 @@ ggplot(mean_life_exp) +
 
 Like histograms, you can color your bars using the `fill` aesthetic.
 
-To give each bar a different color per continent, provide `fill = continent` *inside* the `aes()` function:
+To give each bar/continent a different color, provide `fill = continent` *inside* the `aes()` function:
 
 ```{r}
-ggplot(mean_life_exp) +
+ggplot(mean_life_exp_df) +
   geom_col(aes(x = continent, 
                y = mean_life_exp, 
                fill = continent))
@@ -765,7 +776,7 @@ And to give each bar the same global color, provide your color to `fill` *outsid
 
 
 ```{r}
-ggplot(mean_life_exp) +
+ggplot(mean_life_exp_df) +
   geom_col(aes(x = continent, 
                y = mean_life_exp), 
            fill = "cornflowerblue")
@@ -777,7 +788,7 @@ ggplot(mean_life_exp) +
 
 ## Getting fancy with ggplot2
 
-Now that you've seen the most common ggplot2 layers I typically use, let's talk about how to do even fancier things with them.
+Now that you've seen the most common ggplot2 "geom" layers I typically use, let's talk about how to do even fancier things with ggplot2.
 
 ### Transformations
 

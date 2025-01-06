@@ -6,6 +6,12 @@ editor_options:
 ---
 
 
+:::{.callout-tip}
+## Learn R live!
+
+Prefer to learn via **live instruction**? Register for my [Introduction to R for Data Analysis](https://instats.org/seminar/introduction-to-r-for-data-analysis-2014) seminar via Instats on January 15-16 2025.
+:::
+
 ## Defining a vector
 
 While being able to store numbers and text in a variable, such as `x <- 12`, is super neat, the real power of variables is being able to store a wide variety of objects, including an entire dataset, model, or even a data visualization!
