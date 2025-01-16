@@ -505,7 +505,7 @@ as.character(as.numeric("35"))
 
 
 
-Let's go ahead and create two band-new numeric variables, `x` and `y`:
+Let's go ahead and create two brand-new numeric variables, `x` and `y`:
 
 ```{r}
 x <- 2
