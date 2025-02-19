@@ -6,11 +6,6 @@ editor_options:
 ---
 
 
-:::{.callout-tip}
-## Learn R live!
-
-Prefer to learn via **live instruction**? Register for my [Introduction to R for Data Analysis](https://instats.org/seminar/introduction-to-r-for-data-analysis-2014) seminar via Instats on January 15-16 2025.
-:::
 
 ## Doing math with R
 
